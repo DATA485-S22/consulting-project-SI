@@ -7,7 +7,7 @@ Once you obtain a copy of this repo for your team, skim through the guidance doc
 Here are some example roles that should be filled. You can add or adjust roles as you see fit anytime throughout the semester as long as everyone is clear _and comfortable_ with what their role is at the time. 
 
 * **Oversight:** This person continually keeps the end goal in mind, making sure all work that is being done has a clear purpose that will work towards completing a milestone or end deliverable. This does not mean this person "approves/denies" work/tasks, but starts the "how will this help us achieve our goal" discussions. 
-
+  - Joseph
 
 * **Taskmaster:** Github project board/issue organization. This person keeps track of the tangible "todo" list using github issues and/or the project board. They follows up if a task has been complete but not marked as closed. During team meetings this person also takes note of who is responsible for doing what, and makes sure there 
 
