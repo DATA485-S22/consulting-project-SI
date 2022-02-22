@@ -9,26 +9,30 @@ Here are some example roles that should be filled. You can add or adjust roles a
 * **Oversight:** This person continually keeps the end goal in mind, making sure all work that is being done has a clear purpose that will work towards completing a milestone or end deliverable. This does not mean this person "approves/denies" work/tasks, but starts the "how will this help us achieve our goal" discussions. 
   - Joseph
 
-* **Taskmaster:** Github project board/issue organization. This person keeps track of the tangible "todo" list using github issues and/or the project board. They follows up if a task has been complete but not marked as closed. During team meetings this person also takes note of who is responsible for doing what, and makes sure there 
+* **Taskmaster:** Github project board/issue organization. This person keeps track of the tangible "todo" list using github issues and/or the project board. They follows up if a task has been complete but not marked as closed. During team meetings this person also takes note of who is responsible for doing what, and makes sure there
+  - Rica
 
-* **Liaison:** Who is the primary point of contact with the project scientist team (including Dr. D)? Do they cc all team members on every email or summarize information back to the team? This person also schedules either in person or zoom meetings with the science team as needed. 
+* **Liaison:** Who is the primary point of contact with the project scientist team (including Dr. D)? Do they cc all team members on every email or summarize information back to the team? This person also schedules either in person or zoom meetings with the science team as needed.
+  - Faith
 
 * **Recorder/Timekeeper:** This person is in charge of writing regular updates to the class ADS page, periodically assess if milestones will be reached in the expected time, and keeps the project meeting notes (`project-notes.md`) clean. This does NOT mean this person is the 'secretary' and solely responsible for team meeting notes -unless agreed upon by the entire team. 
-
+  - Skip
 
 ## Team collaboration agreements
-What are your rules of engagement? How quickly should you expect responses from each other? Will you have regular meetings outside of class? What is your agreed upon main mode of communication? 
-
+What are your rules of engagement? How quickly should you expect responses from each other? Will you have regular meetings outside of class? What is your agreed upon main mode of communication?
+  - We will be using discord for communication, with response times by the end of the day. If needed, we can use discord to organize meetings outside of class.
 
 ## Workflow
 How will you use branches? What is the review process for PR's? 
-
+  - We plan to be flexible with pull requests, and "claim" them in the discord chat.
 
 -----
 
 # Getting started
 
-Your first task after setting roles will be to figure out what needs to happen first. What do you need to know and who do you need to know it from? Can you write down a clear deliverable and milestones? How do you want to approach this project? Review Dr. D's [calendar](bit.ly/DrD_calendar) and schedule a time for the group to meet with her to talk about these first steps. 
+Your first task after setting roles will be to figure out what needs to happen first. What do you need to know and who do you need to know it from? Can you write down a clear deliverable and milestones? How do you want to approach this project? Review Dr. D's [calendar](bit.ly/DrD_calendar) and schedule a time for the group to meet with her to talk about these first steps.
+1. Acquire data
+2. Define/ quantify equity
 
 -----
 
