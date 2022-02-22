@@ -34,9 +34,10 @@ How will you use branches? What is the review process for PR's?
 
 Your first task after setting roles will be to figure out what needs to happen first. What do you need to know and who do you need to know it from? Can you write down a clear deliverable and milestones? How do you want to approach this project? Review Dr. D's [calendar](bit.ly/DrD_calendar) and schedule a time for the group to meet with her to talk about these first steps.
 1. Acquire data
-2. Define/ quantify equity
-3. How does SI reduce equity gaps?
-4. How can SI move forward in rededucing equity gaps?
+2. Create codebook/ identify all variables in data
+3. Define/ quantify equity
+4. How does SI reduce equity gaps?
+5. How can SI move forward in rededucing equity gaps?
 
 -----
 
