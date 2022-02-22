@@ -14,6 +14,7 @@ Here are some example roles that should be filled. You can add or adjust roles a
 
 * **Liaison:** Who is the primary point of contact with the project scientist team (including Dr. D)? Do they cc all team members on every email or summarize information back to the team? This person also schedules either in person or zoom meetings with the science team as needed.
   - Faith
+  - Main contact: Erik Wasinger (ewasinger@csuchico.edu)
 
 * **Recorder/Timekeeper:** This person is in charge of writing regular updates to the class ADS page, periodically assess if milestones will be reached in the expected time, and keeps the project meeting notes (`project-notes.md`) clean. This does NOT mean this person is the 'secretary' and solely responsible for team meeting notes -unless agreed upon by the entire team. 
   - Skip
