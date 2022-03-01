@@ -41,4 +41,5 @@ vignettes/*.pdf
 # Data Files
 data/
 
+# R Project
 ads-project.Rproj
