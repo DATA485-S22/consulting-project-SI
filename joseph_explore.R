@@ -50,3 +50,6 @@ program <- program %>%
 program %>%
   group_by(Random.Student.ID) %>%
   summarise(no_rows = length(Random.Student.ID))
+
+# Condiser using conditional logistic regression, matching students who did/did not
+# attend SI, matching on some vars
