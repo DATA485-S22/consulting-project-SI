@@ -37,3 +37,9 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# Data Files
+data/
+
+# R Project
+ads-project.Rproj
