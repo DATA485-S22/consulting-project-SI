@@ -15,6 +15,9 @@ cols <- c("College.Year", "Academic.Year", "Term", "Term.Type", "Gender",
         "Entry.Enrollment.Type", "Academic.Standing.Status")
 program %<>% mutate_at(cols, factor)
 
+program <- group_by(program, Random.Student.ID) %>% # Student was enrolled at any time during/after 2016
+  filter(any(Term.Year >= 2016))
+
 levels(program$Academic.Year)
 program %>%
   group_by(Academic.Year) %>%
@@ -43,12 +46,19 @@ courses$course_num_clean <- droplevels(courses$course_num_clean)
 levels(courses$course_num_clean)
 
 courses <- courses %>%
-  filter(Term.Year >= 2016)
+  filter(Term.Year >= 2016) # Start of SI
 
 courses$Term.Type <- factor(courses$Term.Type)
 levels(courses$Term.Type)
-courses <- courses %>%
-  filter(Term.Type %nin% c("Summer", "Winter"))
-courses$Term.type <- droplevels(courses$Term.Type)
-levels(courses$Term.Type)
+courses <- filter(courses, Term.Type %nin% c("Summer", "Winter"))
+courses <- droplevels(courses)
 
+identical(courses[["Writing.Course.Flag.Description"]], courses[["Writing.or.Not.Writing.Class"]]) # TRUE
+identical(courses[["GE.or.Program.Flag.Description"]], courses[["GE.or.Program.Major"]]) # TRUE
+
+cols2 <- c("Course.Subject.and.Number", "Academic.Subject", "Academic.Subject.Code",
+           "Class.Level", "Class.Learning.Mode", "Instruction.Mode",
+           "Instruction.Mode.Code", "Inst.MD.Persn.Chcoflx.Onl.Othr",
+           "Course.Type", "Course.Fee.Exist.Flag", "Writing.Course.Flag",
+           "GE.Class.Flag")
+courses %<>% mutate_at(cols2, factor)
