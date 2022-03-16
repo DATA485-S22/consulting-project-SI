@@ -62,3 +62,18 @@ cols2 <- c("Course.Subject.and.Number", "Academic.Subject", "Academic.Subject.Co
            "Course.Type", "Course.Fee.Exist.Flag", "Writing.Course.Flag",
            "GE.Class.Flag")
 courses %<>% mutate_at(cols2, factor)
+
+
+##############################################
+si_appt <- read.csv("data/SLC Appointment.csv")
+
+courses$Random.Course.ID <- factor(courses$Random.Course.ID)
+si_appt$Random.Course.ID <- factor(si_appt$Random.Course.ID)
+si_appt <- filter(si_appt, Random.Course.ID %nin% c(-1,-2))
+courses <- filter(courses, Random.Course.ID %in% levels(si_appt$Random.Course.ID))
+
+program.clean <- select(program, Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+                  IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
+                  Academic.Program, Major.1.STEM.Flag, Major.1.College,
+                  Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
+                  Academic.Standing.Status)
