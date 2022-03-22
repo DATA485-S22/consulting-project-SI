@@ -90,6 +90,8 @@ siii <- select(si_appt, Random.Student.ID, SLC.Attended.Flag, Term)
 siii$Term <- factor(siii$Term)
 siii <- siii[!duplicated(siii[,'Random.Student.ID']),]
 
+grades <- 
+
 # Replace with all students who took SI classes
 siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
 siii$SLC.Attended.Flag[is.na(siii$SLC.Attended.Flag)] <- 0
