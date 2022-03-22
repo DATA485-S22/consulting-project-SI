@@ -105,6 +105,8 @@ write.csv(student_profiles, "data/student_profiles_clean.csv")
 
 student_profiles <- read.csv("data/student_profiles_clean.csv")
 
+##############################################################
+
 # Contains number of visits in the term, and flag for at least one visit
 clean_si_visit <- select(si_appt, Random.Student.ID, SLC.Attended.Flag, Term, Visit.Count..per.day.) %>%
   group_by(Random.Student.ID, Term) %>%
@@ -121,8 +123,8 @@ write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 # Contains student grades for all classes with an SI component
 si_grades <- read.csv("data/si_grades.csv")
 
-
-
+##############################################################
+# Work in progress
 # Replace with all students who took SI classes
 siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
 siii$SLC.Attended.Flag[is.na(siii$SLC.Attended.Flag)] <- 0
