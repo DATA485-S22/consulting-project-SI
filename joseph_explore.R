@@ -124,6 +124,11 @@ write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 si_grades <- read.csv("data/si_grades.csv")
 
 ##############################################################
+
+si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
+si_student_profiles <- filter(student_profiles, Random.Student.ID %in% levels(si_grades$Random.Student.ID))
+
+
 # Work in progress
 # Replace with all students who took SI classes
 siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
