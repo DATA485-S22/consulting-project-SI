@@ -101,6 +101,9 @@ profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
 # therefore, they have null values for 
 student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
 student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
+write.csv(student_profiles, "data/student_profiles_clean.csv")
+
+student_profiles <- read.csv("data/student_profiles_clean.csv")
 
 # Contains number of visits in the term, and flag for at least one visit
 clean_si_visit <- select(si_appt, Random.Student.ID, SLC.Attended.Flag, Term, Visit.Count..per.day.) %>%
