@@ -97,6 +97,7 @@ grades <- filter(grades, `Term Year` >= 2016)
 grades$`Random Course ID` <- factor(grades$`Random Course ID`)
 grades$`Term Type` <- factor(grades$`Term Type`)
 si_grades <- filter(grades, `Term Type` %nin% c("Summer", "Winter"), `Random Course ID` %in% levels(si_appt$Random.Course.ID))
+write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 
 # Replace with all students who took SI classes
 siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
