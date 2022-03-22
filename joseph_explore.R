@@ -1,5 +1,6 @@
 # Joseph Shifman's exploring file
 library(tidyverse)
+library(readxl)
 library(magrittr) # Allows %<>% notation to update lhs object with resulting value
 library(naniar)
 library(Hmisc) # %nin%
@@ -86,11 +87,16 @@ profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
          Student.Orientation.Flag)
 # Profile stores all students
+# Add total SI visits
 siii <- select(si_appt, Random.Student.ID, SLC.Attended.Flag, Term)
 siii$Term <- factor(siii$Term)
 siii <- siii[!duplicated(siii[,'Random.Student.ID']),]
 
-grades <- 
+grades <- read_xlsx("data/Student Grade.xlsx")
+grades <- filter(grades, `Term Year` >= 2016)
+grades$`Random Course ID` <- factor(grades$`Random Course ID`)
+grades$`Term Type` <- factor(grades$`Term Type`)
+si_grades <- filter(grades, `Term Type` %nin% c("Summer", "Winter"), `Random Course ID` %in% levels(si_appt$Random.Course.ID))
 
 # Replace with all students who took SI classes
 siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
