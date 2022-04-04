@@ -16,4 +16,7 @@ temp3 <- si_visit %>% group_by(Random.Course.ID) %>%
 
 course.level <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
 
+course.detail <- read.csv("data/Course Detail.csv") 
+
+course.level <- left_join(course.level, course.detail, by = 'Random.Course.ID')
 write.csv(course.level, 'data/course_level.csv')
