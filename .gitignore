@@ -43,3 +43,6 @@ data/
 
 # R Project
 ads-project.Rproj
+
+# Scratch files
+skip_scratch.R
