@@ -85,12 +85,12 @@ program.clean <- filter(program, Term.Year >= 2016) %>%
                   Academic.Program, Major.1.STEM.Flag, Major.1.College,
                   Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
                   Academic.Standing.Status)
-program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID) # 45847
+program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
 
 
 profile <- read.csv("data/Student Profile Metric.csv")
 profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
-  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>% # 29731
+  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
   select(Cohort.Term, Random.Student.ID, Degree.Term,
          Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
@@ -128,10 +128,3 @@ si_grades <- read.csv("data/si_grades.csv")
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
 si_student_profiles <- filter(student_profiles, Random.Student.ID %in% levels(si_grades$Random.Student.ID))
 
-
-# Work in progress
-# Replace with all students who took SI classes
-siii <- right_join(siii, profile, by = c("Random.Student.ID", "Term"))
-siii$SLC.Attended.Flag[is.na(siii$SLC.Attended.Flag)] <- 0
-ggplot(siii) +
-  geom_bar(aes(x = SLC.Attended.Flag))
