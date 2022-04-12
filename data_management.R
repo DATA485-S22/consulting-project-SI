@@ -30,6 +30,9 @@ course.level$SI.Component.Flag <- course.level$n
 course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
+# Remove repeated cols
+course.level <- select(course.level, -Term, -Term.Year, -Term.Type)
+
 write.csv(course.level, 'data/course_level.csv')
 
 ################################################################################
