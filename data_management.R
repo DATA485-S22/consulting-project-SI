@@ -58,6 +58,8 @@ profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
          Student.Orientation.Flag)
 
 # Student Programs and Profiles Joined together
+# about 35% of students are not present in the profile dataset
+# therefore they have null values
 student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
 student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
 write.csv(student_profiles, "data/student_profiles_clean.csv")
