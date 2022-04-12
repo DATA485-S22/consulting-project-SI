@@ -50,6 +50,9 @@ program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 20
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
          Academic.Standing.Status)
 program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
+# Remove duplicate rows
+program.clean <- program.clean[order(program.clean$Random.Student.ID),]
+program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
 
 # Student Profile Dataset
 profile <- read.csv("data/Student Profile Metric.csv")
