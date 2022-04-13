@@ -30,6 +30,9 @@ course.level$SI.Component.Flag <- course.level$n
 course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
+# Remove repeated cols
+course.level <- select(course.level, -Term, -Term.Year, -Term.Type)
+
 write.csv(course.level, 'data/course_level.csv')
 
 ################################################################################
@@ -47,6 +50,9 @@ program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 20
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
          Academic.Standing.Status)
 program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
+# Remove duplicate rows
+program.clean <- program.clean[order(program.clean$Random.Student.ID),]
+program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
 
 # Student Profile Dataset
 profile <- read.csv("data/Student Profile Metric.csv")
@@ -58,6 +64,8 @@ profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
          Student.Orientation.Flag)
 
 # Student Programs and Profiles Joined together
+# about 35% of students are not present in the profile dataset
+# therefore they have null values
 student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
 student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
 write.csv(student_profiles, "data/student_profiles_clean.csv")
