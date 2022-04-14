@@ -4,19 +4,27 @@ library(Hmisc) # Enables %nin% notation
 library(readxl) # read Excel file
 
 ###########################################################################################
-# Course Level Data
+# Create grades.csv 
 ###########################################################################################
 grades <- read_xlsx("data/Student Grade.xlsx")
 
-course.level <- grades %>% group_by(`Random Course ID`, `Term Year`, `Term Type`) %>%
+write.csv(grades, 'data/grades.csv')
+
+
+###########################################################################################
+# Course Level Data
+###########################################################################################
+grades <- read.csv("data/Student Grade.xlsx")
+
+
+course.level <- grades %>% group_by(Random.Course.ID, Term.Year, Term.Type) %>%
   summarise(class.size = n(),
-            class.average = sum(`Student Class Grade Point per Unit`)/class.size,
-            dwf.rate = sum(`Grade DFW Count`)/class.size) %>%
-  rename(Random.Course.ID = `Random Course ID`)
+            class.average = sum(Student.Class.Grade.Point.per.Unit)/class.size,
+            dwf.rate = sum(Grade.DFW.Count)/class.size)
 si_visit <- read.csv('data/SLC Appointment.csv')
 
 temp3 <- si_visit %>% group_by(Random.Course.ID) %>%
-  summarise(n = sum(SLC.Attended.Flag))
+  summarise(SI.Visit.Num = sum(SLC.Attended.Flag))
 
 course.level <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
 
