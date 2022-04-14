@@ -26,72 +26,42 @@ This is a document for Coarsened Exact Mathcing results.
 ## BIO104
 
 ```{r}
-grades <- read.csv("data/grades.csv")
-si_visit <- read.csv("data/SLC Appointment.csv")
-profiles <- read.csv("data/student_profiles_clean.csv")
+data <- read.csv("data/CEM_dataset.csv")
 ```
 
 ```{r}
-convert_grades <- function(x) {
-  A <- factor(x, levels=c("A+", "A", "A-",
-                          "B+", "B", "B-",
-                          "C+", "C", "C-",
-                          "D+", "D", "D-", "F"))
-  values <- c(4.3, 4, 3.7, 
-              3.3, 3, 2.7,
-              2.3, 2, 1.7,
-              1.3, 1, 0.7, 0)
-  values[A]
-}
+summary(factor(data$SI.Attended))
 ```
 
 
 ```{r}
-grad <- grades %>% filter(Random.Course.ID == 14054) # BIO104
-
-si_students <- si_visit %>%  filter(Random.Course.ID == 14054)
-
-temp3 <- si_students %>% group_by(Random.Student.ID) %>%
-  summarise(n = sum(SLC.Attended.Flag))
-
-data1 <- full_join(grad, temp3, by = "Random.Student.ID")
-
-data1$n[is.na(data1$n)] <- 0
-
-data1$n[data1$n > 0] <- 1
-
-data1 <- data1 %>% select(Random.Student.ID, n, Student.Class.Official.Grade)
-
-data2 <- profiles %>% select(Random.Student.ID, Gender.Code, IPEDS.Ethnicity, IPEDS.Ethnicity.URM.Non.URM,
-                             First.Generation.Flag, Entry.Enrollment.Type, HS.GPA, Student.Orientation.Flag) %>%
-  distinct()
-data3 <- data1 %>% left_join(data2, by = 'Random.Student.ID') 
-
-# Remove Withdraws
-data3 <- data3 %>% filter(Student.Class.Official.Grade != 'W') %>% filter(Student.Class.Official.Grade != 'WU')
-
-data3$grade.num <- convert_grades(data3$Student.Class.Official.Grade)
-
-data3 <- data3 %>% na.omit()
-
-# factor(n) is a binary indicator for attending SI at least once
-matching <- matchit(factor(n) ~ IPEDS.Ethnicity  + Gender.Code + HS.GPA + Student.Orientation.Flag,
-                    data = data3, method = 'cem', estimand = 'ATE')
+matching <- matchit(SI.Attended ~ 
+                      HS.GPA + 
+                      Student.Orientation.Flag +
+                      Major.1.STEM.Flag +
+                      Full.Time.Part.Time.Code +
+                      Academic.Program,
+                    data = data, method = 'cem', estimand = 'ATE')
 summary(matching)
 
 # Extract Matchings
 
-matched_df1 <- match.data(matching) %>% arrange(subclass, n)
+matched_df1 <- match.data(matching) %>% arrange(subclass, SI.Attended)
 
 # Estimate Causal Impact
 
-matched_df1 %>% ggplot(aes(factor(n), grade.num)) + geom_boxplot()
+matched_df1 %>% ggplot(aes(factor(SI.Attended), Student.Class.Grade.Point.per.Unit)) + geom_boxplot()
 
-matched_df1 %>% group_by(n) %>% summarise(mean = mean(grade.num))
+matched_df1 %>% group_by(SI.Attended) %>% summarise(mean = mean(Student.Class.Grade.Point.per.Unit))
 
-model1 <- lm(grade.num ~ factor(n), data = matched_df1,
+model1 <- lm(Student.Class.Grade.Point.per.Unit ~ SI.Attended +
+                                                  Gender.Code +
+                                                  First.Generation.Flag +
+                                                  Writing.Course.Flag +
+                                                  Honors.Class.Flag, data = matched_df1,
              weights = weights)
 coeftest(model1, vcov. = vcovCL,
          cluster = ~subclass)
+
 ```
 
