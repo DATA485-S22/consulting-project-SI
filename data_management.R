@@ -14,7 +14,7 @@ write.csv(grades, 'data/grades.csv')
 ###########################################################################################
 # Course Level Data
 ###########################################################################################
-grades <- read.csv("data/Student Grade.xlsx")
+grades <- read.csv("data/grades.csv")
 
 
 course.level <- grades %>% group_by(Random.Course.ID, Term.Year, Term.Type) %>%
@@ -33,13 +33,13 @@ course.detail <- read.csv("data/Course Detail.csv")
 course.level <- left_join(course.level, course.detail, by = 'Random.Course.ID')
 
 # Create flag for SI component
-course.level$n[is.na(course.level$n)] <- 0
-course.level$SI.Component.Flag <- course.level$n
+course.level$SI.Visit.Num[is.na(course.level$SI.Visit.Num)] <- 0
+course.level$SI.Component.Flag <- course.level$SI.Visit.Num
 course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
 # Remove repeated cols
-course.level <- select(course.level, -Term, -Term.Year, -Term.Type)
+course.level <- select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
 
 write.csv(course.level, 'data/course_level.csv')
 
