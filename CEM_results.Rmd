@@ -1,0 +1,249 @@
+---
+title: "CEM Results"
+author: "Skip Moses (+Robin)"
+date: "4/3/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+library(MatchIt)
+library(lmtest)
+library(sandwich)
+library(ggpubr)
+```
+
+## Summary
+
+This is a document for Coarsened Exact Matching results.
+
+## BIO104
+Note from Robin:
+
+* This is not only BIO 104. All courses are present
+* Also, this is not only FTF. Consider filtering. 
+* Matching is still done on the full dataset, not the intersections of URM & FG. That means students from diff demographics are being matched. 
+
+```{r}
+# 2017 Student grades/SI/demographic data
+#data <- read.csv("data/CEM_dataset.csv")
+data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
+
+data.fall <- data %>% filter(Term.Type == "Fall") %>% 
+  select(-X) %>%
+  # Remove Withdraws from class 
+  filter(Student.Class.Grade.Point.per.Unit > 0)
+
+# COnvert to factors
+data.fall$SI.Attended <- as.factor(data.fall$SI.Attended)
+data.fall$Random.Student.ID <- as.factor(data.fall$Random.Student.ID)
+data.fall$Random.Course.ID <- as.factor(data.fall$Random.Course.ID)
+
+# Center the grade per unit (this is actually normalizing - RAD)
+# And it's normalizing against the mean/sd for the entire data set. 
+# normalizing within class would be more appropriate. 
+# (IF we really need to go there. let's keep the normal grade scale for now.)
+#data.fall$Grade.Point.per.Unit.center <- (data.fall$Student.Class.Grade.Point.per.Unit - mean(data.fall$Student.Class.Grade.Point.per.Unit))/sd(data.fall$Student.Class.Grade.Point.per.Unit)
+```
+
+
+```{r}
+# Turning this off to to calculate glm derived propensity
+# Estimate Propensity Scores
+prop.score <- glm(SI.Attended ~ HS.GPA + 
+                    Student.Orientation.Flag + 
+                    Major.1.STEM.Flag +
+                    Random.Course.ID, family = binomial, data = data.fall)
+
+summary(prop.score)
+
+data.fall$Prop.Score <- predict(prop.score, type = "response")
+
+labs <- paste("Actually Attended SI:", c("Did not Attend", "Attended"))
+
+# Histogram of Propensity Scores (I think the labels are reversed)
+#data.fall %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[1], labs[2])) %>% 
+#  ggplot(aes(x = Prop.Score)) +
+#    geom_histogram(binwidth = .1) + facet_wrap(~SI.Attended) + xlab("Probability of goint to SI")
+
+data.fall %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[2], labs[1])) %>% 
+  ggplot(aes(x = Prop.Score, y=First.Generation.Flag, fill=SI.Attended)) +
+    geom_violin() + 
+  facet_wrap(~IPEDS.Ethnicity.URM.Non.URM) + coord_flip()+
+  xlab("Probability of goint to SI")
+```
+
+
+```{r}
+# Here we make our matching. The k2K = TRUE will coarsen the covariates first
+# and then do an exact matching on the coarsend data. This allows us to compute 
+# the difference in grade between our matching.
+matching <- matchit(SI.Attended ~ 
+                      HS.GPA + 
+                      Student.Orientation.Flag + 
+                      Major.1.STEM.Flag +
+                      Random.Course.ID ,
+                    data = data.fall, 
+                    method = 'cem', estimand = 'ATE',
+                    k2k = TRUE, # After Pair Matching without Replacement
+                    k2k.method = "euclidean")
+matching
+#summary(matching)
+```
+
+Skip: Need to discuss quality of matches. 
+
+
+* The average treatment effect in the population (ATE) is the average effect of the treatment **for all units in the target population**.
+* The average treatment effect in the treated (ATT) is the average effect of the treatment for units **like those who actually were treated**.
+
+```{r}
+# Covariates should be those that cause variation in the outcome and selection into treatment group; these are known as confounding variables. (Greifer)
+matching.strict <- matchit(SI.Attended ~ 
+                      HS.GPA + 
+                      Student.Orientation.Flag + 
+                      Major.1.STEM.Flag +
+                      Random.Course.ID + 
+                      Academic.Level + 
+                      First.Generation.Flag + 
+                      IPEDS.Ethnicity.URM.Non.URM +
+                      Gender.Code, 
+                    data = data.fall, 
+                    method = 'cem', estimand = 'ATT',
+                    k2k = TRUE, # FALSE - After Stratum Matching
+                    k2k.method = "euclidean")
+matching.strict
+
+# Extract Matched pairs
+matched_df1 <- match.data(matching) %>% 
+  relocate(subclass, SI.Attended) %>% 
+  arrange(subclass, SI.Attended)  %>%
+  rename(grade = Student.Class.Grade.Point.per.Unit)
+```
+
+## Exploratory plots with matched sample - trying to create this gap
+```{r}
+# Identify courses with 20 or more students (10 matched pairs per class)
+matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
+  tally() %>% filter(n>=20) %>% droplevels()
+
+matched_df2 <- matched_df1 %>% 
+  filter(Random.Course.ID %in% matched_courses$Random.Course.ID) %>%
+  group_by(Random.Course.ID, First.Generation.Flag, SI.Attended) %>%
+  summarise(avg.grade = mean(grade), 
+            n=n()) 
+
+matched_df2_wide <- matched_df2 %>% 
+  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended), 
+              names_from = First.Generation.Flag, 
+              values_from = c(avg.grade, n)) %>%
+  mutate(fg_gap = avg.grade_N - avg.grade_Y, 
+         n = pmin(n_N, n_Y)) 
+
+ggplot(matched_df2_wide, 
+       aes(y=fg_gap, x=SI.Attended, color = Random.Course.ID, 
+           group = Random.Course.ID)) + 
+  geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) + 
+  geom_text(aes(x=.75, y=.25, label = "Non-FG > FG"), col="red") +
+  geom_text(aes(x=.75, y=-.25, label = "Non-FG < FG"), col="green3") +
+  ylab("Non-FG - FG") + 
+  ggtitle("FG gap among matched students who went to SI vs those who did not go to SI")
+```
+
+* At the course-section level - possibly too small sample sizes here. Sometimes within a class, only 2 students who are a FG who didn't go to SI. We also didn't match on FG. 
+* Size of dots is the min size of either FG or NonFG. 
+
+```{r}
+matched_df2[33:40,]
+```
+
+### Overall (not course level) gap
+```{r}
+ggplot(matched_df1, aes(y=grade, x = First.Generation.Flag)) + 
+  geom_violin(alpha=.5) + geom_jitter(alpha=.5, width=.2, height=.1) +
+   stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 1) + 
+  facet_wrap(~SI.Attended) 
+
+matched_df1 %>% ggline(x="First.Generation.Flag", y = "grade", 
+                       facet.by = "SI.Attended", add=c("jitter", "mean_se")) + 
+  ggtitle("SI helps both grops equally")
+
+```
+
+### Assess treatment affect on matched sample
+
+The statistical quantity of interest is the causal effect of the treatment (`SI.Attended`) on grade in the class: (`grade`). The other variables are pre-treatment covariates. In particular, the analysis is concerned with the marginal, total effect of the treatment for those who actually received the treatment. (ATT) (copy/paste/edit Greifer))_
+
+```{r}
+# Following https://cloud.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html
+fit1 <- lm(grade ~ SI.Attended + HS.GPA + Student.Orientation.Flag + Academic.Level +
+     Major.1.STEM.Flag + First.Generation.Flag + IPEDS.Ethnicity.URM.Non.URM + 
+     Gender.Code, 
+   data=matched_df1, weights = weights)
+
+coeftest(fit1, vcov. = vcovCL, cluster = ~subclass)
+# it is important not to interpret the coefficients and tests of the other covariates in the outcome model. These are not causal effects and their estimates may be severely confounded.
+```
+
+The estimated effect was (0.377, SE=.076, p<.0001), indicating that the average effect of attending SI 0.37 grade points higher compared to those that did not go to SI in 2017. 
+
+Results still pending further filtering such as on FTF only. And possibly including more years. 
+
+### Strict matching
+```{r}
+matched_df1.strict <- match.data(matching.strict) %>% 
+  rename(grade = Student.Class.Grade.Point.per.Unit)
+
+fit.strict <- lm(grade ~ SI.Attended + HS.GPA + Student.Orientation.Flag + Academic.Level +
+     Major.1.STEM.Flag + First.Generation.Flag + IPEDS.Ethnicity.URM.Non.URM + 
+     Gender.Code, 
+   data=matched_df1.strict, weights = weights)
+
+coeftest(fit.strict, vcov. = vcovCL, cluster = ~subclass)
+```
+
+* Hoooooly hell. A near full grade point higher? Too good to be true. What am I missing??
+
+```{r}
+ggplot(matched_df1.strict, aes(y=grade, x = First.Generation.Flag)) + 
+  geom_violin(alpha=.5) + geom_jitter(alpha=.5, width=.2, height=.1) +
+   stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 1) + 
+  facet_wrap(~SI.Attended) 
+
+matched_df1.strict %>% ggline(x="First.Generation.Flag", y = "grade", 
+                       facet.by = "SI.Attended", add=c("jitter", "mean_se")) 
+```
+
+So few FG people?
+```{r}
+table(matched_df1.strict$SI.Attended, matched_df1.strict$First.Generation.Flag)
+```
+
+What about URM?
+```{r}
+ggplot(matched_df1.strict, aes(y=grade, x = IPEDS.Ethnicity.URM.Non.URM)) + 
+  geom_violin(alpha=.5) + geom_jitter(alpha=.5, width=.2, height=.1) +
+   stat_summary(fun.data = "mean_cl_boot", colour = "red", size = 1) + 
+  facet_wrap(~SI.Attended) 
+
+matched_df1.strict %>% ggline(x="IPEDS.Ethnicity.URM.Non.URM", y = "grade", 
+                       facet.by = "SI.Attended", add=c("jitter", "mean_se")) 
+
+table(matched_df1.strict$SI.Attended, matched_df1.strict$IPEDS.Ethnicity.URM.Non.URM)
+```
+
+what is the unmodified gap within SI?
+```{r}
+matched_df1.strict %>% filter(SI.Attended==1) %>% 
+  t.test(grade~IPEDS.Ethnicity.URM.Non.URM, data=.)
+matched_df1.strict %>% filter(SI.Attended==0) %>% 
+  t.test(grade~IPEDS.Ethnicity.URM.Non.URM, data=.)
+```
+
+on the matched sample, marginally significant gap (probably not quite estimating this correctly w/o matching weights) on those that did not go to SI. **No gap for those that did go to SI.**
+
+> Don't get excited yet Erik! We MUST consult someone who is an expert in causal modeling to confirm that we didn't mess up and/or interpreting this right. 
+
+
