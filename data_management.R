@@ -149,6 +149,7 @@ write.csv(grades, "data/grades_SI_classes.csv")
 
 grades <- read.csv("data/grades_SI_classes.csv")  %>%
   select(c("Random.Course.ID",
+           "Term",
            "Term.Year",
            "Term.Type",
            "Student.Class.Unit.Attempted",
@@ -176,6 +177,7 @@ profiles <- read.csv("data/student_profiles_clean.csv") %>%
            "Student.Orientation.Flag"))
 courses <- read.csv("data/Course Detail.csv") %>%
   select(c("Random.Course.ID",
+           "Term",
            "Term.Year",
            "Term.Type",
            "Class.Subject.Number.Section",
