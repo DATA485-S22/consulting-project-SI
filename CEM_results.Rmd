@@ -28,8 +28,8 @@ Note from Robin:
 
 ```{r}
 # 2017 Student grades/SI/demographic data
-#data <- read.csv("data/CEM_dataset.csv")
-data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
+data <- read.csv("data/CEM_dataset.csv")
+#data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
 
 data.fall <- data %>% filter(Term.Type == "Fall") %>% 
   select(-X) %>%

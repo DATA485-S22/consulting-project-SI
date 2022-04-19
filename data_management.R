@@ -107,3 +107,102 @@ write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 ################################################################################
 si_student_profiles <- filter(student_profiles,
                               Random.Student.ID %in% levels(si_grades$Random.Student.ID))
+
+#############################################################################################
+#                         Create Grades data for only SI classes
+#############################################################################################
+
+si_students <- read.csv("data/SLC Appointment.csv")
+grades <- read.csv("data/grades.csv")
+profiles <- read.csv("data/Student Profile Metric.csv")
+courses <- read.csv("data/course_level.csv") %>% filter(SI.Component.Flag == 1)
+
+# Select grades from courses that have an SI component
+grades <- grades %>% filter(Random.Course.ID %in% courses$Random.Course.ID)
+
+si_students <- si_students %>% select(Term.Year, 
+                                      Term.Type,
+                                      Random.Course.ID,
+                                      Random.Student.ID,
+                                      SLC.Attended.Flag)
+
+# Aggregate number of SI visits for each student in SLC dataset
+si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
+  dplyr::summarize(SI.Visit.Num = sum(SLC.Attended.Flag))
+
+grades <- grades %>% left_join(si_count)
+
+grades <- select(Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
+                 Random.Studen.ID, SI.Visit.Num, SI.Attended)
+
+# Create a flag for SI attended
+grades$SI.Attended <- ifelse(grades$SI.Visit.Num > 0, 1, 0)
+
+grades$SI.Attended[is.na(grades$SI.Attended)] <- 0
+
+# Grades Data for only SI classes
+write.csv(grades, "data/grades_SI_classes.csv")
+
+#############################################################################################
+#                                 Data for matchit
+#############################################################################################
+
+grades <- read.csv("data/grades_SI_classes.csv")  %>%
+  select(c("Random.Course.ID",
+           "Term.Year",
+           "Term.Type",
+           "Student.Class.Unit.Attempted",
+           "Student.Class.Unit.Passed",
+           "Student.Class.Grade.Point.per.Unit",
+           "Student.Class.Official.Grade",
+           "Random.Student.ID",
+           "SI.Visit.Num",
+           "SI.Attended"))
+profiles <- read.csv("data/student_profiles_clean.csv") %>%
+  select(c("Random.Student.ID",
+           "IPEDS.Ethnicity",
+           "IPEDS.Ethnicity.URM.Non.URM",
+           "Gender.Code",
+           "First.Generation.Flag",
+           "Academic.Level",
+           "Academic.Program",
+           "Major.1.STEM.Flag",
+           "Major.1.College",
+           "Entry.Enrollment.Type",
+           "Academic.Standing.Status",
+           "Full.Time.Part.Time.Code",
+           "HS.GPA",
+           "Transfer.GPA", 
+           "Student.Orientation.Flag"))
+courses <- read.csv("data/Course Detail.csv") %>%
+  select(c("Random.Course.ID",
+           "Term.Year",
+           "Term.Type",
+           "Class.Subject.Number.Section",
+           "Course.Subject.and.Number",
+           "Academic.Subject",
+           "Academic.Subject.Code",
+           "Course.Catalog.Number",
+           "Class.Learning.Mode",
+           "Instruction.Mode",
+           "Inst.MD.Persn.Chcoflx.Onl.Othr",
+           "Inst.MD.Persn.Onl.Othr",
+           "Course.Type",
+           "Class.Status",
+           "Course.Fee.Exist.Flag",
+           "Combined.Section.Group.ID",
+           "Writing.Course.Flag",
+           "GE.Class.Flag",
+           "GE.Foundation.Course",
+           "GE.Foundation.Course.Code",
+           "GE.Advanced.Course.Substitution.Flag",
+           "Honors.Class.Flag"))
+
+# Merge the data sets
+data <- grades %>% left_join(profiles) %>% left_join(courses) %>% drop_na(c(HS.GPA, 
+                                                                            Student.Orientation.Flag,
+                                                                            Major.1.STEM.Flag,
+                                                                            Full.Time.Part.Time.Code,
+                                                                            Academic.Program))
+
+write.csv(data, "data/CEM_full_dataset.csv")
