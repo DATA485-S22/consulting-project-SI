@@ -53,3 +53,19 @@ Your first task after setting roles will be to figure out what needs to happen f
 * Github issues https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues
 * Github project boards: https://docs.github.com/en/issues/organizing-your-work-with-project-boards/managing-project-boards/about-project-boards 
   Tracking projects: https://docs.github.com/en/issues/organizing-your-work-with-project-boards/tracking-work-with-project-boards/adding-issues-and-pull-requests-to-a-project-board
+  
+  
+  
+## Notes from 04/19/2022
+
+#### Student Level
+  - DV: 1 year retention
+  - Time frame 2016-2021sp
+  - IV: SI attended Y/N
+  - Prelim: $B_{SI} +$
+ 
+#### Causal Student Level 
+
+###### Next Steps 
+  - Interactions between URM and SI
+  

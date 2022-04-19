@@ -1,7 +1,7 @@
 ---
-title: "CEM Results"
-author: "Skip Moses (+Robin)"
-date: "4/3/2022"
+title: "Untitled"
+author: "Skip Moses"
+date: "4/19/2022"
 output: html_document
 ---
 
@@ -15,37 +15,29 @@ library(sandwich)
 library(ggpubr)
 ```
 
-## Summary
-
-This is a document for Coarsened Exact Matching results.
-
-## BIO104
-Note from Robin:
-
-* This is not only BIO 104. All courses are present
-* Also, this is not only FTF. Consider filtering. 
-* Matching is still done on the full dataset, not the intersections of URM & FG. That means students from diff demographics are being matched. 
 
 ```{r}
 # 2017 Student grades/SI/demographic data
-data <- read.csv("data/CEM_dataset.csv")
+data <- read.csv("data/CEM_full_dataset.csv")
 #data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
 
-data.fall <- data %>% filter(Term.Type == "Fall") %>% 
+data <- data %>% filter(Term != "Spring 2019") %>% filter(Term.Year < 2020)
+
+data <- data  %>% 
   select(-X) %>%
   # Remove Withdraws from class 
   filter(Student.Class.Grade.Point.per.Unit > 0)
 
 # COnvert to factors
-data.fall$SI.Attended <- as.factor(data.fall$SI.Attended)
-data.fall$Random.Student.ID <- as.factor(data.fall$Random.Student.ID)
-data.fall$Random.Course.ID <- as.factor(data.fall$Random.Course.ID)
+data$SI.Attended <- as.factor(data$SI.Attended)
+data$Random.Student.ID <- as.factor(data$Random.Student.ID)
+data$Random.Course.ID <- as.factor(data$Random.Course.ID)
 
 # Center the grade per unit (this is actually normalizing - RAD)
 # And it's normalizing against the mean/sd for the entire data set. 
 # normalizing within class would be more appropriate. 
 # (IF we really need to go there. let's keep the normal grade scale for now.)
-#data.fall$Grade.Point.per.Unit.center <- (data.fall$Student.Class.Grade.Point.per.Unit - mean(data.fall$Student.Class.Grade.Point.per.Unit))/sd(data.fall$Student.Class.Grade.Point.per.Unit)
+#data$Grade.Point.per.Unit.center <- (data$Student.Class.Grade.Point.per.Unit - mean(data$Student.Class.Grade.Point.per.Unit))/sd(data$Student.Class.Grade.Point.per.Unit)
 ```
 
 
@@ -55,20 +47,20 @@ data.fall$Random.Course.ID <- as.factor(data.fall$Random.Course.ID)
 prop.score <- glm(SI.Attended ~ HS.GPA + 
                     Student.Orientation.Flag + 
                     Major.1.STEM.Flag +
-                    Random.Course.ID, family = binomial, data = data.fall)
+                    Random.Course.ID, family = binomial, data = data)
 
 summary(prop.score)
 
-data.fall$Prop.Score <- predict(prop.score, type = "response")
+data$Prop.Score <- predict(prop.score, type = "response")
 
 labs <- paste("Actually Attended SI:", c("Did not Attend", "Attended"))
 
 # Histogram of Propensity Scores (I think the labels are reversed)
-#data.fall %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[1], labs[2])) %>% 
+#data %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[1], labs[2])) %>% 
 #  ggplot(aes(x = Prop.Score)) +
 #    geom_histogram(binwidth = .1) + facet_wrap(~SI.Attended) + xlab("Probability of goint to SI")
 
-data.fall %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[2], labs[1])) %>% 
+data %>% mutate(SI.Attended = ifelse(SI.Attended == 1, labs[2], labs[1])) %>% 
   ggplot(aes(x = Prop.Score, y=First.Generation.Flag, fill=SI.Attended)) +
     geom_violin() + 
   facet_wrap(~IPEDS.Ethnicity.URM.Non.URM) + coord_flip()+
@@ -85,7 +77,7 @@ matching <- matchit(SI.Attended ~
                       Student.Orientation.Flag + 
                       Major.1.STEM.Flag +
                       Random.Course.ID ,
-                    data = data.fall, 
+                    data = data, 
                     method = 'cem', estimand = 'ATE',
                     k2k = TRUE, # After Pair Matching without Replacement
                     k2k.method = "euclidean")
@@ -93,11 +85,6 @@ matching
 #summary(matching)
 ```
 
-Skip: Need to discuss quality of matches. 
-
-
-* The average treatment effect in the population (ATE) is the average effect of the treatment **for all units in the target population**.
-* The average treatment effect in the treated (ATT) is the average effect of the treatment for units **like those who actually were treated**.
 
 ```{r}
 # Covariates should be those that cause variation in the outcome and selection into treatment group; these are known as confounding variables. (Greifer)
@@ -110,7 +97,7 @@ matching.strict <- matchit(SI.Attended ~
                       First.Generation.Flag + 
                       IPEDS.Ethnicity.URM.Non.URM +
                       Gender.Code, 
-                    data = data.fall, 
+                    data = data, 
                     method = 'cem', estimand = 'ATT',
                     k2k = TRUE, # FALSE - After Stratum Matching
                     k2k.method = "euclidean")
@@ -122,6 +109,7 @@ matched_df1 <- match.data(matching) %>%
   arrange(subclass, SI.Attended)  %>%
   rename(grade = Student.Class.Grade.Point.per.Unit)
 ```
+
 
 ## Exploratory plots with matched sample - trying to create this gap
 ```{r}
@@ -187,7 +175,7 @@ coeftest(fit1, vcov. = vcovCL, cluster = ~subclass)
 # it is important not to interpret the coefficients and tests of the other covariates in the outcome model. These are not causal effects and their estimates may be severely confounded.
 ```
 
-The estimated effect was (0.377, SE=.076, p<.0001), indicating that the average effect of attending SI 0.37 grade points higher compared to those that did not go to SI in 2017. 
+The estimated effect was (0.344, SE=.076, p<.0001), indicating that the average effect of attending SI 0.338 grade points higher compared to those that did not go to SI. 
 
 Results still pending further filtering such as on FTF only. And possibly including more years. 
 
@@ -245,6 +233,44 @@ matched_df1.strict %>% filter(SI.Attended==0) %>%
 on the matched sample, marginally significant gap (probably not quite estimating this correctly w/o matching weights) on those that did not go to SI. **No gap for those that did go to SI.**
 
 > Don't get excited yet Erik! We MUST consult someone who is an expert in causal modeling to confirm that we didn't mess up and/or interpreting this right. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
