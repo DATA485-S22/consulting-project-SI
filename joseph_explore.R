@@ -132,3 +132,12 @@ si_student_profiles <- filter(student_profiles, Random.Student.ID %in% levels(si
 # Making Graphs
 ################################################################################
 
+# GPA Spread for SI/Non-SI with First-gen facet
+
+# Create dataset for:
+# - All Grades First-Gen
+# - All Grades Non-First-Gen
+
+student_grades <- read.csv("data/grades.csv")
+student_grades <- select(student_grades, Random.Course.ID,
+                         Student.Class.Grade.Point.per.Unit, Random.Course.ID)
