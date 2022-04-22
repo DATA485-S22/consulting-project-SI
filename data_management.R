@@ -4,12 +4,12 @@ library(Hmisc) # Enables %nin% notation for "not in"
 library(readxl) # read Excel file
 
 ###########################################################################################
-# Create grades.csv 
+# Create grades.csv (easier to work with)
 ###########################################################################################
 # WARNING: THIS IS VERY LARGE, IT WILL TAKE ~5 MINS
 grades <- read_xlsx("data/Student Grade.xlsx")
 
-write.csv(grades, 'data/grades.csv')
+write.csv(grades, 'data/grades.csv', row.names = FALSE)
 
 
 ###########################################################################################
@@ -42,7 +42,7 @@ course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 # Remove repeated cols
 course.level <- select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
 
-write.csv(course.level, 'data/course_level.csv')
+write.csv(course.level, 'data/course_level.csv', row.names = FALSE)
 
 ################################################################################
 # Cleaned Student Profiles
@@ -77,7 +77,7 @@ profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
 # therefore they have null values
 student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
 student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
-write.csv(student_profiles, "data/student_profiles_clean.csv")
+write.csv(student_profiles, "data/student_profiles_clean.csv", row.names = FALSE)
 
 ################################################################################
 # Grades Data
