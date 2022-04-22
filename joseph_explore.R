@@ -134,10 +134,26 @@ si_student_profiles <- filter(student_profiles, Random.Student.ID %in% levels(si
 
 # GPA Spread for SI/Non-SI with First-gen facet
 
-# Create dataset for:
-# - All Grades First-Gen
-# - All Grades Non-First-Gen
-
 student_grades <- read.csv("data/grades.csv")
 student_grades <- select(student_grades, Random.Course.ID,
-                         Student.Class.Grade.Point.per.Unit, Random.Course.ID)
+                         Student.Class.Grade.Point.per.Unit, Random.Student.ID)
+student_profiles <- read.csv("data/student_profiles_clean.csv")
+student_profiles <- select(student_profiles, Random.Student.ID, First.Generation.Flag)
+courses <- read.csv("data/course_level.csv")
+courses <- select(courses, Random.Course.ID, dwf.rate, class.average, class.size, SI.Component.Flag)
+
+si_grades_with_fg <- left_join(student_grades, courses, by = "Random.Course.ID")
+si_grades_with_fg <- left_join(si_grades_with_fg, student_profiles, by = "Random.Student.ID")
+si_grades_with_fg$First.Generation.Flag <- factor(si_grades_with_fg$First.Generation.Flag)
+si_grades_with_fg$SI.Component.Flag <- factor(si_grades_with_fg$SI.Component.Flag)
+si_grades_with_fg <- na.omit(si_grades_with_fg)
+
+# Student Level
+ggplot(data = si_grades_with_fg) +
+  geom_density(aes(x = Student.Class.Grade.Point.per.Unit, fill = SI.Component.Flag), alpha = .3) +
+  facet_grid(rows = vars(First.Generation.Flag))
+
+# Course level SI Spread
+
+ggplot(data = si_grades_with_fg) +
+  geom_density(aes(x = class.average, fill = SI.Component.Flag), alpha = .3)

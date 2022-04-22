@@ -4,7 +4,7 @@ library(Hmisc) # Enables %nin% notation for "not in"
 library(readxl) # read Excel file
 
 ###########################################################################################
-# Create grades.csv 
+# Create grades.csv (easier to work with)
 ###########################################################################################
 # WARNING: THIS IS VERY LARGE, IT WILL TAKE ~5 MINS
 grades <- read_xlsx("data/Student Grade.xlsx")
