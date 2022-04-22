@@ -144,16 +144,50 @@ courses <- select(courses, Random.Course.ID, dwf.rate, class.average, class.size
 
 si_grades_with_fg <- left_join(student_grades, courses, by = "Random.Course.ID")
 si_grades_with_fg <- left_join(si_grades_with_fg, student_profiles, by = "Random.Student.ID")
-si_grades_with_fg$First.Generation.Flag <- factor(si_grades_with_fg$First.Generation.Flag)
+si_grades_with_fg$First.Generation.Flag <- factor(si_grades_with_fg$First.Generation.Flag,
+                                                  labels = c("Not First-Gen", "First-Gen Student"))
 si_grades_with_fg$SI.Component.Flag <- factor(si_grades_with_fg$SI.Component.Flag)
 si_grades_with_fg <- na.omit(si_grades_with_fg)
+
+num_zeros <- filter(si_grades_with_fg, Student.Class.Grade.Point.per.Unit == 0) %>%
+  group_by(Random.Course.ID, First.Generation.Flag) %>%
+  summarise(count = n(), class.size) %>%
+  mutate(zero.rate = count/class.size)
+si_summary_grades <- group_by(si_grades_with_fg, Random.Course.ID, First.Generation.Flag) %>%
+  summarise(avg_grade = mean(Student.Class.Grade.Point.per.Unit)) %>%
+  left_join(select(num_zeros, Random.Course.ID, zero.rate), by = c("Random.Course.ID", "First.Generation.Flag"))
+si_summary_grades$zero.rate <- coalesce(si_summary_grades$zero.rate, 0)
+si_summary_grades <- left_join(unique(si_summary_grades),
+                               select(courses, Random.Course.ID, SI.Component.Flag),
+                               by = "Random.Course.ID")
+
+# SI First Gen Student `Grade = Zero` rate
+SI_FG_zero_rate <- filter(si_summary_grades, First.Generation.Flag == "First-Gen Student", SI.Component.Flag == 1)
+SI_FG_zero_rate <- mean(SI_FG_zero_rate$zero.rate)
+# Non-SI First Gen Student `Grade = Zero` rate
+NSI_FG_zero_rate <- filter(si_summary_grades, First.Generation.Flag == "First-Gen Student", SI.Component.Flag == 0)
+NSI_FG_zero_rate <- mean(NSI_FG_zero_rate$zero.rate)
+# SI Non-First Gen Student `Grade = Zero` rate
+SI_NFG_zero_rate <- filter(si_summary_grades, First.Generation.Flag == "Not First-Gen", SI.Component.Flag == 1)
+SI_NFG_zero_rate <- mean(SI_NFG_zero_rate$zero.rate)
+# Non-SI NonFirst Gen Student `Grade = Zero` rate
+NSI_NFG_zero_rate <- filter(si_summary_grades, First.Generation.Flag == "Not First-Gen", SI.Component.Flag == 0)
+NSI_NFG_zero_rate <- mean(NSI_NFG_zero_rate$zero.rate)
+
+# Text for Facets
+dat_text <- data.frame(
+  label = c(paste("Zero Rate for Class w/ SI: ", round(SI_NFG_zero_rate,3), "\nZero Rate for Class w/o SI: ", round(NSI_NFG_zero_rate,3)),
+            paste("Zero Rate for Class w/ SI: ", round(SI_FG_zero_rate,3), "\nZero Rate for Class w/o SI: ", round(NSI_FG_zero_rate,3))),
+  First.Generation.Flag = c("Not First-Gen", "First-Gen Student"))
 
 # Student Level
 ggplot(data = si_grades_with_fg) +
   geom_density(aes(x = Student.Class.Grade.Point.per.Unit, fill = SI.Component.Flag), alpha = .3) +
+  geom_text(data = dat_text, aes(x = 1.25, y = 1, label = label)) +
   facet_grid(rows = vars(First.Generation.Flag))
 
 # Course level SI Spread
 
 ggplot(data = si_grades_with_fg) +
   geom_density(aes(x = class.average, fill = SI.Component.Flag), alpha = .3)
+
