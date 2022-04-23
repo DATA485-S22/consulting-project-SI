@@ -1,9 +1,19 @@
-# Data Management File
+---
+title: "course_analysis"
+author: "Rica Rebusit"
+date: "4/23/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(Hmisc) # Enables %nin% notation for "not in"
 library(readxl) # read Excel file
-
-
+library(magrittr) #Allows %<>% notation to update lhs object with resulting value
+library(naniar)
+library(tinytex)
+library(ggplot2)
 
 grades <- read_xlsx("data/Student Grade.xlsx")
 names(grades) <- make.names(names(grades), unique=TRUE)
@@ -41,12 +51,10 @@ student_data$First.Gen<-factor(student_data$First.Generation.Flag)
 student_data$First.Gen<-ifelse(student_data$First.Generation.Flag == "Y",1,0)
 
 si_visit <- read.csv('data/SLC Appointment.csv')
+si_visit <- filter(si_visit, Term.Year>=2016)
 si_visit$Random.Student.ID<-factor(si_visit$Random.Student.ID)
 student_data<-left_join(student_data,si_visit, by = "Random.Student.ID" )
-###Work in progress
-###########################################################################################
-# Course Level Data
-###########################################################################################
+
 course.level <- student_data%>% group_by(Random.Course.ID.x, Term.Year.x, Term.Type.x, URM) %>%
   summarise(class.size = n(),
             class.average = sum(Student.Class.Grade.Point.per.Unit)/class.size,
@@ -55,28 +63,19 @@ course.level <- student_data%>% group_by(Random.Course.ID.x, Term.Year.x, Term.T
             First.Gen.Perc = sum(First.Gen)/class.size,
             SLC.visits = sum(SLC.Attended.Flag)/class.size
             )
-si_visit <- read.csv('data/SLC Appointment.csv')
 
-si_visit <- filter(si_visit, Term.Year>=2016)
-si_visit$Random.Course.ID <- factor(si_visit$Random.Course.ID)
-
-si_courses <- filter(courses, Random.Course.ID %in% levels(si_visit$Random.Course.ID))
-si_courses$Random.Course.ID <- factor(si_courses$Random.Course.ID)
 course.level <- rename(course.level, Random.Course.ID=Random.Course.ID.x)
 course.level$Random.Course.ID <- factor(course.level$Random.Course.ID)
-
-si_attend<-left_join(si_visit, si_courses, by = "Random.Course.ID")
-
 temp3 <- si_visit %>% group_by(Random.Course.ID) %>%
   summarise(SI.Visit.Num = sum(SLC.Attended.Flag))
-
+temp3$Random.Course.ID <- factor(temp3$Random.Course.ID)
 course.level <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
 
 # Add covariates from course detail file
-course.detail <- read.csv("~/Downloads/Course Detail.csv") 
+course.detail <- read.csv("data/Course Detail.csv") 
+course.detail$Random.Course.ID <- factor(course.detail$Random.Course.ID)
 course.level <- left_join(course.level, course.detail, by = 'Random.Course.ID')
 
-str(course.detail)
 course.detail$Random.Course.ID <- factor(course.detail$Random.Course.ID)
 # Create flag for SI component
 course.level$SI.Visit.Num[is.na(course.level$SI.Visit.Num)] <- 0
@@ -84,21 +83,31 @@ course.level$SI.Component.Flag <- course.level$SI.Visit.Num
 course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
+course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
+                                       "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
+```
+
+```{r}
 dwf.equity <- group_by(course.level, URM)
 dwf.equity <- summarise(dwf.equity, dwf.sum = sum(dwf.rate))
 dwf.equity
+2643.810-1850.636 # Difference of dwf rates of URM and Non-URM
+```
 
-course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
-                                       "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
-
-
-
+```{r}
 m <- lm(dwf.rate ~ SI.Component.Flag + class.size + URM + First.Gen.Perc, data=course.level)
-
-m1 <- lm(dwf.rate ~ URM, data = course.level)
-m2 <- lm(dwf.rate ~ SI.Component.Flag, data = course.level)
-m3 <- lm(dwf.rate ~ URM + SI.Component.Flag, data = course.level)
-m4 <- lm(dwf.rate ~ SI.Component.Flag + First.Gen.Perc + HS.GPA.Ave + class.average + class.size + URM, data = course.level)
 summary(m)
+```
+Increase in SI, class size negative, URM and First Gen positive
 
+```{r}
+m1 <- lm(dwf.rate ~ URM + SI.Component.Flag, data = course.level)
+summary(m1)
+```
+Both significant and positive
 
+```{r}
+m2 <- lm(dwf.rate ~ SI.Component.Flag + First.Gen.Perc + HS.GPA.Ave + class.average + class.size + URM, data = course.level)
+summary(m2)
+```
+Class average and size both negative and significant, URM is positive
