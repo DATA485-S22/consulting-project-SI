@@ -78,7 +78,7 @@ d<-left_join(profile, si_attend, by = "Random.Student.ID" ) %>%
 
 d<-left_join(d, program, by = "Random.Student.ID")
 
-d$SLC.Attended.Flag<-ifelse(is.na(d$SLC.Attended.Flag),0,1)
+d$SLC.Attended.Flag[is.na(d$SLC.Attended.Flag)] <- 0
 d$SLC.Attended.Flag<-factor(d$SLC.Attended.Flag)
 d$Instruction.Mode<-factor(d$Instruction.Mode)
 d$Student.Orientation.Flag<-factor(d$Student.Orientation.Flag)
