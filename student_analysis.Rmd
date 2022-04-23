@@ -1,10 +1,21 @@
+---
+title: 'Student Level Analysis: SI on One Year Retention'
+author: "Faith Fatchen"
+date: "4/22/2022"
+output: pdf_document
+---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
 library(tidyverse)
 library(readxl)
 library(magrittr) #Allows %<>% notation to update lhs object with resulting value
 library(naniar)
 library(Hmisc) # %nin%
-#library(sjPlot)
+library(stargazer)
+library(tinytex)
+library(ggplot2)
 
 courses<-read_csv("data/Course Detail.csv")
 names(courses) <- make.names(names(courses), unique=TRUE)
@@ -37,20 +48,8 @@ si_appt$Random.Student.ID <- factor(si_appt$Random.Student.ID)
 
 # Stores classes with an SI component
 si_courses <- filter(courses, Random.Course.ID %in% levels(si_appt$Random.Course.ID))
+#Joining SI Classes with SI visit data 
 si_attend<-left_join(si_appt, si_courses, by = "Random.Course.ID")
-
-# Want student level 1 year retention as function of some variable for SI visits, student demographics, year fixed effects, course fixed effects?
-# time to graduate by cohort 
-# one year retention rates gets around COVID 
-# could use if student dropped failed or withdrew 
-# if course could use DFW rate 
-
-#Currently plotting  years retention by cohort 
-# glm --> adding resampling using tidymodels 
-
-grades <- read_xlsx("data/Student Grade.xlsx")
-names(grades) <- make.names(names(grades), unique=TRUE)
-grades <- filter(grades, Term.Year >= 2016)
 
 profile <- read.csv("data/Student Profile Metric.csv") 
 
@@ -62,7 +61,7 @@ profile$Years.enrolled = rowSums(profile[,c(24,25,26,27,28)])
 profile$Years.enrolled = factor(profile$Years.enrolled )
 profile$Random.Student.ID<-factor(profile$Random.Student.ID)
 
-program<-read.csv("data/Student Program.csv")
+program<-read.csv("data/Student Program.csv") 
 program<- filter(program, Term.Year >= 2016) %>%
   mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
   filter(Term.Type %nin% c("Summer", "Winter")) %>%
@@ -79,8 +78,6 @@ d<-left_join(profile, si_attend, by = "Random.Student.ID" ) %>%
 
 d<-left_join(d, program, by = "Random.Student.ID")
 
-#d<-subset(d, !is.na(Random.Course.ID)) # just SI classes
-
 d$SLC.Attended.Flag<-ifelse(is.na(d$SLC.Attended.Flag),0,1)
 d$SLC.Attended.Flag<-factor(d$SLC.Attended.Flag)
 d$Instruction.Mode<-factor(d$Instruction.Mode)
@@ -89,20 +86,60 @@ d$GE.Class.Flag<-factor(d$GE.Class.Flag)
 d$One.Year.Retention<-factor(d$One.Year.Retention)
 d$URM<-factor(d$IPEDS.Ethnicity.URM.Non.URM)
 d$Gender.Code<-factor(d$Gender.Code)
-d$Writing.Course.Flag<-factor(d$Writing.Course.Flag)
+d$Writing.Course.Flag<-factor(d$Writing.Course.Flag) # no writing classes only one level so omitted from model
 d$Major.1.STEM.Flag<-factor(d$Major.1.STEM.Flag)
-d$Major.1.College<-factor(d$Major.1.College)
+d$Random.Instructor.ID<-factor(d$Random.Instructor.ID)
+d$Class.Level<-factor(d$Class.Level)
+d$Academic.Standing.Status<-factor(d$Academic.Standing.Status)
+d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
+d$First.Generation.Flag<-factor(d$First.Generation.Flag)
+d$Term.Year<-factor(d$Term.Year.x)
 
-d<-select(d, c(Random.Student.ID, Random.Course.ID, Cohort.Term.Year, Degree.Term, HS.GPA, One.Year.Retention,
-               SLC.Attended.Flag, Random.Instructor.ID, Class.Level, Instruction.Mode, Writing.Course.Flag, 
-               GE.Class.Flag, Gender.Code, IPEDS.Ethnicity, IPEDS.Ethnicity.URM.Non.URM, URM, First.Generation.Flag,
-               Major.1.STEM.Flag, Major.1.College))
-write.csv(d, "data/student_analysis.csv")
+d<-select(d, c(Random.Student.ID, Random.Course.ID, Cohort.Term.Year, Term.Year, Degree.Term, HS.GPA, One.Year.Retention,Student.Orientation.Flag, Years.enrolled, SLC.Attended.Flag, Random.Instructor.ID, Class.Level, Instruction.Mode, Writing.Course.Flag,GE.Class.Flag, Gender.Code, IPEDS.Ethnicity, IPEDS.Ethnicity.URM.Non.URM, URM, First.Generation.Flag, Major.1.STEM.Flag, Major.1.College, Academic.Standing.Status)) 
 
-fit1<-glm(One.Year.Retention ~ SLC.Attended.Flag + HS.GPA + URM + Gender.Code,
-             family = binomial(link = "logit"), data = d)
+```
+
+
+## Initial Model
+
+```{r}
+fit1<-glm(One.Year.Retention ~ SLC.Attended.Flag + Cohort.Term.Year + Student.Orientation.Flag + URM + First.Generation.Flag + Gender.Code + HS.GPA + Major.1.College + Major.1.STEM.Flag , family = binomial(link = "logit"), data = d)
 summary(fit1)
+```
 
-fit2<-glm(One.Year.Retention ~ SLC.Attended.Flag + HS.GPA + URM + GE.Class.Flag, family = binomial(link = "logit"), data = d)
+```{r results='asis'}
+#stargazer(fit1)
+```
+Notably,
+- SLC positive & significant 
+- Cohort yrs 2019 (fire), 2020 (Pandemic), (2021) negative & significant 
+- First gen & URM positive & insignificant (bias?)
+## With some interactions
 
+```{r}
+fit2<-glm(One.Year.Retention ~ SLC.Attended.Flag + Cohort.Term.Year + URM*First.Generation.Flag + Gender.Code + HS.GPA + Major.1.College + Major.1.STEM.Flag , family = binomial(link = "logit"), data = d)
+summary(fit2)
+```
+
+```{r results='asis'}
+#stargazer(fit2)
+```
+- with interaction URM negative & significant, First gen negative and significant, URM*First gen positive and signficant 
+
+```{r}
+fit3<-glm(One.Year.Retention ~ SLC.Attended.Flag + Cohort.Term.Year + URM + First.Generation.Flag + URM:First.Generation.Flag + URM:SLC.Attended.Flag + First.Generation.Flag:SLC.Attended.Flag +Gender.Code + HS.GPA + Major.1.College + Major.1.STEM.Flag , family = binomial(link = "logit"), data = d)
+summary(fit3)
+```
+
+```{r results='asis'}
+#stargazer(fit3)
+```
+
+- SLC non URM positive significant 
+- SLC * URM positive significant
+- SLC * First gen positive significant 
+
+```{r results = "asis"}
+#stargazer(fit1, fit2, fit3, header = FALSE)
+```
 
