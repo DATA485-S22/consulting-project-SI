@@ -18,15 +18,13 @@ library(ggpubr)
 
 ```{r}
 # 2017 Student grades/SI/demographic data
-data <- read.csv("data/CEM_full_dataset.csv")
-#data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
+#data_raw <- read.csv("data/CEM_full_dataset.csv")
+data_raw <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_full_dataset.csv")
 
-data <- data %>% filter(Term != "Spring 2019") %>% filter(Term.Year < 2020)
-
-data <- data  %>% 
+data <- data_raw %>% filter(Term.Year < 2020, Entry.Enrollment.Type == "First-Time Freshman") %>%
   select(-X) %>%
   # Remove Withdraws from class 
-  filter(Student.Class.Grade.Point.per.Unit > 0)
+  filter(Student.Class.Official.Grade != "W")
 
 # COnvert to factors
 data$SI.Attended <- as.factor(data$SI.Attended)
@@ -138,6 +136,17 @@ ggplot(matched_df2_wide,
   geom_text(aes(x=.75, y=-.25, label = "Non-FG < FG"), col="green3") +
   ylab("Non-FG - FG") + 
   ggtitle("FG gap among matched students who went to SI vs those who did not go to SI")
+
+
+ggplot(matched_df2_wide, 
+       aes(y=fg_gap, x=SI.Attended, color = Random.Course.ID, 
+           group = Random.Course.ID)) + 
+  geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) + 
+  geom_text(aes(x=.75, y=.25, label = "Non-FG > FG"), col="red") +
+  geom_text(aes(x=.75, y=-.25, label = "Non-FG < FG"), col="green3") +
+  ylab("Non-FG - FG") + 
+  ggtitle("FG gap among matched students who went to SI vs those who did not go to SI") + 
+  facet_wrap(~Term.Year)
 ```
 
 * At the course-section level - possibly too small sample sizes here. Sometimes within a class, only 2 students who are a FG who didn't go to SI. We also didn't match on FG. 
@@ -155,7 +164,7 @@ ggplot(matched_df1, aes(y=grade, x = First.Generation.Flag)) +
   facet_wrap(~SI.Attended) 
 
 matched_df1 %>% ggline(x="First.Generation.Flag", y = "grade", 
-                       facet.by = "SI.Attended", add=c("jitter", "mean_se")) + 
+                       facet.by = "SI.Attended", add=c("mean_se")) + 
   ggtitle("SI helps both grops equally")
 
 ```
@@ -232,11 +241,12 @@ matched_df1.strict %>% filter(SI.Attended==0) %>%
 
 on the matched sample, marginally significant gap (probably not quite estimating this correctly w/o matching weights) on those that did not go to SI. **No gap for those that did go to SI.**
 
-> Don't get excited yet Erik! We MUST consult someone who is an expert in causal modeling to confirm that we didn't mess up and/or interpreting this right. 
 
+### Testing DoD analysis code
 
+```{r}
 
-
+```
 
 
 

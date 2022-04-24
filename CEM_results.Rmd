@@ -28,13 +28,18 @@ Note from Robin:
 
 ```{r}
 # 2017 Student grades/SI/demographic data
-data <- read.csv("data/CEM_dataset.csv")
-#data <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
+#data <- read.csv("data/CEM_dataset.csv")
+data <- read.csv("C:/users/rdonatello/Box/Projects_Current/SI Equity analysis/data/CEM_dataset.csv")
 
 data.fall <- data %>% filter(Term.Type == "Fall") %>% 
   select(-X) %>%
   # Remove Withdraws from class 
-  filter(Student.Class.Grade.Point.per.Unit > 0)
+  filter(Student.Class.Official.Grade != "W")
+
+
+# check grade
+table(data$Student.Class.Grade.Point.per.Unit, data$Student.Class.Official.Grade, useNA = "always")
+
 
 # COnvert to factors
 data.fall$SI.Attended <- as.factor(data.fall$SI.Attended)
