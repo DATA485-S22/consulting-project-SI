@@ -1,0 +1,199 @@
+---
+title: Exploring the Effect of Supplimental Instruction on Equity Gaps 
+author:
+  - name: Faith Fatchen
+    affil: 1
+  - name: Skip Moses
+    affil: 1
+  - name: Rica Rebusit
+    affil: 1
+  - name: Joseph Shifman
+    affil: 1
+  - name: Robin Donatello
+    affil: 1
+  - name: Eric Wasigner
+    affil: 2
+affiliation:
+  - num: 1
+    address: Department of Mathematics and Statistics, California State University, Chico
+  - num: 2
+    address: Department of Chemistry and Biochemistry, California State University, Chico
+column_numbers: 4
+primary_colour: "#9D2235"
+secondary_colour: "#FFFFFF"
+poster_height: "36in"
+poster_width: "60in"
+# logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+# logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+output: 
+  posterdown::posterdown_html:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction
+
+#### What is Supplemental Instruction?
+
+  * Supplemental Instruction (SI) is a student lead homework session, where the SI leader is a student who has already received an A in the course. 
+  * Students have diverse backgrounds, and some are not as prepared for college level material as others. SI aims bridge this gap, so every student has an equal opportunity at success. 
+
+#### Related Work (Rica could put her summaries here)
+
+  * 
+  *
+
+#### What is and Equity Gap?
+
+# Methods
+
+  *
+  *
+
+#### Student Level
+
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+
+#### Course Level
+
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+
+# Student Level Models
+  
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+
+# Course Level Models 
+  
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+  *
+
+# Future Work
+
+  * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps
