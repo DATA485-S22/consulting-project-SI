@@ -2,20 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="generator" content="pandoc" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-
-<title>Graph Topology Learning from Binary Signals on Graph</title>
-
-<script src="poster-html_files/header-attrs-2.11/header-attrs.js"></script>
-
-<script src="poster-html_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
-
-
-
 
 
 <!--
@@ -27,30 +16,179 @@ Font-awesome icons ie github or twitter
 <!--
 Google fonts api stuff
 -->
-<link href='https://fonts.googleapis.com/css?family=Special Elite' rel='stylesheet'>
-<link href='https://fonts.googleapis.com/css?family=Rasa' rel='stylesheet'>
 
-<!--
-Here are the required style attributes for css to make this poster work :)
--->
+
+
+<title>Exploring the Effect of Supplimental Instruction on Equity Gaps</title>
+
+<script src="poster-html_files/header-attrs-2.11/header-attrs.js"></script>
+
+<script src="poster-html_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+
+
 <style>
 @page {
 size: 60in 36in;
 margin: 0;
 padding: 0;
-background-color: #ffffff;
 }
 body {
-margin: 0px;
-padding: 0px;
+margin: 0;
+font-size: 45px;
 width: 60in;
 height: 36in;
+padding: 0;
 text-align: justify;
-font-size: 45px;
-background-color: #FFFFFF;
-color: #000000;
+font-family: Palatino;
 }
-/* RMarkdown Class Styles */
+.poster_wrap {
+width: 60in;
+height: 36in;
+padding: 0cm;
+}
+.title_container {
+width: 60in;
+height: calc(36in * 0.15);
+overflow: hidden;
+background-color: #9D2235;
+border: 0 solid #FFFFFF;
+}
+.logo_left {
+float: left;
+width: 10%;
+height: 100%;
+background-color: #9D2235;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.logo_right {
+float: right;
+width: 10%;
+height: 100%;
+background-color: #9D2235;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.poster_title {
+text-align: center;
+position: relative;
+float: left;
+width: 80%;
+height: 100%;
+color: #FFFFFF;
+top: 50%;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+}
+#title {
+font-family: Palatino;
+}
+/* unvisited link */
+a:link {
+color: #cc0000;
+}
+.mybreak {
+  break-before: column;
+}
+/* visited link */
+a:visited {
+color: #cc0000;
+}
+
+/* mouse over link */
+a:hover {
+color: #cc0000;
+}
+
+/* selected link */
+a:active {
+color: #cc0000;
+}
+.poster_body {
+-webkit-column-count: 4; /* Chrome, Safari, Opera */
+-moz-column-count: 4; /* Firefox */
+column-count: 4;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+-webkit-column-rule-width: 1mm;
+-moz-column-rule-width: 1mm;
+column-rule-width: 1mm;
+-webkit-column-rule-style: dashed;
+-moz-column-rule-style: dashed;
+column-rule-style: dashed;
+-webkit-column-rule-color: #9D2235;
+-moz-column-rule-color: #9D2235;
+column-rule-color: #9D2235;
+column-gap: 1em;
+padding-left: 0.5em;
+padding-right: 0.5em;
+height: 100%;
+color: #000000
+background-color: #ffffff;
+}
+.poster_title h1 {
+font-size: 75pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_body_wrap{
+width: calc(60in + 0 + 0);
+height: calc(36in * 0.83);
+padding-top: calc(36in * 0.005);
+padding-bottom: calc(36in * 0.01);
+background-color: #ffffff;
+}
+.poster_title h3 {
+color: #FFFFFF;
+font-size: 50pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_title h3 > sup {
+  font-size: 35pt;
+  margin-left: 0.02em;
+}
+.poster_title h5 {
+color: #FFFFFF;
+font-size: 35pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+img {
+margin-top: 2cm;
+margin-bottom: 0;
+}
+.section {
+  padding: 0.2em;
+}
+.poster_body h1 {
+text-align: center;
+color: #FFFFFF;
+font-size: 65pt;
+border: 2mm solid #9D2235;
+background-color: #9D2235;
+border-radius: 4mm 0mm;
+margin-top: 2mm;
+margin-bottom: 2mm;
+font-weight: normal;
+}
+.poster_body h2 {
+color: #000000;
+font-size: 40pt;
+padding-left: 4mm;
+font-weight: normal;
+}
+.span {
+width: 200%;
+}
 /* center align leaflet map,
 from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
 .html-widget {
@@ -68,219 +206,71 @@ background-color: #dddddd40;
 border-radius: 4mm;
 padding: 4mm;
 width: 75%;
-margin: auto;
-margin-top: 1em;
-margin-bottom: 1em;
 /* align-items: center; */
+margin: auto;
+padding-left: 2cm;
 }
 code.sourceCode.r{
 background-color: transparent;
 font-size: 20pt;
 border-radius: 2mm;
 }
-code {
+.caption {
 font-size: 25pt;
+}
+.table caption {
+font-size: 25pt;
+padding-bottom: 3mm;
+
+}
+code {
+font-size: 1em;
 font-family: monospace;
 background-color: #FFFFFF24;
 color: #9D2235;
 padding: 1.2mm;
-line-height: 1;
 border-radius: 2mm;
+}
+.poster_title code {
+font-size: 1em;
+}
+table {
+font-size: 40px;
+margin: auto;
+border-top: 3px solid #666;
+border-bottom: 3px solid #666;
+}
+table thead th {
+border-bottom: 3px solid #ddd;
+}
+td {
+padding: 8px;
+}
+th {
+padding: 15px;
 }
 caption {
 margin-bottom: 10px;
+}
+.poster_body p {
+margin-right: 4mm;
+margin-left: 4mm;
+margin-top: 6mm;
+margin-bottom: 10mm;
+}
+.poster_body ol {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+#ul {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+.references p {
 font-size: 20pt;
-font-style: italic;
-}
-
-tbody tr:nth-child(odd) {
-    background-color: #9D223520;
-}
-.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
-  border-spacing: 0;
-  font-size: 40%;
-  border-style: none;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-right: 1em;
-  padding-left: 1em;
-  line-height: 1em;
-}
-table {
-  margin: auto;
-}
-th {
-  padding-left: 5mm;
-  padding-right: 5mm;
-}
-.caption {
-font-size: 20pt;
-font-style: italic;
-padding-top: 0;
-}
-.references {
-font-size: 20px;
-line-height: 90%;
-}
-/* Create three unequal columns that floats next to each other */
-.column {
-float: left;
-padding: 0px;
-}
-.outer {
-width: 60in;
-height: 36in;
--webkit-column-count: 2; /* Chrome, Safari, Opera */
--moz-column-count: 2; /* Firefox */
-column-count: 2;
--webkit-column-fill: auto;
--moz-column-fill: auto;
-column-fill: auto;
--webkit-column-rule-width: 50%;
--moz-column-rule-width: 50%;
-column-rule-width: 50%;
--webkit-column-rule-style: solid;
--moz-column-rule-style: solid;
-column-rule-style: solid;
--webkit-column-rule-color: black;
--moz-column-rule-color: black;
-column-rule-color: black;
--webkit-column-gap: 50%;
-background-color: #ffffff;
-font-family: Rasa;
-color: #000000;
-}
-span.citation {
-  color: #FFFFFF;
-  font-weight: bold;
-}
-a {
-text-decoration: none;
-color: #FFFFFF;
-}
-#title {
-font-size: 125pt;
-text-align: left;
-margin: 0;
-line-height: 90%;
-border-bottom: 0;
-}
-#author {
-color: #9D2235;
-margin: 0;
-line-height: 90%;
-font-size: 1.17em;
-}
-#affiliation {
-padding-top: 1em;
-color: #00000060;
-font-style: italic;
-font-size: 25px;
-margin: 0;
-}
-sup {
-color: #cc0000;
-}
-.affiliation sup {
-font-size: 20px;
-}
-.author sup {
-font-size: 30px;
-}
-.author_extra {
-color: #FFFFFF;
-margin: 0;
-line-height: 85%;
-font-size: 35px;
-}
-.outer h1 {
-text-align: center;
-margin-top: 0.5in;
-margin-bottom: 0.5in;
-}
-.outer h2 {
-text-align: center;
-}
-.outer p {
-color: #000000;
-}
-.outer ol {
-text-align: left;
-}
-.main {
-width: calc(60in / 2);
-height: 36in;
-position: absolute;
-margin-left: calc(60in / 4);
-background-color: #9D2235;
-color: #FFFFFF90;
-font-family: Special Elite;
-background-image: linear-gradient(#9D2235 50%, #FFFFFF);
-}
-.main strong {
-color: #FFFFFF;
-}
-img.main-img-left {
-width: 20%;
-left: 0.5in;
-bottom: 0.2in;
-position: absolute;
-}
-img.main-img-right {
-width: 18%;
-right: 0.5in;
-bottom: 0.2in;
-position: absolute;
-}
-.main p {
-padding-top: 20%;
-font-size: 170px;
-text-align: left;
-}
-.fab {
-color: #00000060;
-font-size: 25px;
-}
-.twitter, i {
-color: #00000060;
-font-size: 35px;
-text-decoration: none;
-}
-a.email {
-text-decoration: none;
-color: #00000060;
-font-size: 35px;
-}
-.envelope {
-color: #00000060;
-font-size: 5px;
-text-decoration: none;
-}
-.poster_wrap {
-width: 60in;
-height: 36in;
-padding: 0cm;
-background-color: #ffffff;
-}
-span > #tab:mytable {
-  font-weight: bold;
-}
-.section {
-  padding-left: 10mm;
-  padding-right: 10mm;
-}
-.main p {
-  padding-left: 30mm;
-  padding-right: 30mm;
-}
-.main_pic {
-  width: 50%;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
 }
 .orcid img {
-  width: 3%;
+  width: 1em;
 }
 </style>
 </head>
@@ -288,174 +278,210 @@ span > #tab:mytable {
 
 
 <div class="poster_wrap">
-<div class="column outer">
-<br>
-<div class="title section">
-<h1 id="title">Graph Topology Learning from Binary Signals on Graph</h1>
-<br>
-<h3 id="author" class="author">
-
-  </h3>
-
-<h5 id="author_extra" class="author_extra">
-Skip Moses<sup>1</sup>
- Jing Guo<sup>1</sup>
- Robin Donatello<sup>1</sup>
-</h5>
-
-<p id="affiliation" class="affiliation">
-<sup>1</sup> Department of Mathematics and Statistics, California State University, Chico
-</p>
-
+<div class="title_container">
+<!-- Left Logo  -->
+<div class="logo_left">
 </div>
+<!-- Poster Title -->
+<div class= "poster_title">
+<h1 id="title">Exploring the Effect of Supplimental Instruction on Equity Gaps</h1>
+<h3 id="author">Faith Fatchen<sup>1</sup>, Skip Moses<sup>1</sup>, Rica Rebusit<sup>1</sup>, Joseph Shifman<sup>1</sup>, Robin Donatello<sup>1</sup>, Eric Wasigner<sup>2</sup></h3><br>
+<h5 id="affiliation"><sup>1</sup> Department of Mathematics and Statistics, California State University, Chico<br> <sup>2</sup> Department of Chemistry and Biochemistry, California State University, Chico</h5>
+</div>
+<!-- Right Logo  -->
+<div class="logo_right">
+</div>
+</div>
+
+<div class='poster_body_wrap'>
+<div class='poster_body'>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Data often has an underlying structure or geometry that can be modeled as a signal on the vertices of a weighted, undirected graph. Traditionally, the emphasis was on using a underlying graph, or network, to understand the properties of signals over the vertices. Recently, there has been a surge in converse problem; of learning a graph structure from a set of signals satisfying some constraints <span class="citation">(Xia et al. 2021)</span> <span class="citation">(Dong et al. 2016)</span> <span class="citation">(Ortega et al. 2018)</span>. In previous research <span class="citation">(Dong et al. 2016)</span>, <span class="citation">(Tugnait 2021)</span>, <span class="citation">(Pu et al. 2021)</span>, and <span class="citation">(Saboksayr and Mateos 2021)</span>, signals on graph were assumed to follow multivariate gaussian distributions, but there has been little exploration in learning a network from binomial signals. In this work, we develop a noval methodology that allows for learning graph topology given a set of binary signals on the graph. An example of such signals on graph is presented in Figure 1.</p>
-<div class="figure">
-<img src="pictures/gt_graph.png" style="width:90.0%" alt="" />
-<p class="caption">Figure 1. Binary Signals on Graph</p>
+<div id="what-is-supplemental-instruction" class="section level4">
+<h4>What is Supplemental Instruction?</h4>
+<ul>
+<li>Supplemental Instruction (SI) is a student lead homework session, where the SI leader is a student who has already received an A in the course.</li>
+<li>Students have diverse backgrounds, and some are not as prepared for college level material as others. SI aims bridge this gap, so every student has an equal opportunity at success.</li>
+</ul>
+</div>
+<div id="related-work-rica-could-put-her-summaries-here" class="section level4">
+<h4>Related Work (Rica could put her summaries here)</h4>
+<ul>
+<li></li>
+<li></li>
+</ul>
+</div>
+<div id="what-is-and-equity-gap" class="section level4">
+<h4>What is and Equity Gap?</h4>
 </div>
 </div>
 <div id="methods" class="section level1">
 <h1>Methods</h1>
-<div id="signals-on-the-graph-and-model-specification" class="section level4">
-<h4>Signals on the graph and model specification</h4>
-<p>We consider a weighted undirected graph <span class="math inline">\(G = (V, E)\)</span>, with the vertices set <span class="math inline">\(V = {1, 2, \dots, N}\)</span>, and edge set <span class="math inline">\(E\)</span>. Let <span class="math inline">\(\mathbf{A}\)</span> denote the weighted adjacency matrix for the graph <span class="math inline">\(G\)</span>. In the case of weighted undirected graph, <span class="math inline">\(\mathbf{A}\)</span> is a square and symmetric matrix.</p>
-<p>Let <span class="math inline">\(Y_{i,j}\)</span> denote the signal on the node <span class="math inline">\(i\)</span> of graph <span class="math inline">\(G\)</span> at round <span class="math inline">\(j\)</span>, where <span class="math inline">\(j = 1, \dots, M\)</span>, and <span class="math inline">\(i = 1, \dots, N\)</span>. We assume that <span class="math inline">\(Y_{i,j}\)</span> is a binary signal that can be 1, or 0.</p>
-<p>Suppose the signals at stratum <span class="math inline">\(j\)</span> denoted by <span class="math inline">\(Y[, j]\)</span> for all <span class="math inline">\(N\)</span> nodes are independent of the signals at stratum <span class="math inline">\(k\)</span> denoted by <span class="math inline">\(Y[,k ]\)</span>, for <span class="math inline">\(j \neq k\)</span>. Let <span class="math inline">\(p_{i,j}\)</span> denote the probability of <span class="math inline">\(Y_{i,j} = 1\)</span>. Our model assumes</p>
-<p><span class="math display">\[\begin{equation}
-\label{eq: binaryglm}
-\text{logit}(p_{i,j}) = \mathbf{A} h )_i,
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(\mathbf{A}\)</span> is the adjacency matrix from the graph <span class="math inline">\(G\)</span>, <span class="math inline">\(h\)</span> is a vector of latent factors that governs <span class="math inline">\(p_{i, j}\)</span> through <span class="math inline">\(\mathbf{A}\)</span> and assumed to be a standard normal random vector, and <span class="math inline">\(\alpha_j\)</span> is a round specific parameter at stratum <span class="math inline">\(j\)</span>, and assumed to be normally distributed with mean of 0, and unknown variance <span class="math inline">\(\sigma^2\)</span>.</p>
+<ul>
+<li></li>
+<li></li>
+</ul>
+<div id="student-level" class="section level4">
+<h4>Student Level</h4>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
 </div>
-<div id="method-of-estimation" class="section level4">
-<h4>Method of Estimation</h4>
-<div id="maximum-likelihood-for-one-stratum" class="section level5">
-<h5>Maximum likelihood for one stratum</h5>
-<p>Consider the proabability mass function for a given <span class="math inline">\(A\)</span> and signal <span class="math inline">\(y = Y[,k]\)</span>
-<span class="math display">\[\begin{align}
-P_{Ah}(y_i) &amp;= P^{y_i}(1-p)^{1-y_i} \\
-            &amp;= \left(\frac{e^{A[i,]h^T}}{1 + e^{A[i,]h^T}}\right)\left(1- \frac{e^{A[i,]h^T}}{1 + e^{A[i,]h^T}}\right)^{1-y_i} \\
-            &amp;= \left(\frac{e^{A[i,]h^T}}{1 + e^{A[i,]h^T}}\right)\left(\frac{1}{1 + e^{A[i,]h^T}}\right)^{1-y_i} \\
-            &amp;= \frac{e^{y(A[i,]h^T)}}{1 + e^{A[i,]h^T}}                     
-\end{align}\]</span></p>
-<p>Therefore, our Likelihood function will be given by</p>
-<p><span class="math display">\[\begin{align}
-\mathcal{L}(h) = \prod_{i=1}^N\frac{e^{y_i(A[i,]h^T)}}{1 + e^{A[i,]h^T}} 
-\end{align}\]</span></p>
-<p>In order to maximize we consider the natural logarithm of our likelihood</p>
-<p><span class="math display">\[\begin{align}
-\log(\mathcal{L}(h)) = \sum_{i=1}^N\left(y_i(A[i,]h^T) - \log(1 + e^{A[i,]h^T})\right)
-\end{align}\]</span></p>
-</div>
-<div id="optimization-program" class="section level5">
-<h5>Optimization Program</h5>
-<p>Taking inspiration from the above derivation we will solve for estimated <span class="math inline">\(A\)</span> by maximizing the following</p>
-<p><span class="math display">\[\begin{equation}
-\label{eq:optimization}
-\begin{aligned}
-&amp;\max_{A,h} \sum_{j = 1}^M\sum_{i=1}^N\left(y_{i,j}(A[i,]h^T) - \log(1 + e^{A[i,]h^T})\right) - \alpha \vert L \vert _ F \\
-\textrm{s.t.} \quad  &amp;A_{i,j} = 0 \text{ if } i =j\\
-                     &amp;A_{i,j} \geq 0 \text{ if } i \neq j\\
-                     &amp;\mathbb{1}h^T = 0 \\
-                     &amp;\max(h) \leq a \\
-                     &amp;\min(h) \geq b
-\end{aligned}
-\end{equation}\]</span>
-where <span class="math inline">\(\alpha\)</span> is a tunning parameter for controlling the sparsity and <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are tunning parameters for restricting the spread of the values of <span class="math inline">\(h\)</span>.</p>
-<hr />
-<hr />
-<span class="math inline">\(\textbf{Algorithm 1:}\)</span> Estimate <span class="math inline">\(A\)</span> given <span class="math inline">\(Y\)</span>.
-<hr />
-<hr />
-<span class="math display">\[\begin{align*}
-&amp;1) \textbf{ Input: } \text{ Input a signal } Y.\\
-&amp;2) \textbf{ Output: } \text{ Output an estimated } A.\\
-&amp;3) \textbf{ Initialization: } h_{i,0} \sim \mathcal{N}(0,1) \text{ for } $i = 1,\ldots, N$\\
-&amp;4) \textbf{ for } t = 1, \ldots, iter:\\
-&amp;5) \textbf{ Update } A \textbf{ given } h:\\
-&amp;6) \textbf{        Update } h \textbf{ given } A:\\
-&amp;7) \textbf{ end for }
-\end{align*}\]</span>
-<hr />
+<div id="course-level" class="section level4">
+<h4>Course Level</h4>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
 </div>
 </div>
+<div id="student-level-models" class="section level1">
+<h1>Student Level Models</h1>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
 </div>
-<div id="results" class="section level1">
-<h1>Results</h1>
-<p>In each iteration of step 5) and 6) of Algorithm 1, the optimization program gives a Diciplined Concave Program that can be solved efficiently in Python with the CVXPY libarary. A random Erds-Reyni graph on <span class="math inline">\(N = 20\)</span> nodes and edge probability <span class="math inline">\(p = 0.2\)</span>. Heat maps of the ground truth adjacency matrix and estitmated adjacency matrix are given, along with circular embeddings of the ground truth and estimated graphs.</p>
-<table>
-<thead>
-<tr class="header">
-<th align="center">Ground Truth</th>
-<th align="center">Estimation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="center"><img src="pictures/gt_A_heatmap.png" style="width:125.0%" /></td>
-<td align="center"><img src="pictures/est_A_heatmap.png" style="width:125.0%" /></td>
-</tr>
-</tbody>
-</table>
-<div class="figure">
-<img src="pictures/est_graph.png" style="width:90.0%" alt="" />
-<p class="caption">Figure 2: Estimated Graph</p>
+<div id="course-level-models" class="section level1">
+<h1>Course Level Models</h1>
+<ul>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>
 </div>
-</div>
-<div id="discussion" class="section level1">
-<h1>Discussion</h1>
-<p>Currently, GSP frameworks such as ours have limitations making them only practical in experimental settings. For instance, these frameworks require the input to be the entire graph. This automatically puts a harsh limit on the size of the graphs that can be learned. Another related limitation, is the availability of the algorithms used to learn the laplacian. In <span class="citation">Saboksayr and Mateos (2021)</span> the author shows fast proximal-gradient iterations can be applied to the framework given by <span class="citation">Kalofolias (2016)</span> converges to a globally optimal solution in <span class="math inline">\(O (1/k)\)</span>. A natural next step would be to apply fast proximal-gradient iterations our framework to overcome scalability issues.</p>
-</div>
-<div id="references" class="section level1 unnumbered">
-<h1>References</h1>
-<div id="refs" class="references hanging-indent">
-<div id="ref-dong2016learning">
-<p>Dong, Xiaowen, Dorina Thanou, Pascal Frossard, and Pierre Vandergheynst. 2016. “Learning Laplacian Matrix in Smooth Graph Signal Representations.” <em>IEEE Transactions on Signal Processing</em> 64 (23): 6160–73.</p>
-</div>
-<div id="ref-kalofolias2016learn">
-<p>Kalofolias, Vassilis. 2016. “How to Learn a Graph from Smooth Signals.” In <em>Artificial Intelligence and Statistics</em>, 920–29. PMLR.</p>
-</div>
-<div id="ref-ortega2018graph">
-<p>Ortega, Antonio, Pascal Frossard, Jelena Kovačević, José MF Moura, and Pierre Vandergheynst. 2018. “Graph Signal Processing: Overview, Challenges, and Applications.” <em>Proceedings of the IEEE</em> 106 (5): 808–28.</p>
-</div>
-<div id="ref-pu2021learning">
-<p>Pu, Xingyue, Tianyue Cao, Xiaoyun Zhang, Xiaowen Dong, and Siheng Chen. 2021. “Learning to Learn Graph Topologies.” <em>Advances in Neural Information Processing Systems</em> 34.</p>
-</div>
-<div id="ref-saboksayr2021accelerated">
-<p>Saboksayr, Seyed Saman, and Gonzalo Mateos. 2021. “Accelerated Graph Learning from Smooth Signals.” <em>IEEE Signal Processing Letters</em> 28: 2192–6.</p>
-</div>
-<div id="ref-tugnait2021sparse">
-<p>Tugnait, Jitendra K. 2021. “Sparse Graph Learning Under Laplacian-Related Constraints.” <em>IEEE Access</em> 9: 151067–79.</p>
-</div>
-<div id="ref-xia2021graph">
-<p>Xia, Feng, Ke Sun, Shuo Yu, Abdul Aziz, Liangtian Wan, Shirui Pan, and Huan Liu. 2021. “Graph Learning: A Survey.” <em>IEEE Transactions on Artificial Intelligence</em> 2 (2): 109–27.</p>
+<div id="future-work" class="section level1">
+<h1>Future Work</h1>
+<ul>
+<li>Ideally, we want to identify attending SI as a treatment, and explore it’s causal effect on equity gaps</li>
+</ul>
 </div>
 </div>
 </div>
 
 </div>
-<div class="main">
-<p></p>
 
-
-</div>
-</div>
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-(function () {
-var script = document.createElement("script");
-script.type = "text/javascript";
-var src = "true";
-if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-if (location.protocol !== "file:" && /^https?:/.test(src))
-src = src.replace(/^https?:/, '');
-script.src = src;
-document.getElementsByTagName("head")[0].appendChild(script);
-})();
-</script>
 
 
 </body>
