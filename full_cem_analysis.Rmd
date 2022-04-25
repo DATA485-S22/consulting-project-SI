@@ -13,6 +13,9 @@ library(MatchIt)
 library(lmtest)
 library(sandwich)
 library(ggpubr)
+
+library(multcomp) # difference of differnces
+library(scales) # plotting
 ```
 
 
@@ -239,18 +242,75 @@ matched_df1.strict %>% filter(SI.Attended==0) %>%
   t.test(grade~IPEDS.Ethnicity.URM.Non.URM, data=.)
 ```
 
-on the matched sample, marginally significant gap (probably not quite estimating this correctly w/o matching weights) on those that did not go to SI. **No gap for those that did go to SI.**
 
+-----
 
-### Testing DoD analysis code
+# Does SI reduce the DWF gap
+Create dwf variable. This is where we can modify the data used 
 
 ```{r}
-
+dod_data <- data %>% 
+  mutate(dwf = ifelse(Student.Class.Grade.Point.per.Unit < 2.0, 1, 0))
 ```
 
+Bivariate exploration. No additional covarites.
+```{r}
+dod_data %>% group_by(IPEDS.Ethnicity.URM.Non.URM, SI.Attended) %>%
+  summarize(x = sum(dwf), 
+            n=n(), 
+            pct = x/n, pct.lab = percent(pct, accuracy = .1))  %>%
+  ggplot(aes(x=SI.Attended, 
+             y = pct, 
+             fill = as.factor(IPEDS.Ethnicity.URM.Non.URM), 
+             label = pct.lab)) + 
+  geom_col(position=position_dodge()) + 
+  geom_text(position=position_dodge(width = 1))
+```
+
+* URM gap for Non-SI: 44.4% - 33.6% = 10.8%
+* URM gap for SI: 27.1 - 16.8: 10.3%
 
 
+### Modeling the Difference of Differences
+```{r}
+dod_mod <- glm(dwf ~ SI.Attended*IPEDS.Ethnicity.URM.Non.URM, 
+               data=dod_data)
+coef(dod_mod)
+```
 
+**Writing contrasts**
+
+* b0 = Intercept
+* b1 = SI
+* b2 = URM
+* b3 = SI * URM
+
+First I define each of the 4 groups, and the calculate the gap within SI and for no SI. 
+
+```{r}
+# URM = No & SI = Yes
+URM.no_SI.yes <- matrix(c(1, 1, 0, 0), 1)
+# URM = Yes & SI = Yes
+URM.yes_SI.yes <- matrix(c(1, 1, 1, 1), 1)
+(URM.gap_SI.yes <- URM.no_SI.yes - URM.yes_SI.yes)
+
+# URM = No & SI = No
+URM.no_SI.no <- matrix(c(1, 0, 0, 0), 1)
+# URM = Yes & SI = No
+URM.yes_SI.no <- matrix(c(1, 0, 1, 0), 1)
+(URM.gap_SI.no <- URM.no_SI.no - URM.yes_SI.no)
+```
+
+difference of differences: URM gap for No SI - URM gap for SI
+```{r}
+(K <- URM.gap_SI.no - URM.gap_SI.yes)
+
+mind.the.gap <- glht(dod_mod, linfct = K)
+summary(mind.the.gap)
+confint(mind.the.gap)
+```
+
+The difference between URM yes and URM does not significantly differ between SI yes and SI no.
 
 
 
