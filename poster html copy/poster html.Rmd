@@ -281,11 +281,13 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   *
   *
   *
+# Conclusions
+* The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
 
 # Future Work
 
-  * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
+* Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
   * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
-  * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
+* With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
   
-# Conclusions
+
