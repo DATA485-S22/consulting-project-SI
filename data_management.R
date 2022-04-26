@@ -91,13 +91,13 @@ clean_si_visit <- dplyr::select(si_visit, Random.Course.ID, Random.Student.ID, S
             count.visits = sum(Visit.Count..per.day.))
 
 # Import Grades Data, clean
-grades <- filter(grades, `Term Year` >= 2016)
-grades$`Random Course ID` <- factor(grades$`Random Course ID`)
-grades$`Term Type` <- factor(grades$`Term Type`)
+grades <- filter(grades, Term.Year >= 2016)
+grades$Random.Course.ID <- factor(grades$Random.Course.ID)
+grades$Term.Type <- factor(grades$Term.Type)
 
 # Create Table for Grades of SI Classes
-si_grades <- filter(grades, `Term Type` %nin% c("Summer", "Winter"),
-                    `Random Course ID` %in% levels(si_visit$Random.Course.ID))
+si_grades <- filter(grades, Term.Type %nin% c("Summer", "Winter"),
+                    Random.Course.ID %in% levels(si_visit$Random.Course.ID))
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
 
 # Contains Grades of all Students for All Courses With SI
@@ -142,7 +142,7 @@ grades$SI.Attended <- ifelse(grades$SI.Visit.Num > 0, 1, 0)
 grades$SI.Attended[is.na(grades$SI.Attended)] <- 0
 
 # Grades Data for only SI classes
-write.csv(grades, "data/grades_SI_classes.csv")
+write.csv(grades, "data/grades_SI_classes.csv", row.names = FALSE)
 
 #############################################################################################
 #                                 Data for matchit
@@ -197,7 +197,7 @@ data <- grades %>% left_join(profiles) %>% left_join(courses) %>% drop_na(c(HS.G
                                                                             Full.Time.Part.Time.Code,
                                                                             Academic.Program))
 
-write.csv(data, "data/CEM_full_dataset.csv")
+write.csv(data, "data/CEM_full_dataset.csv", row.names = FALSE)
 
 ################################################################################
 #                       Student analysis Dataset
@@ -282,4 +282,4 @@ d <- grades %>% left_join(profile) %>% left_join(courses) %>%
   drop_na(c(HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag,
             Full.Time.Part.Time.Code, Academic.Program))
 
-write.csv(d, "data/student_analysis_dataset.csv")
+write.csv(d, "data/student_analysis_dataset.csv", row.names = FALSE)
