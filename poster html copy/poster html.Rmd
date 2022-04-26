@@ -45,7 +45,7 @@ library(dotwhisker)
 library(broom)
 library(multcomp)
 
-d<-read_csv("data/student_analysis_dataset.csv")
+d<-read_csv("~/Documents/consulting-project-SI/data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
 d$Term.Year<-factor(d$Term.Year)
 d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
@@ -59,19 +59,14 @@ fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Uni
 dod_data <- d %>% group_by(URM, SI.Attended)
 dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
 
-#course.level <- read_csv("data/course_analysis_dataset.csv")
-#dod <- course.level %>% group_by(URM, SI.Component.Flag)
+course.level <- read_csv("data/course_analysis_dataset.csv")
+dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 # Introduction
 
-### Abstract 
-
-It is the top mission of our university to retain and graduate students who are well prepared for careers or graduate school. CSU, Chico observed a 5.1% percentage point decrease in first year retention rate from 2015 (85.8%) to 2020 (80.7%). This decrease was slightly larger for first-generation college students at 5.4% percentage points over the same period (83.4% in ‘15 to 78% in ‘20) compared to their counterparts who have college educated parents (88.6% in ‘15 and 83.9% in ‘20, a 4.7% percentage point decrease). This difference is called an equity gap. Supplemental Instruction (SI) is a program offered at numerous CSU campuses to support students in selected courses by providing peer-assisted discussion sessions. These courses are selected based on their difficulty and the rate which students do not pass. This study assesses the impact of SI on reducing the equity gaps in the overall pass rate for a course, on the individual student grade for a course, and individual student 1 year retention. Equity gaps are being measured on students of underrepresented minority status and first-generation students. Multivariable statistical models such as linear and logistic regression are used to account for variability in the equity gap from sources other than SI. Additionally, Coarsened Exact Matching is used to estimate causal impact of SI on first year retention by matching students who did/did not attend SI on their likelihood of attending SI. 
-
-
 #### What is Supplemental Instruction? 
 
-* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additional support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
+* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughtout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additionaly support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
 #### Related Work and Background (Rica could put her summaries here)
 
@@ -123,7 +118,6 @@ The data included course information, student demographics, and student course g
 </table>
 
 
-
 ### Student Level
 
 *  The student level explores the success of an individual student. We define student success as one year retention. This means the student was still enrolled one year from the course. At the student level, the questions we are addressing is "Does SI have an impact on the one retention". Then, to consider the the measures of equity previously defined, "Does the impact of SI differ between the equity groups".
@@ -131,7 +125,7 @@ We limited our sample to first time freshman. Hence, they should still be enroll
 Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
 these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
-```{r echo=FALSE, fig.width = 6}
+```{r echo=FALSE}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
@@ -146,11 +140,11 @@ ggplot(dod_data2) +
 
 #### Course Level
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
 ```
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
 ```
 
@@ -223,7 +217,7 @@ dwplot(m4) +
 
 # Course Level Models 
   
-```{r eval=FALSE, include=FALSE}
+```{r}
 ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
 ```
   
@@ -281,13 +275,11 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   *
   *
   *
-# Conclusions
-* The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
 
 # Future Work
 
-* Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
+  * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
   * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
-* With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
+  * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
   
-
+# Conclusions

@@ -144,9 +144,10 @@ ggplot(course.level, aes(dwf.rate, First.Gen.Perc)) + geom_point()
 
 ggplot(dod, aes(dwf.rate, SI.Component.Flag, color=URM)) +geom_smooth() + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate") 
 
+ggplot(course.level, aes(URM, First.Gen.Perc, color=SI.Component.Flag)) + geom_boxplot() # First gen
 
 
-Course level displays the DWF rates of a course here at Chico State and we address the impact SI has on DFW rates. Here, In the first figure, we compare the rates of people who are URM and Non-URM shows that both groups have similar rates. 
+*Course level displays the DWF rates of a course here at Chico State and we address the impact SI has on DFW rates. Here, In the first figure, we compare the rates of people who are URM and Non-URM shows that both groups have similar rates. 
 In the second figure, we explore the groups who attended SI and determine if SI has an impact on DFW rates
 
 
