@@ -96,6 +96,7 @@ grades$Random.Course.ID <- factor(grades$Random.Course.ID)
 grades$Term.Type <- factor(grades$Term.Type)
 
 # Create Table for Grades of SI Classes
+si_visit$Random.Course.ID <- _factor(si_visit$Random.Course.ID)
 si_grades <- filter(grades, Term.Type %nin% c("Summer", "Winter"),
                     Random.Course.ID %in% levels(si_visit$Random.Course.ID))
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
@@ -114,12 +115,8 @@ si_student_profiles <- filter(student_profiles,
 #############################################################################################
 
 si_students <- read.csv("data/SLC Appointment.csv")
-grades <- read.csv("data/grades.csv")
 profiles <- read.csv("data/Student Profile Metric.csv")
 courses <- read.csv("data/course_level.csv") %>% filter(SI.Component.Flag == 1)
-
-# Select grades from courses that have an SI component
-grades <- grades %>% filter(Random.Course.ID %in% courses$Random.Course.ID)
 
 si_students <- si_students %>% dplyr::select(Term.Year, 
                                       Term.Type,
@@ -130,19 +127,21 @@ si_students <- si_students %>% dplyr::select(Term.Year,
 # Aggregate number of SI visits for each student in SLC dataset
 si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
   dplyr::summarize(SI.Visit.Num = sum(SLC.Attended.Flag))
+si_count$Random.Course.ID <- factor(si_count$Random.Course.ID)
+si_count$Random.Student.ID <- factor(si_count$Random.Student.ID)
 
-grades <- grades %>% left_join(si_count)
+si_grades <- si_grades %>% left_join(si_count)
 
-grades <- dplyr::select(grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
+si_grades <- dplyr::select(si_grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
                  Random.Student.ID, SI.Visit.Num, Student.Class.Unit.Passed, Student.Class.Unit.Attempted)
 
 # Create a flag for SI attended
-grades$SI.Attended <- ifelse(grades$SI.Visit.Num > 0, 1, 0)
+si_grades$SI.Attended <- ifelse(si_grades$SI.Visit.Num > 0, 1, 0)
 
-grades$SI.Attended[is.na(grades$SI.Attended)] <- 0
+si_grades$SI.Attended[is.na(si_grades$SI.Attended)] <- 0
 
 # Grades Data for only SI classes
-write.csv(grades, "data/grades_SI_classes.csv", row.names = FALSE)
+write.csv(si_grades, "data/grades_SI_classes.csv", row.names = FALSE)
 
 #############################################################################################
 #                                 Data for matchit
