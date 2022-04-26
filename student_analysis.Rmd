@@ -260,13 +260,7 @@ ggplot(dod_data) +
   facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("")
 ```
 
-```{r}
-facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
-ggplot(dod_data) +
-  geom_point(aes(x=Cohort.Term.Year, y = One.Year.Retention, fill=URM),
-           position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("")
-```
+
 
 
 

@@ -32,23 +32,48 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(tidyverse)
+library(readxl)
+library(magrittr) #Allows %<>% notation to update lhs object with resulting value
+library(naniar)
+library(Hmisc) # %nin%
+library(stargazer)
+library(tinytex)
+library(ggplot2)
+library(dotwhisker)
+library(broom)
+library(multcomp)
 
+d<-read_csv("~/Documents/consulting-project-SI/data/student_analysis_dataset.csv")
+d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
+d$Term.Year<-factor(d$Term.Year)
+d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
+d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
+d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
+d$One.Year.Retention<-factor(d$One.Year.Retention)
+fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
+
+fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
+
+dod_data <- d %>% group_by(URM, SI.Attended)
+dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
 ```
-
 # Introduction
 
-#### What is Supplemental Instruction?
+#### What is Supplemental Instruction? 
 
-  * Supplemental Instruction (SI) is a student lead homework session, where the SI leader is a student who has already received an A in the course. 
-  * Students have diverse backgrounds, and some are not as prepared for college level material as others. SI aims bridge this gap, so every student has an equal opportunity at success. 
+* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughtout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additionaly support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
-#### Related Work (Rica could put her summaries here)
+#### Related Work and Background (Rica could put her summaries here)
 
-  * 
-  *
+* The impact of SI can be addressed at the class level or the individual student level. 
+Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
+The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below.
 
-#### What is and Equity Gap?
-
+#### What is an Equity Gap?
+* By measuring equity gaps, we seek to address disparities faced by historically underserved groups. When addressing inequities, CSU's consider three student groups underrepresented minorities (URM), first generation, and low income. Due to data limitations, here we consider the former two groups. 
+  
 # Methods
 
   <table>
@@ -89,16 +114,26 @@ knitr::opts_chunk$set(echo = FALSE)
 </tbody>
 </table>
 
-#### Student Level
 
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
+### Student Level
+
+*  The student level explores the success of an individual student. We define student success as one year retention. This means the student was still enrolled one year from the course. At the student level, the questions we are addressing is "Does SI have an impact on the one retention". Then, to consider the the measures of equity previously defined, "Does the impact of SI differ between the equity groups".
+We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
+Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
+these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
+
+```{r echo=FALSE}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod_data) +
+  geom_bar(aes(x=One.Year.Retention, fill=URM),
+           position = "dodge") +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("") + theme_bw()
+ggplot(dod_data2) +
+  geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
+           position = "dodge") +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+ scale_fill_discrete(name="First\nGeneration") + ylab("") + theme_bw()
+```
+
 
 #### Course Level
 
@@ -111,10 +146,18 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Student Level Models
   
-  *
-  *
-  *
-  *
+```{r echo=FALSE}
+m1<-tidy(fit1) %>%
+  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
+dwplot(m1) +
+    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_bw()
+m4<-tidy(fit3)%>%
+  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
+dwplot(m4) +
+    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Model Results Interactions SI and Equity Measures")+ xlab("Confidence Interval") + theme_bw()
+```
+  * Figure 3, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 4, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
+* 
   *
   *
   *
