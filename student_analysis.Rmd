@@ -29,7 +29,7 @@ d$Term.Year<-factor(d$Term.Year)
 d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
 d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
 d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
-
+d$One.Year.Retention<-factor(d$One.Year.Retention)
 
 ```
 
@@ -41,11 +41,12 @@ program <- read.csv("data/Student Program.csv")
 program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
   mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
   filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+  select(Term.Year, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
          IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
          Academic.Program, Major.1.STEM.Flag, Major.1.College,
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
          Academic.Standing.Status)
+
 program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
 # Remove duplicate rows
 program.clean <- program.clean[order(program.clean$Random.Student.ID),]
@@ -94,6 +95,7 @@ grades <- read.csv("data/grades_SI_classes.csv")  %>%
            "Student.Class.Grade.Point.per.Unit",
            "Student.Class.Official.Grade",
            "Random.Student.ID",
+           "Grade.DFW.Count",
            "SI.Visit.Num",
            "SI.Attended"))
 
@@ -143,7 +145,7 @@ summary(fit1)
 
 ```{r}
 m1<-tidy(fit1) %>%
-  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "HS.GPA" | term == "Inst.MD.Persn.Onl.OthrOnline")
+  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
 dwplot(m1) +
     geom_vline(xintercept = 0, colour = "grey60", linetype = 2)
 ```
@@ -164,7 +166,7 @@ summary(fit2)
 
 ```{r}
 m3<-tidy(fit2) %>%
-  filter(term == "SI.Visit.Num" | term == "URMURM" | term == "First.Generation.FlagY" | term == "HS.GPA" | term == "Inst.MD.Persn.Onl.OthrOnline")
+  filter(term == "SI.Visit.Num" | term == "URMURM" | term == "First.Generation.FlagY")
 dwplot(m3) +
     geom_vline(xintercept = 0, colour = "grey60", linetype = 2)
 ```
@@ -248,7 +250,23 @@ confint(mind.the.gap)
 
 The difference between URM yes and URM does not significantly differ between SI yes and SI no.
 
+## Plots
 
+```{r}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod_data) +
+  geom_bar(aes(x=One.Year.Retention, fill=URM),
+           position = "dodge") +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("")
+```
+
+```{r}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod_data) +
+  geom_point(aes(x=Cohort.Term.Year, y = One.Year.Retention, fill=URM),
+           position = "dodge") +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("")
+```
 
 
 
