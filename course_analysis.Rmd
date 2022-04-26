@@ -85,13 +85,15 @@ course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
 course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
                                        "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
+
+write.csv(course.level, "data/student_analysis_dataset.csv")
 ```
 
 ```{r}
 dwf.equity <- group_by(course.level, URM)
 dwf.equity <- summarise(dwf.equity, dwf.sum = sum(dwf.rate))
 dwf.equity
-2643.810-1850.636 # Difference of dwf rates of URM and Non-URM
+2630.425-1849.853 # Difference of dwf rates of URM and Non-URM
 ```
 
 ```{r}
@@ -111,3 +113,24 @@ m2 <- lm(dwf.rate ~ SI.Component.Flag + First.Gen.Perc + HS.GPA.Ave + class.aver
 summary(m2)
 ```
 Class average and size both negative and significant, URM is positive
+
+# DoD
+```{r}
+dod <- course.level %>% group_by(URM, SI.Component.Flag)
+m.dod <- lm(dwf.rate ~ SI.Component.Flag + URM, data=dod)
+summary(m.dod)
+```
+
+# Initial Graphs
+```{r}
+ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_point() + xlab("Attended SI") + ylab("DWF Rate")
+```
+
+```{r}
+ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
+```
+
+```{r}
+ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
+```
+
