@@ -84,7 +84,7 @@ write.csv(student_profiles, "data/student_profiles_clean.csv", row.names = FALSE
 ################################################################################
 
 # Contains number of visits in the term, and flag for at least one visit
-clean_si_visit <- select(si_appt, Random.Student.ID, SLC.Attended.Flag,
+clean_si_visit <- select(si_visit, Random.Course.ID, Random.Student.ID, SLC.Attended.Flag,
                          Term, Visit.Count..per.day.) %>%
   group_by(Random.Student.ID, Term) %>%
   summarise(attended.si = min(SLC.Attended.Flag),
@@ -97,7 +97,7 @@ grades$`Term Type` <- factor(grades$`Term Type`)
 
 # Create Table for Grades of SI Classes
 si_grades <- filter(grades, `Term Type` %nin% c("Summer", "Winter"),
-                    `Random Course ID` %in% levels(si_appt$Random.Course.ID))
+                    `Random Course ID` %in% levels(si_visit$Random.Course.ID))
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
 
 # Contains Grades of all Students for All Courses With SI
@@ -148,18 +148,7 @@ write.csv(grades, "data/grades_SI_classes.csv")
 #                                 Data for matchit
 #############################################################################################
 
-grades <- read.csv("data/grades_SI_classes.csv")  %>%
-  select(c("Random.Course.ID",
-           "Term",
-           "Term.Year",
-           "Term.Type",
-           "Student.Class.Unit.Attempted",
-           "Student.Class.Unit.Passed",
-           "Student.Class.Grade.Point.per.Unit",
-           "Student.Class.Official.Grade",
-           "Random.Student.ID",
-           "SI.Visit.Num",
-           "SI.Attended"))
+grades <- read.csv("data/grades_SI_classes.csv")
 profiles <- read.csv("data/student_profiles_clean.csv") %>%
   select(c("Random.Student.ID",
            "IPEDS.Ethnicity",
