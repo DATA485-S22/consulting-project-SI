@@ -133,8 +133,8 @@ si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
 
 grades <- grades %>% left_join(si_count)
 
-grades <- select(Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
-                 Random.Studen.ID, SI.Visit.Num, SI.Attended)
+grades <- select(grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
+                 Random.Student.ID, SI.Visit.Num)
 
 # Create a flag for SI attended
 grades$SI.Attended <- ifelse(grades$SI.Visit.Num > 0, 1, 0)
