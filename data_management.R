@@ -250,20 +250,7 @@ profile<- student_profiles %>%
                   "One.Year.Retention",
                   "Student.Orientation.Flag"))
 
-grades <- read.csv("data/grades_SI_classes.csv")  %>%
-  dplyr::select(c("Random.Course.ID",
-                  "Term",
-                  "Term.Year",
-                  "Term.Type",
-                  "Student.Class.Unit.Attempted",
-                  "Student.Class.Unit.Passed",
-                  "Student.Class.Grade.Point.per.Unit",
-                  "Student.Class.Official.Grade",
-                  "Random.Student.ID",
-                  "Grade.DFW.Count",
-                  "SI.Visit.Num",
-                  "SI.Attended"))
-
+grades <- read.csv("data/grades_SI_classes.csv")
 courses <- read.csv("data/Course Detail.csv") %>%
   dplyr::select(c("Random.Course.ID",
                   "Term",
