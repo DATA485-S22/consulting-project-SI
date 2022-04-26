@@ -32,6 +32,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+
 ```
 
 # Introduction
@@ -50,8 +51,43 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Methods
 
-  *
-  *
+  <table>
+<caption>Table 1: Population and Sample Comparison</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Chancelor.Data </th>
+   <th style="text-align:right;"> Sample.Data </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Mean Number of Students </td>
+   <td style="text-align:right;"> 16984 </td>
+   <td style="text-align:right;"> 16075 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mean Percentage of Females </td>
+   <td style="text-align:right;"> 54.27 </td>
+   <td style="text-align:right;"> 53.34 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mean Percentage of Males </td>
+   <td style="text-align:right;"> 45.72 </td>
+   <td style="text-align:right;"> 46.61 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mean Percentage of First Gen. </td>
+   <td style="text-align:right;"> 50.94 </td>
+   <td style="text-align:right;"> 38.13 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Mean Percentage of URM </td>
+   <td style="text-align:right;"> 36.66 </td>
+   <td style="text-align:right;"> 37.55 </td>
+  </tr>
+</tbody>
+</table>
 
 #### Student Level
 
@@ -63,14 +99,9 @@ knitr::opts_chunk$set(echo = FALSE)
   *
   *
   *
-  *
-  *
 
 #### Course Level
 
-  *
-  *
-  *
   *
   *
   *
@@ -196,4 +227,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 # Future Work
 
-  * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps
+  * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
+  * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
+  * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
+  
+# Conclusions

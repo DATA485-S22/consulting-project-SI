@@ -20,14 +20,17 @@ library(scales) # plotting
 
 
 ```{r}
-# 2017 Student grades/SI/demographic data
-#data_raw <- read.csv("data/CEM_full_dataset.csv")
-data_raw <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_full_dataset.csv")
+# 2016-2019 Student grades/SI/demographic data
+data_raw <- read.csv("data/CEM_full_dataset.csv")
+#data_raw <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_full_dataset.csv")
 
 data <- data_raw %>% filter(Term.Year < 2020, Entry.Enrollment.Type == "First-Time Freshman") %>%
-  select(-X) %>%
+  dplyr::select(-X) %>%
   # Remove Withdraws from class 
-  filter(Student.Class.Official.Grade != "W")
+  filter(Student.Class.Official.Grade != "W") %>%
+  filter(Student.Class.Official.Grade != "WU") %>%
+  filter(Student.Class.Official.Grade != "IC") %>%
+  filter(Student.Class.Official.Grade != "AU")
 
 # COnvert to factors
 data$SI.Attended <- as.factor(data$SI.Attended)
