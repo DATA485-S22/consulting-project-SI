@@ -58,6 +58,9 @@ fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Uni
 
 dod_data <- d %>% group_by(URM, SI.Attended)
 dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
+
+course.level <- read_csv("data/course_analysis_dataset.csv")
+dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 # Introduction
 
@@ -137,12 +140,14 @@ ggplot(dod_data2) +
 
 #### Course Level
 
-  *
-  *
-  *
-  *
-  *
-  *
+```{r}
+ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
+```
+
+```{r}
+ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
+```
+
 
 # Student Level Models
   
@@ -212,7 +217,10 @@ dwplot(m4) +
 
 # Course Level Models 
   
-  *
+```{r}
+ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
+```
+  
   *
   *
   *
