@@ -198,3 +198,101 @@ data <- grades %>% left_join(profiles) %>% left_join(courses) %>% drop_na(c(HS.G
                                                                             Academic.Program))
 
 write.csv(data, "data/CEM_full_dataset.csv")
+
+################################################################################
+#                       Student analysis Dataset
+################################################################################
+program <- read.csv("data/Student Program.csv")
+program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
+  mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
+  filter(Term.Type %nin% c("Summer", "Winter")) %>%
+  dplyr::select(Term.Year, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+                IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
+                Academic.Program, Major.1.STEM.Flag, Major.1.College,
+                Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
+                Academic.Standing.Status)
+
+program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
+# Remove duplicate rows
+program.clean <- program.clean[order(program.clean$Random.Student.ID),]
+program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
+
+# Student Profile Dataset
+profile <- read.csv("data/Student Profile Metric.csv")
+profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
+  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
+  filter(Cohort.Student.Enrollment.Type == "First-Time Freshman")%>%
+  dplyr::select(Cohort.Term, Cohort.Term.Year, Random.Student.ID, Degree.Term,
+                Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
+                HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,One.Year.Retention,
+                Student.Orientation.Flag)
+program.clean<-filter(program.clean, Random.Student.ID %in% levels(profile$Random.Student.ID))
+
+student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
+student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
+
+profile<- student_profiles %>% 
+  dplyr::select(c("Random.Student.ID",
+                  "IPEDS.Ethnicity",
+                  "IPEDS.Ethnicity.URM.Non.URM",
+                  "Gender.Code",
+                  "First.Generation.Flag",
+                  "Academic.Level",
+                  "Academic.Program",
+                  "Major.1.STEM.Flag",
+                  "Major.1.College",
+                  "Entry.Enrollment.Type",
+                  "Academic.Standing.Status",
+                  "Full.Time.Part.Time.Code",
+                  "HS.GPA",
+                  "Enrollment.Term",
+                  "Cohort.Term.Year",
+                  "One.Year.Retention",
+                  "Student.Orientation.Flag"))
+
+grades <- read.csv("data/grades_SI_classes.csv")  %>%
+  dplyr::select(c("Random.Course.ID",
+                  "Term",
+                  "Term.Year",
+                  "Term.Type",
+                  "Student.Class.Unit.Attempted",
+                  "Student.Class.Unit.Passed",
+                  "Student.Class.Grade.Point.per.Unit",
+                  "Student.Class.Official.Grade",
+                  "Random.Student.ID",
+                  "Grade.DFW.Count",
+                  "SI.Visit.Num",
+                  "SI.Attended"))
+
+courses <- read.csv("data/Course Detail.csv") %>%
+  dplyr::select(c("Random.Course.ID",
+                  "Term",
+                  "Term.Year",
+                  "Term.Type",
+                  "Class.Subject.Number.Section",
+                  "Course.Subject.and.Number",
+                  "Academic.Subject",
+                  "Academic.Subject.Code",
+                  "Course.Catalog.Number",
+                  "Class.Learning.Mode",
+                  "Instruction.Mode",
+                  "Inst.MD.Persn.Chcoflx.Onl.Othr",
+                  "Inst.MD.Persn.Onl.Othr",
+                  "Course.Type",
+                  "Class.Status",
+                  "Course.Fee.Exist.Flag",
+                  "Combined.Section.Group.ID",
+                  "Writing.Course.Flag",
+                  "GE.Class.Flag",
+                  "GE.Foundation.Course",
+                  "GE.Foundation.Course.Code",
+                  "GE.Advanced.Course.Substitution.Flag",
+                  "Honors.Class.Flag"))
+
+grades$Random.Student.ID<-factor(grades$Random.Student.ID)
+# Merge the data sets
+d <- grades %>% left_join(profile) %>% left_join(courses) %>%
+  drop_na(c(HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag,
+            Full.Time.Part.Time.Code, Academic.Program))
+
+write.csv(d, "data/student_analysis_dataset.csv")
