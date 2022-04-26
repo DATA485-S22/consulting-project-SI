@@ -40,7 +40,7 @@ course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
 # Remove repeated cols
-course.level <- select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
+course.level <- dplyr::select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
 
 write.csv(course.level, 'data/course_level.csv', row.names = FALSE)
 
@@ -53,7 +53,7 @@ program <- read.csv("data/Student Program.csv")
 program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
   mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
   filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+  dplyr::select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
          IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
          Academic.Program, Major.1.STEM.Flag, Major.1.College,
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
@@ -67,7 +67,7 @@ program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
 profile <- read.csv("data/Student Profile Metric.csv")
 profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
   mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
-  select(Cohort.Term, Random.Student.ID, Degree.Term,
+  dplyr::select(Cohort.Term, Random.Student.ID, Degree.Term,
          Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
          Student.Orientation.Flag)
@@ -84,7 +84,7 @@ write.csv(student_profiles, "data/student_profiles_clean.csv", row.names = FALSE
 ################################################################################
 
 # Contains number of visits in the term, and flag for at least one visit
-clean_si_visit <- select(si_visit, Random.Course.ID, Random.Student.ID, SLC.Attended.Flag,
+clean_si_visit <- dplyr::select(si_visit, Random.Course.ID, Random.Student.ID, SLC.Attended.Flag,
                          Term, Visit.Count..per.day.) %>%
   group_by(Random.Student.ID, Term) %>%
   summarise(attended.si = min(SLC.Attended.Flag),
@@ -121,7 +121,7 @@ courses <- read.csv("data/course_level.csv") %>% filter(SI.Component.Flag == 1)
 # Select grades from courses that have an SI component
 grades <- grades %>% filter(Random.Course.ID %in% courses$Random.Course.ID)
 
-si_students <- si_students %>% select(Term.Year, 
+si_students <- si_students %>% dplyr::select(Term.Year, 
                                       Term.Type,
                                       Random.Course.ID,
                                       Random.Student.ID,
@@ -133,8 +133,8 @@ si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
 
 grades <- grades %>% left_join(si_count)
 
-grades <- select(grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
-                 Random.Student.ID, SI.Visit.Num)
+grades <- dplyr::select(grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
+                 Random.Student.ID, SI.Visit.Num, Student.Class.Unit.Passed, Student.Class.Unit.Attempted)
 
 # Create a flag for SI attended
 grades$SI.Attended <- ifelse(grades$SI.Visit.Num > 0, 1, 0)
@@ -150,7 +150,7 @@ write.csv(grades, "data/grades_SI_classes.csv")
 
 grades <- read.csv("data/grades_SI_classes.csv")
 profiles <- read.csv("data/student_profiles_clean.csv") %>%
-  select(c("Random.Student.ID",
+  dplyr::select(c("Random.Student.ID",
            "IPEDS.Ethnicity",
            "IPEDS.Ethnicity.URM.Non.URM",
            "Gender.Code",
@@ -166,7 +166,7 @@ profiles <- read.csv("data/student_profiles_clean.csv") %>%
            "Transfer.GPA", 
            "Student.Orientation.Flag"))
 courses <- read.csv("data/Course Detail.csv") %>%
-  select(c("Random.Course.ID",
+  dplyr::select(c("Random.Course.ID",
            "Term",
            "Term.Year",
            "Term.Type",
