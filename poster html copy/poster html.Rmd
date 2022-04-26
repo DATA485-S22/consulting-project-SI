@@ -18,13 +18,11 @@ affiliation:
     address: Department of Mathematics and Statistics, California State University, Chico
   - num: 2
     address: Department of Chemistry and Biochemistry, California State University, Chico
-column_numbers: 4
+column_numbers: 3
 primary_colour: "#9D2235"
 secondary_colour: "#FFFFFF"
 poster_height: "36in"
 poster_width: "60in"
-# logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
-# logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
 output: 
   posterdown::posterdown_html:
     self_contained: false
@@ -44,6 +42,7 @@ library(ggplot2)
 library(dotwhisker)
 library(broom)
 library(multcomp)
+library(ggthemes)
 
 d<-read_csv("data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
@@ -57,19 +56,16 @@ fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Un
 fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
 
 dod_data <- d %>% group_by(URM, SI.Attended)
+dod_data$One.Year.Retention <- factor(dod_data$One.Year.Retention, labels = c("No", "Yes"))
 dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
+dod_data2$One.Year.Retention <- factor(dod_data2$One.Year.Retention, labels = c("No", "Yes"))
 
 #course.level <- read_csv("data/course_analysis_dataset.csv")
 #dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 # Introduction
 
-### Abstract 
-
-It is the top mission of our university to retain and graduate students who are well prepared for careers or graduate school. CSU, Chico observed a 5.1% percentage point decrease in first year retention rate from 2015 (85.8%) to 2020 (80.7%). This decrease was slightly larger for first-generation college students at 5.4% percentage points over the same period (83.4% in ‘15 to 78% in ‘20) compared to their counterparts who have college educated parents (88.6% in ‘15 and 83.9% in ‘20, a 4.7% percentage point decrease). This difference is called an equity gap. Supplemental Instruction (SI) is a program offered at numerous CSU campuses to support students in selected courses by providing peer-assisted discussion sessions. These courses are selected based on their difficulty and the rate which students do not pass. This study assesses the impact of SI on reducing the equity gaps in the overall pass rate for a course, on the individual student grade for a course, and individual student 1 year retention. Equity gaps are being measured on students of underrepresented minority status and first-generation students. Multivariable statistical models such as linear and logistic regression are used to account for variability in the equity gap from sources other than SI. Additionally, Coarsened Exact Matching is used to estimate causal impact of SI on first year retention by matching students who did/did not attend SI on their likelihood of attending SI. 
-
-
-#### What is Supplemental Instruction? 
+### What is Supplemental Instruction? 
 
 * Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additional support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
@@ -131,78 +127,52 @@ We limited our sample to first time freshman. Hence, they should still be enroll
 Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
 these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
-```{r echo=FALSE, fig.width = 6}
+```{r echo=FALSE, fig.dim = c(17,7)}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("") + theme_bw()
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("") + theme_few() +
+  theme(text = element_text(size = 32))
+
 ggplot(dod_data2) +
   geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+ scale_fill_discrete(name="First\nGeneration") + ylab("") + theme_bw()
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+ scale_fill_discrete(name="First\nGeneration") + ylab("") + theme_few() +
+  theme(text = element_text(size = 32))
 ```
 
 
 #### Course Level
 
 ```{r eval=FALSE, include=FALSE}
+#Does not work
 ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
 ```
 
 ```{r eval=FALSE, include=FALSE}
+#does not work
 ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
 ```
 
 
 # Student Level Models
   
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=17}
 m1<-tidy(fit1) %>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
 dwplot(m1) +
-    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_bw()
+    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
 m4<-tidy(fit3)%>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
 dwplot(m4) +
-    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Model Results Interactions SI and Equity Measures")+ xlab("Confidence Interval") + theme_bw()
+    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Model Results Interactions SI and Equity Measures")+ xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
 ```
-  * Figure 3, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 4, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
+
+* Figure 3, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 4, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
 * 
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
   *
   *
   *
@@ -227,45 +197,6 @@ dwplot(m4) +
 ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
 ```
   
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
   *
   *
   *
