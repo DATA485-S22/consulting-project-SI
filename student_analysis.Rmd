@@ -41,7 +41,7 @@ program <- read.csv("data/Student Program.csv")
 program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
   mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
   filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term.Year, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+  dplyr::select(Term.Year, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
          IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
          Academic.Program, Major.1.STEM.Flag, Major.1.College,
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
@@ -57,7 +57,7 @@ profile <- read.csv("data/Student Profile Metric.csv")
 profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
   mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
   filter(Cohort.Student.Enrollment.Type == "First-Time Freshman")%>%
-  select(Cohort.Term, Cohort.Term.Year, Random.Student.ID, Degree.Term,
+  dplyr::select(Cohort.Term, Cohort.Term.Year, Random.Student.ID, Degree.Term,
          Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,One.Year.Retention,
          Student.Orientation.Flag)
@@ -67,7 +67,7 @@ student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
 student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
 
 profile<- student_profiles %>% 
-   select(c("Random.Student.ID",
+   dplyr::select(c("Random.Student.ID",
            "IPEDS.Ethnicity",
            "IPEDS.Ethnicity.URM.Non.URM",
            "Gender.Code",
@@ -86,7 +86,7 @@ profile<- student_profiles %>%
            "Student.Orientation.Flag"))
 
 grades <- read.csv("data/grades_SI_classes.csv")  %>%
-  select(c("Random.Course.ID",
+  dplyr::select(c("Random.Course.ID",
            "Term",
            "Term.Year",
            "Term.Type",
@@ -100,7 +100,7 @@ grades <- read.csv("data/grades_SI_classes.csv")  %>%
            "SI.Attended"))
 
 courses <- read.csv("data/Course Detail.csv") %>%
-  select(c("Random.Course.ID",
+  dplyr::select(c("Random.Course.ID",
            "Term",
            "Term.Year",
            "Term.Type",
@@ -201,18 +201,18 @@ dwplot(m5) +
     geom_vline(xintercept = 0, colour = "grey60", linetype = 2)
 ```
 
-# DoD
+## DoD URM
 
 ```{r}
-dod_data <- d %>% group_by(URM, SI.Attended)
+dod_data_urm <- d %>% group_by(URM, SI.Attended)
 
 ```
 
-### Modeling the Difference of Differences
+### Modeling the Difference of Differences: URM
 
 ```{r}
-dod_mod <- glm(One.Year.Retention ~ SI.Attended*URM,  family = binomial(link = "logit"), data=dod_data)
-coef(dod_mod)
+dod_mod_urm <- glm(One.Year.Retention ~ SI.Attended*URM,  family = binomial(link = "logit"), data=dod_data_urm)
+coef(dod_mod_urm)
 
 ```
 
@@ -243,24 +243,79 @@ difference of differences: URM gap for No SI - URM gap for SI
 ```{r}
 (K <- URM.gap_SI.no - URM.gap_SI.yes)
 
-mind.the.gap <- glht(dod_mod, linfct = K)
-summary(mind.the.gap)
-confint(mind.the.gap)
+mind.the.gap.urm <- glht(dod_mod_urm, linfct = K)
+summary(mind.the.gap.urm)
+confint(mind.the.gap.urm)
 ```
 
 The difference between URM yes and URM does not significantly differ between SI yes and SI no.
+
+## DoD First gen
+
+```{r}
+dod_data_first <- d %>% group_by(First.Generation.Flag, SI.Attended)
+
+```
+
+### Modeling the Difference of Differences: URM
+
+```{r}
+dod_mod_first <- glm(One.Year.Retention ~ SI.Attended*First.Generation.Flag,  family = binomial(link = "logit"), data=dod_data_first)
+coef(dod_mod_first)
+
+```
+
+**Writing contrasts**
+(Same as URM)
+* b0 = Intercept
+* b1 = SI
+* b2 = First
+* b3 = SI * First
+
+First I define each of the 4 groups, and the calculate the gap within SI and for no SI. 
+
+```{r}
+# First = No & SI = Yes
+First.no_SI.yes <- matrix(c(1, 1, 0, 0), 1)
+# First = Yes & SI = Yes
+First.yes_SI.yes <- matrix(c(1, 1, 1, 1), 1)
+(First.gap_SI.yes <- First.no_SI.yes - First.yes_SI.yes)
+
+# First = No & SI = No
+First.no_SI.no <- matrix(c(1, 0, 0, 0), 1)
+# First = Yes & SI = No
+First.yes_SI.no <- matrix(c(1, 0, 1, 0), 1)
+(First.gap_SI.no <- First.no_SI.no - First.yes_SI.no)
+```
+
+difference of differences: First gap for No SI - First gap for SI
+```{r}
+(L <- First.gap_SI.no - First.gap_SI.yes)
+
+mind.the.gap.first <- glht(dod_mod_first, linfct = L)
+summary(mind.the.gap.first)
+confint(mind.the.gap.first)
+```
+
+The difference between First yes and First does not significantly differ between SI yes and SI no.
 
 ## Plots
 
 ```{r}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
-ggplot(dod_data) +
+ggplot(dod_data_urm) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
            position = "dodge") +
   facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("")
 ```
 
-
+```{r}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod_data_first) +
+  geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
+           position = "dodge") +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + xlab("One Year Retention")+ scale_fill_discrete(name="First\nGen") + ylab("")
+```
 
 
 
