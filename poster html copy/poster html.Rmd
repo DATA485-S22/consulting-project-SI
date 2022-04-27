@@ -62,27 +62,19 @@ dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
 #course.level <- read_csv("data/course_analysis_dataset.csv")
 #dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
+
 # Introduction
-
-### Abstract 
-
-It is the top mission of our university to retain and graduate students who are well prepared for careers or graduate school. CSU, Chico observed a 5.1% percentage point decrease in first year retention rate from 2015 (85.8%) to 2020 (80.7%). This decrease was slightly larger for first-generation college students at 5.4% percentage points over the same period (83.4% in ‘15 to 78% in ‘20) compared to their counterparts who have college educated parents (88.6% in ‘15 and 83.9% in ‘20, a 4.7% percentage point decrease). This difference is called an equity gap. Supplemental Instruction (SI) is a program offered at numerous CSU campuses to support students in selected courses by providing peer-assisted discussion sessions. These courses are selected based on their difficulty and the rate which students do not pass. This study assesses the impact of SI on reducing the equity gaps in the overall pass rate for a course, on the individual student grade for a course, and individual student 1 year retention. Equity gaps are being measured on students of underrepresented minority status and first-generation students. Multivariable statistical models such as linear and logistic regression are used to account for variability in the equity gap from sources other than SI. Additionally, Coarsened Exact Matching is used to estimate causal impact of SI on first year retention by matching students who did/did not attend SI on their likelihood of attending SI. 
-
 
 #### What is Supplemental Instruction? 
 
 * Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additional support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
-#### Related Work and Background (Rica could put her summaries here)
-
-* The impact of SI can be addressed at the class level or the individual student level. 
-Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
-The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below.
+#### Related Work (Rica could put her summaries here)
 
 #### What is an Equity Gap?
 * By measuring equity gaps, we seek to address disparities faced by historically underserved groups. When addressing inequities, CSU's consider three student groups underrepresented minorities (URM), first generation, and low income. Due to data limitations, here we consider the former two groups. 
   
-# Methods
+### Data
 
   <table>
 <caption>Table 1: Population and Sample Comparison</caption>
@@ -122,16 +114,26 @@ The data included course information, student demographics, and student course g
 </tbody>
 </table>
 
+The impact of SI can be addressed at the class level or the individual student level. 
+Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
+The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below. 
+<br>
+<br>
+<br>
+<br>
 
-
+# Methods
 ### Student Level
+*  The student level explores the success of an individual student. The questions we are addressing is "Does SI have an impact on the one retention" and "Does the impact of SI differ between the equity groups". 
 
-*  The student level explores the success of an individual student. We define student success as one year retention. This means the student was still enrolled one year from the course. At the student level, the questions we are addressing is "Does SI have an impact on the one retention". Then, to consider the the measures of equity previously defined, "Does the impact of SI differ between the equity groups".
-We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
+#### How is success defined?
+
+* We define student success as one year retention. This means the student was still enrolled one year from the course. 
+* We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
 Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
 these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
-```{r echo=FALSE, fig.width = 6}
+```{r echo=FALSE, fig.height = 7, fig.width = 7, fig.align = 'center'}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
@@ -155,13 +157,14 @@ ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab
 ```
 
 
-# Student Level Models
+# Student Level Results
   
 ```{r echo=FALSE}
 m1<-tidy(fit1) %>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
 dwplot(m1) +
     geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_bw()
+
 m4<-tidy(fit3)%>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
 dwplot(m4) +
@@ -221,7 +224,7 @@ dwplot(m4) +
   *
   *
 
-# Course Level Models 
+# Course Level Results 
   
 ```{r eval=FALSE, include=FALSE}
 ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
