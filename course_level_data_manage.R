@@ -119,7 +119,13 @@ summary(lm(dwf.rate ~ SI.Component.Flag + URM, data=dod))
 
 ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_point() + geom_smooth() + xlab("Attended SI") + ylab("DWF Rate")
 ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
-ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
+ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate") 
+
+ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot() + facet_wrap(~SI.Component.Flag) # Use
+ggplot(dod, aes(First.Gen.Perc, dwf.rate)) + geom_point(alpha = 0.5) + facet_wrap(~SI.Component.Flag) # Use
+
+
+
 write.csv(course.level, "~/Downloads/course_analysis_dataset.csv")
 
 m2 <- lm(dwf.rate ~ SI.Component.Flag + First.Gen.Perc + HS.GPA.Ave + class.average + class.size + URM, data = course.level)
@@ -146,8 +152,28 @@ ggplot(dod, aes(dwf.rate, SI.Component.Flag, color=URM)) +geom_smooth() + geom_d
 
 ggplot(course.level, aes(URM, First.Gen.Perc, color=SI.Component.Flag)) + geom_boxplot() # First gen
 
+ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot(alpha = 0.5) + facet_wrap(~SI.Component.Flag) + geom_smooth(method=lm)
 
-*Course level displays the DWF rates of a course here at Chico State and we address the impact SI has on DFW rates. Here, In the first figure, we compare the rates of people who are URM and Non-URM shows that both groups have similar rates. 
-In the second figure, we explore the groups who attended SI and determine if SI has an impact on DFW rates
+*Course level displays the DWF rates of a course at Chico State and we address the impact SI has on DFW rates. We consider the question,
+"Will SI have an impact on reducing equity gaps in the overall pass rate for a course" 
 
+Figure 1 compares DWF Rate of URM and Non-URM students that did not attend SI (column 0) and students
+that did attend SI (column 1). Figure 2 compares DWF Rate of the percentage of students that 
+are First Generation who did not attend SI (column 0) and students that did attend SI (column 1). Both figures
+show SI reduces the DWF rates of equity gaps.
+ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot() + facet_wrap(~SI.Component.Flag) + ylab("DWF Rate")
+ggplot(dod, aes(First.Gen.Perc, dwf.rate)) + geom_point(alpha = 0.5) + facet_wrap(~SI.Component.Flag) +
+  xlab("Percentage of First Generation") + ylab("DWF Rate")
+
+
+
+
+lm1 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
+summary(lm1)
+model1 <- tidy(lm1) %>%
+  filter(term == "URMURM" | term == "First.Gen.Perc" | term == "SI.Component.Flag1")
+dwplot(i) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+
+The model results show URM, First Generation, and SI is positively related to DWF rates # May have interpreted this wrong??
 
