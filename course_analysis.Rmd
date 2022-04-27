@@ -86,7 +86,7 @@ course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
                                        "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
 
-write.csv(course.level, "data/student_analysis_dataset.csv")
+write.csv(course.level, "data/course_analysis_dataset.csv")
 ```
 
 ```{r}
