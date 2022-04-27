@@ -147,19 +147,16 @@ ggplot(dod_data2) +
 
 #### Course Level
 
+* Course level displays the DWF rates of a course and we address the impact SI has on DFW rates. We consider the question, "Will SI have an impact on reducing equity gaps in the overall pass rate for a course" 
+
+Figure 1 compares DWF Rate of URM and Non-URM students that did not attend SI (column 0) and students
+that did attend SI (column 1). Figure 2 compares DWF Rate of the percentage of students that 
+are First Generation who did not attend SI (column 0) and students that did attend SI (column 1). Both figures show SI reduces the DWF rates of equity gaps.
 
 ```{r}
-ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
-```
-
-```{r eval=FALSE, include=FALSE}
-#Does not work
-ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
-```
-
-```{r eval=FALSE, include=FALSE}
-#does not work
-ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
+ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot() + facet_wrap(~SI.Component.Flag) + ylab("DWF Rate")
+ggplot(dod, aes(First.Gen.Perc, dwf.rate)) + geom_point(alpha = 0.5) + facet_wrap(~SI.Component.Flag) +
+  xlab("Percentage of First Generation") + ylab("DWF Rate")
 ```
 
 
@@ -200,11 +197,17 @@ dwplot(m4) +
 
 # Course Level Models 
   
+
 ```{r}
-ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
+lm1 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
+summary(lm1)
+model1 <- tidy(lm1) %>%
+  filter(term == "URMURM" | term == "First.Gen.Perc" | term == "SI.Component.Flag1")
+dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
 ```
   
-  *
+  * The model results show URM, First Generation, and SI is positively related to DWF rates (May have interpreted this wrong??)
   *
   *
   *
@@ -266,4 +269,3 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
   * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
   * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
-

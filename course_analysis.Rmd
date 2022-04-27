@@ -114,6 +114,12 @@ summary(m2)
 ```
 Class average and size both negative and significant, URM is positive
 
+```{r}
+m3 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
+summary(m3)
+```
+All positively significant
+
 # DoD
 ```{r}
 dod <- course.level %>% group_by(URM, SI.Component.Flag)
@@ -122,6 +128,14 @@ summary(m.dod)
 ```
 
 # Initial Graphs
+
+```{r}
+ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot() + facet_wrap(~SI.Component.Flag) + ylab("DWF Rate")
+ggplot(dod, aes(First.Gen.Perc, dwf.rate)) + geom_point(alpha = 0.5) + facet_wrap(~SI.Component.Flag) +
+  xlab("Percentage of First Generation") + ylab("DWF Rate")
+```
+
+
 ```{r}
 ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_point() + xlab("Attended SI") + ylab("DWF Rate")
 ```
