@@ -18,7 +18,7 @@ affiliation:
     address: Department of Mathematics and Statistics, California State University, Chico
   - num: 2
     address: Department of Chemistry and Biochemistry, California State University, Chico
-column_numbers: 3
+column_numbers: 4
 primary_colour: "#9D2235"
 secondary_colour: "#FFFFFF"
 poster_height: "36in"
@@ -43,8 +43,9 @@ library(dotwhisker)
 library(broom)
 library(multcomp)
 library(ggthemes)
+library(RColorBrewer)
 
-d<-read_csv("~/Documents/consulting-project-SI/data/student_analysis_dataset.csv")
+d<-read_csv("data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
 d$Term.Year<-factor(d$Term.Year)
 d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
@@ -65,22 +66,16 @@ dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 # Introduction
 
-
 #### What is Supplemental Instruction? 
 
+* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additional support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
-* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughtout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additionaly support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
-
-#### Related Work and Background (Rica could put her summaries here)
-
-* The impact of SI can be addressed at the class level or the individual student level. 
-Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
-The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below.
+#### Related Work (Rica could put her summaries here)
 
 #### What is an Equity Gap?
 * By measuring equity gaps, we seek to address disparities faced by historically underserved groups. When addressing inequities, CSU's consider three student groups underrepresented minorities (URM), first generation, and low income. Due to data limitations, here we consider the former two groups. 
   
-# Methods
+### Data
 
   <table>
 <caption>Table 1: Population and Sample Comparison</caption>
@@ -120,85 +115,83 @@ The data included course information, student demographics, and student course g
 </tbody>
 </table>
 
+The impact of SI can be addressed at the class level or the individual student level. 
+Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
+The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below. 
+<br>
+<br>
+<br>
+<br>
 
+# Methods
 ### Student Level
+*  The student level explores the success of an individual student. The questions we are addressing is "Does SI have an impact on the one retention" and "Does the impact of SI differ between the equity groups". 
 
-*  The student level explores the success of an individual student. We define student success as one year retention. This means the student was still enrolled one year from the course. At the student level, the questions we are addressing is "Does SI have an impact on the one retention". Then, to consider the the measures of equity previously defined, "Does the impact of SI differ between the equity groups".
-We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
+#### How is success defined?
+
+* We define student success as one year retention. This means the student was still enrolled one year from the course. 
+* We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
 Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
 these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
-
-```{r echo=FALSE, fig.dim = c(17,7)}
+```{r echo=FALSE, fig.dim=c(14,7), message=FALSE, warning=FALSE}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("") + theme_few() +
-  theme(text = element_text(size = 32))
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+   ylab("") + theme_few() +
+  theme(text = element_text(size = 32, family = "Times New Roman"))+ scale_fill_brewer(name="Underrepresented\nMinority(URM)", palette = "Paired")
 
 ggplot(dod_data2) +
   geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+ scale_fill_discrete(name="First\nGeneration") + ylab("") + theme_few() +
-  theme(text = element_text(size = 32))
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+    ylab("") + theme_few() +
+  theme(text = element_text(size = 32,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
 ```
-
+<br>
+<br>
+<br>
+<br>
 
 #### Course Level
 
 * Course level displays the DWF rates of a course and we address the impact SI has on DFW rates. We consider the question, "Will SI have an impact on reducing equity gaps in the overall pass rate for a course" 
 
-Figure 1 compares DWF Rate of URM and Non-URM students that did not attend SI (column 0) and students
-that did attend SI (column 1). Figure 2 compares DWF Rate of the percentage of students that 
+Figure 3 compares DWF Rate of URM and Non-URM students that did not attend SI (column 0) and students
+that did attend SI (column 1). Figure 4 compares DWF Rate of the percentage of students that 
 are First Generation who did not attend SI (column 0) and students that did attend SI (column 1). Both figures show SI reduces the DWF rates of equity gaps.
 
-```{r}
-ggplot(dod, aes(URM, dwf.rate)) + geom_boxplot() + facet_wrap(~SI.Component.Flag) + ylab("DWF Rate")
-ggplot(dod, aes(First.Gen.Perc, dwf.rate)) + geom_point(alpha = 0.5) + facet_wrap(~SI.Component.Flag) +
-  xlab("Percentage of First Generation") + ylab("DWF Rate")
+```{r echo=FALSE, warning=FALSE, fig.dim=c(14,5)}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Component.Flag,labeller = as_labeller(facet_names)) + ylab("DWF Rate")+ scale_fill_brewer(palette = "Paired") +theme_bw() +
+  theme(text = element_text(size = 32,family = "Times New Roman"))
+
+ggplot(dod, aes(x =First.Gen.Perc, y=dwf.rate)) + geom_point(aes( color = as.factor(SI.Component.Flag))) +
+  xlab("Percentage of First Generation") + ylab("DWF Rate") + scale_colour_brewer(palette = "Reds")+theme_bw() +
+  theme(text = element_text(size = 32,family = "Times New Roman"))
 ```
 
 
 # Student Level Models
+* Figure 5, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 6, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
   
-```{r echo=FALSE, fig.width=17}
+```{r echo=FALSE, fig.dim=c(14,5)}
 m1<-tidy(fit1) %>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
-dwplot(m1) +
-    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_few() +
-  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+dwplot(m1,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey")) +
+    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3:  SI and Equity") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20, family = "Times New Roman"), title = element_text(size = 32,family = "Times New Roman"), text = element_text(size = 24, family = "Times New Roman"))
 m4<-tidy(fit3)%>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
-dwplot(m4) +
-    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Model Results Interactions SI and Equity Measures")+ xlab("Confidence Interval") + theme_few() +
-  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+dwplot(m4,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey")) +
+    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Interactions SI and Equity")+ xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20,family = "Times New Roman"), title = element_text(size = 32),text = element_text(size = 24, family = "Times New Roman"))
 ```
-
-* Figure 3, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 4, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
-* 
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
 
 # Course Level Models 
   
 
-```{r}
+```{r include=FALSE}
 lm1 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
 summary(lm1)
 model1 <- tidy(lm1) %>%
@@ -208,56 +201,6 @@ dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggt
 ```
   
   * The model results show URM, First Generation, and SI is positively related to DWF rates (May have interpreted this wrong??)
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
   *
   *
 
