@@ -66,10 +66,16 @@ dod <- course.level %>% group_by(URM, SI.Component.Flag)
 # Introduction
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #### What is Supplemental Instruction? 
 =======
 ### What is Supplemental Instruction? 
 >>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
+=======
+
+#### What is Supplemental Instruction? 
+
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 
 * Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughtout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additionaly support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
 
@@ -131,10 +137,15 @@ Additionally, is primarily found in GE classes, so transfer students are likely 
 these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ```{r echo=FALSE}
 =======
 ```{r echo=FALSE, fig.dim = c(17,7)}
 >>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
+=======
+
+```{r echo=FALSE, fig.dim = c(17,7)}
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
@@ -153,12 +164,19 @@ ggplot(dod_data2) +
 #### Course Level
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 ```{r}
 ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
 ```
 
+<<<<<<< HEAD
 ```{r}
 =======
+=======
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 ```{r eval=FALSE, include=FALSE}
 #Does not work
 ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
@@ -166,7 +184,10 @@ ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(bas
 
 ```{r eval=FALSE, include=FALSE}
 #does not work
+<<<<<<< HEAD
 >>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
+=======
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
 ```
 
@@ -228,6 +249,10 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   *
   *
 <<<<<<< HEAD
+<<<<<<< HEAD
+  *
+=======
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
   *
   *
   *
@@ -266,16 +291,20 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   *
   *
   *
-  *
+<<<<<<< HEAD
 =======
 # Conclusions
 * The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
 >>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
+=======
+
+# Conclusions
+* The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 
 # Future Work
 
   * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
   * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
   * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
-  
-# Conclusions
+

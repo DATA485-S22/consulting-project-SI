@@ -282,6 +282,9 @@ d <- grades %>% left_join(profile) %>% left_join(courses) %>%
             Full.Time.Part.Time.Code, Academic.Program))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
 write.csv(d, "data/student_analysis_dataset.csv")
 
 ################################################################################
@@ -359,6 +362,10 @@ course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Ter
                                        "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
 
 write.csv(course.level, "data/course_analysis_dataset.csv")
+<<<<<<< HEAD
 =======
 write.csv(d, "data/student_analysis_dataset.csv", row.names = FALSE)
 >>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
+=======
+
+>>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
