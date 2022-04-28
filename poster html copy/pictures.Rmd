@@ -50,7 +50,7 @@ ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
            position = "dodge") +
   facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+   ylab("") + theme_few() +
-  theme(text = element_text(size = 16, family = "Times New Roman"))
+  theme(text = element_text(size = 16, family = "Times New Roman"))+ scale_fill_brewer(name="First\nGeneration",palette = "Paired")
 ggsave("pictures/fig1.png")
 ggplot(dod_data2) +
   geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
@@ -87,7 +87,8 @@ ggsave("pictures/fig6.png")
 ```
 
 ```{r include=FALSE}
-lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag, data=course.level)
+course.level$Term.Year.x<-factor(course.level$Term.Year.x)
+lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag + class.size + Term.Year.x + HS.GPA.Ave, data=course.level)
 summary(lm1)
 model1 <- tidy(lm1)
 dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
