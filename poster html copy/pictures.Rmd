@@ -22,6 +22,7 @@ library(broom)
 library(multcomp)
 library(ggthemes)
 library(RColorBrewer)
+library(kableExtra)
 
 d<-read_csv("data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
@@ -64,7 +65,7 @@ facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Component.Flag,labeller = as_labeller(facet_names)) + ylab("DWF Rate")+ scale_fill_brewer(palette = "Paired") +theme_bw() +
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig3.png")
-ggplot(dod, aes(x =First.Gen.Perc, y=dwf.rate)) + geom_point(aes( color = as.factor(SI.Component.Flag))) +
+ggplot(dod, aes(x =First.Gen.Perc, y=dwf.rate)) + geom_point(aes( color = ifelse(dod$SI.Component.Flag == 1, "Yes", "No"))) +
   xlab("Percentage of First Generation") + ylab("DWF Rate") + scale_colour_brewer(palette = "Reds")+theme_bw() + labs(color = "SI Component Flag")
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig4.png")
@@ -86,11 +87,11 @@ ggsave("pictures/fig6.png")
 ```
 
 ```{r include=FALSE}
-lm1 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
+lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag, data=course.level)
 summary(lm1)
-model1 <- tidy(lm1) %>%
-  filter(term == "URMURM" | term == "First.Gen.Perc" | term == "SI.Component.Flag1")
+model1 <- tidy(lm1)
 dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
   theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
-summary(model1)
+d1 <- data.frame(model1)
+kable(d1)
 ```

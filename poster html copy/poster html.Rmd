@@ -103,7 +103,7 @@ knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 knitr::include_graphics(c("pictures/fig3.png"))
 ```
 
-```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
+```{r, echo=FALSE,fig.cap="There is no clear relationship between DWF rate and Percentage of First Gen Students. This seems to be the case with courses with an SI component as well.",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig4.png"))
 ```
 
@@ -118,12 +118,56 @@ knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 
 # Course Level Models 
   
-```{r eval=FALSE, include=FALSE}
-ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha=0.1) + geom_smooth(method=lm)
-```
-  
-  *
-  *
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Term </th>
+   <th style="text-align:right;"> Estimate </th>
+   <th style="text-align:right;"> Std Error </th>
+   <th style="text-align:right;"> Statistic </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 0.068 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 55.087 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> % URM </td>
+   <td style="text-align:right;"> 0.027 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 18.818 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SI Component </td>
+   <td style="text-align:right;"> 0.092 </td>
+   <td style="text-align:right;"> 0.012 </td>
+   <td style="text-align:right;"> 7.388 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> % First Gen  </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 4.833 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> % URM:SI Component </td>
+   <td style="text-align:right;"> 0.056 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> 4.366 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> SI Component:% First Gen </td>
+   <td style="text-align:right;"> -0.173 </td>
+   <td style="text-align:right;"> 0.024 </td>
+   <td style="text-align:right;"> -7.156 </td>
+  </tr>
+</tbody>
+</table>
+
+All estimates in the model are statistically significant (p-value << 0.001).
 
 # Conclusions
 The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
