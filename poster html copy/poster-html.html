@@ -21,7 +21,9 @@ Google fonts api stuff
 
 <title>Exploring the Effect of Supplimental Instruction on Equity Gaps</title>
 
+<script src="poster-html_files/header-attrs-2.11/header-attrs.js"></script>
 
+<script src="poster-html_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -406,15 +408,15 @@ Figure 1: Less students attended SI overall, but there were fewer one-year drop-
 <div id="course-level" class="section level4">
 <h4>Course Level</h4>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
-<img src="pictures/fig3.png" alt="caption" width="1094" />
+<img src="pictures/fig3.png" alt="caption" width="1036" />
 <p class="caption">
 Figure 2: caption
 </p>
 </div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-3"></span>
-<img src="pictures/fig4.png" alt="caption" width="1094" />
+<img src="pictures/fig4.png" alt="There is no clear relationship between DWF rate and Percentage of First Gen Students. This seems to be the case with courses with an SI component as well." width="1036" />
 <p class="caption">
-Figure 3: caption
+Figure 3: There is no clear relationship between DWF rate and Percentage of First Gen Students. This seems to be the case with courses with an SI component as well.
 </p>
 </div>
 </div>
@@ -437,14 +439,113 @@ Figure 4: caption
 </div>
 <div id="course-level-models" class="section level1">
 <h1>Course Level Models</h1>
-<ul>
-<li></li>
-<li></li>
-</ul>
-</div>
-<div id="conclusions" class="section level1">
-<h1>Conclusions</h1>
-<p>The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Term
+</th>
+<th style="text-align:right;">
+Estimate
+</th>
+<th style="text-align:right;">
+Std Error
+</th>
+<th style="text-align:right;">
+Statistic
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+(Intercept)
+</td>
+<td style="text-align:right;">
+0.068
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+55.087
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+% URM
+</td>
+<td style="text-align:right;">
+0.027
+</td>
+<td style="text-align:right;">
+0.001
+</td>
+<td style="text-align:right;">
+18.818
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SI Component
+</td>
+<td style="text-align:right;">
+0.092
+</td>
+<td style="text-align:right;">
+0.012
+</td>
+<td style="text-align:right;">
+7.388
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+% First Gen
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+0.003
+</td>
+<td style="text-align:right;">
+4.833
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+% URM:SI Component
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+0.013
+</td>
+<td style="text-align:right;">
+4.366
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SI Component:% First Gen
+</td>
+<td style="text-align:right;">
+-0.173
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+-7.156
+</td>
+</tr>
+</tbody>
+</table>
+<p>All estimates in the model are statistically significant (p-value &lt;&lt; 0.001).
+# Conclusions
+The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions.</p>
 </div>
 <div id="future-work" class="section level1">
 <h1>Future Work</h1>
