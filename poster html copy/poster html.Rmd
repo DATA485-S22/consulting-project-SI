@@ -31,55 +31,13 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
-library(tidyverse)
-library(readxl)
-library(magrittr) #Allows %<>% notation to update lhs object with resulting value
-library(naniar)
-library(Hmisc) # %nin%
-library(stargazer)
-library(tinytex)
-library(ggplot2)
-library(dotwhisker)
-library(broom)
-library(multcomp)
-
-d<-read_csv("data/student_analysis_dataset.csv")
-d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
-d$Term.Year<-factor(d$Term.Year)
-d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
-d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
-d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
-d$One.Year.Retention<-factor(d$One.Year.Retention)
-fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
-
-fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
-
-dod_data <- d %>% group_by(URM, SI.Attended)
-dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
-
-#course.level <- read_csv("data/course_analysis_dataset.csv")
-#dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 # Introduction
 
-### Abstract 
-
-It is the top mission of our university to retain and graduate students who are well prepared for careers or graduate school. CSU, Chico observed a 5.1% percentage point decrease in first year retention rate from 2015 (85.8%) to 2020 (80.7%). This decrease was slightly larger for first-generation college students at 5.4% percentage points over the same period (83.4% in ‘15 to 78% in ‘20) compared to their counterparts who have college educated parents (88.6% in ‘15 and 83.9% in ‘20, a 4.7% percentage point decrease). This difference is called an equity gap. Supplemental Instruction (SI) is a program offered at numerous CSU campuses to support students in selected courses by providing peer-assisted discussion sessions. These courses are selected based on their difficulty and the rate which students do not pass. This study assesses the impact of SI on reducing the equity gaps in the overall pass rate for a course, on the individual student grade for a course, and individual student 1 year retention. Equity gaps are being measured on students of underrepresented minority status and first-generation students. Multivariable statistical models such as linear and logistic regression are used to account for variability in the equity gap from sources other than SI. Additionally, Coarsened Exact Matching is used to estimate causal impact of SI on first year retention by matching students who did/did not attend SI on their likelihood of attending SI. 
-
-
 #### What is Supplemental Instruction? 
 
-<<<<<<< refs/remotes/origin/skip_branch
-* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer lead study session. The SI leader has performed well in the course. Using this experience, the SI leader encourages and assists students own success. Students success is a top mission throughout universities. Hence, it is of the utmost important to find and/or develop strategies to promote student success in the classroom. Students come from diverse backgrounds, and may need additional support to flourish at the university level. SI aims bridge this gap, so every student has an equal opportunity at success. 
-
-#### Related Work and Background (Rica could put her summaries here)
-
-* The impact of SI can be addressed at the class level or the individual student level. 
-Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
-The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below.
-=======
 * Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assited study session. The SI leader has performed well in the course.  
->>>>>>> local
+
 
 #### What is an Equity Gap?
 * An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
@@ -124,38 +82,10 @@ The data included course information, student demographics, and student course g
 </tbody>
 </table>
 
-<<<<<<< refs/remotes/origin/skip_branch
-
-
-### Student Level
-
-*  The student level explores the success of an individual student. We define student success as one year retention. This means the student was still enrolled one year from the course. At the student level, the questions we are addressing is "Does SI have an impact on the one retention". Then, to consider the the measures of equity previously defined, "Does the impact of SI differ between the equity groups".
-We limited our sample to first time freshman. Hence, they should still be enrolled one year later.
-Additionally, is primarily found in GE classes, so transfer students are likely not enrolling in 
-these course at CSU Chico. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
-
-```{r echo=FALSE, fig.width = 6}
-facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
-ggplot(dod_data) +
-  geom_bar(aes(x=One.Year.Retention, fill=URM),
-           position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+ scale_fill_discrete(name="Underrepresented\nMinority(URM)") + ylab("") + theme_bw()
-ggplot(dod_data2) +
-  geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
-           position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+ scale_fill_discrete(name="First\nGeneration") + ylab("") + theme_bw()
-```
-=======
 The impact of SI can be addressed at the class level or the individual student level. 
 Here, we investigate both. We obtained data from CSU Chico Institutional Research. 
 The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. The methods for these different explorations are detailed below. 
-<br>
-<br>
-<br>
-<br>
-<br>
 
-# Methods
 ### Student Level
 *  The student level explores the success of an individual student. We are addressing the following questions:
   - Does SI have an impact on the one retention? 
@@ -174,22 +104,9 @@ knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 <br>
 
 #### Course Level
->>>>>>> local
 
-
-#### Course Level
-
-<<<<<<< refs/remotes/origin/skip_branch
-```{r eval=FALSE, include=FALSE}
-ggplot(dod, aes(dwf.rate, color=URM)) + geom_density(alpha = 0.2) + theme_bw(base_size = 10) + xlab("DWF Rate")
-```
-
-```{r eval=FALSE, include=FALSE}
-ggplot(dod, aes(SI.Component.Flag, dwf.rate, color=URM)) + geom_boxplot() + xlab("Attended SI") + ylab("DWF Rate")
-=======
 ```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig3.png"))
->>>>>>> local
 ```
 
 ```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
@@ -197,77 +114,13 @@ knitr::include_graphics(c("pictures/fig4.png"))
 ```
 
 # Student Level Models
-<<<<<<< refs/remotes/origin/skip_branch
-  
-```{r echo=FALSE}
-m1<-tidy(fit1) %>%
-  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
-dwplot(m1) +
-    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Figure 3: Model Results SI and Equity Measures") + xlab("Confidence Interval") + theme_bw()
-m4<-tidy(fit3)%>%
-  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
-dwplot(m4) +
-    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Figure 4: Model Results Interactions SI and Equity Measures")+ xlab("Confidence Interval") + theme_bw()
-=======
+
 * Figure 5, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 6, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
 
 ```{r, echo=FALSE,out.width = "50%", fig.cap="caption",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
->>>>>>> local
 ```
   * Figure 3, presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results from this model imply, that SI does not a have a significant impact on student one year retention. If the student is first generation is also insignificant. Additionally, this model also implies that a student that is classified as URM is positively related to one year retention. Figure 4, presents the results from a model considering the second student level question "Does the impact of SI differ between the equity groups". Again, SI attendance was found to be insignificant and URM is positively related. Additionally, if the student is an URM and attended SI, was also found to be insignificant. If the student is first generation is also found to be insignificant. However, if the student is first generation and attends SI the probability of year retention increases, and this relationship is significant. For both models, other covariates that may capture variation in one year retention were included in the model that are not presented here. 
-* 
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
 
 # Course Level Models 
   
@@ -277,64 +130,9 @@ ggplot(course.level, aes(dwf.rate, class.average, color=URM)) + geom_point(alpha
   
   *
   *
-<<<<<<< refs/remotes/origin/skip_branch
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-  *
-=======
 
 # Conclusions
 The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias. The following section describes additional work that may help us better consider our questions. 
->>>>>>> local
 
 # Future Work
 
@@ -342,11 +140,7 @@ The results from these initial models did not find significant results for our v
   * In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
   * With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
   
-<<<<<<< refs/remotes/origin/skip_branch
-# Conclusions
-=======
 # Acknowledgments
 
 We are extremely grateful for the guidance provided by Dr. Robin Donatello and Dr. Eric Wasinger. We are also thankful for our peers in MATH485 for providing helpful feedback thoughout to project. 
 
->>>>>>> local
