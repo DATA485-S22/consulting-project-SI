@@ -48,14 +48,14 @@ facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
   geom_bar(aes(x=One.Year.Retention, fill=URM),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+   ylab("") + theme_few() +
-  theme(text = element_text(size = 16, family = "Times New Roman"))
-ggsave("pictures/fig1.png")
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 1") +xlab("One Year Retention")+   ylab("") + theme_few() +
+  theme(text = element_text(size = 32, family = "Times New Roman"))+ scale_fill_brewer(name="Underrepresented\nMinority(URM)", palette = "Paired")
+
 ggplot(dod_data2) +
   geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
            position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+    ylab("") + theme_few() +
-  theme(text = element_text(size = 16,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names)) + ggtitle("Figure 2") +xlab("One Year Retention")+    ylab("") + theme_few() +
+  theme(text = element_text(size = 32,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
 ggsave("pictures/fig2.png")
 ```
 
@@ -85,12 +85,11 @@ dwplot(m4,dot_args = list(size = 3, color = "black"), whisker_args = list(size =
 ggsave("pictures/fig6.png")
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE, fig.dim=c(14,5)}
 lm1 <- lm(dwf.rate ~ URM + First.Gen.Perc + SI.Component.Flag, data=course.level)
-summary(lm1)
 model1 <- tidy(lm1) %>%
-  filter(term == "URMURM" | term == "First.Gen.Perc" | term == "SI.Component.Flag1")
-dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
-  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
-summary(model1)
+  filter(term == "URMURM" | term == "First.Gen.Perc" | term == "SI.Component.Flag")
+dwplot(model1,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey")) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20,family = "Times New Roman"), title = element_text(size = 32),text = element_text(size = 24, family = "Times New Roman"))
+ggsave("pictures/fig7.png")
 ```
