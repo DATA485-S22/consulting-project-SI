@@ -61,7 +61,7 @@ ggsave("pictures/fig2.png")
 ```
 
 ```{r echo=FALSE, warning=FALSE, fig.dim=c(14,5)}
-facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+facet_names<-c(`0` = "No SI Component", `1` = "SI Component")
 ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Component.Flag,labeller = as_labeller(facet_names)) + ylab("DWF Rate")+ scale_fill_brewer(palette = "Paired") +theme_bw() +
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig3.png")
