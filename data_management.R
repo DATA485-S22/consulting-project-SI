@@ -281,11 +281,7 @@ d <- grades %>% left_join(profile) %>% left_join(courses) %>%
   drop_na(c(HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag,
             Full.Time.Part.Time.Code, Academic.Program))
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
-write.csv(d, "data/student_analysis_dataset.csv")
+write.csv(d, "data/student_analysis_dataset.csv", row.names = FALSE)
 
 ################################################################################
 #                       Course analysis Dataset
@@ -361,11 +357,4 @@ course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
                                        "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
 
-write.csv(course.level, "data/course_analysis_dataset.csv")
-<<<<<<< HEAD
-=======
-write.csv(d, "data/student_analysis_dataset.csv", row.names = FALSE)
->>>>>>> bac85ce1b463b02bf6dfafe8a4024a9697728440
-=======
-
->>>>>>> 3088403de25b08aad79ae9240a035670d1caeeef
+write.csv(course.level, "data/course_analysis_dataset.csv", row.names = FALSE)
