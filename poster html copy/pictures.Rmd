@@ -65,7 +65,7 @@ ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Comp
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig3.png")
 ggplot(dod, aes(x =First.Gen.Perc, y=dwf.rate)) + geom_point(aes( color = as.factor(SI.Component.Flag))) +
-  xlab("Percentage of First Generation") + ylab("DWF Rate") + scale_colour_brewer(palette = "Reds")+theme_bw() +
+  xlab("Percentage of First Generation") + ylab("DWF Rate") + scale_colour_brewer(palette = "Reds")+theme_bw() + labs(color = "SI Component Flag")
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig4.png")
 ```

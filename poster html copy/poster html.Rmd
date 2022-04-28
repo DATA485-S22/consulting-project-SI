@@ -94,15 +94,9 @@ The data included course information, student demographics, and student course g
 * We define student success as one year retention. This means the student was still enrolled one year from the course. 
 * We limited our sample to first time freshman and General Education Courses. Figure 1 presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
 
-```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
+```{r, echo=FALSE,fig.cap="Less students attended SI overall, but there were fewer one-year drop-outs from students who attended SI.",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 ```
-
-<br>
-<br>
-<br>
-<br>
-
 #### Course Level
 
 ```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
