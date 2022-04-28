@@ -96,7 +96,7 @@ grades$Random.Course.ID <- factor(grades$Random.Course.ID)
 grades$Term.Type <- factor(grades$Term.Type)
 
 # Create Table for Grades of SI Classes
-si_visit$Random.Course.ID <- _factor(si_visit$Random.Course.ID)
+si_visit$Random.Course.ID <- factor(si_visit$Random.Course.ID)
 si_grades <- filter(grades, Term.Type %nin% c("Summer", "Winter"),
                     Random.Course.ID %in% levels(si_visit$Random.Course.ID))
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
@@ -286,17 +286,13 @@ write.csv(d, "data/student_analysis_dataset.csv", row.names = FALSE)
 ################################################################################
 #                       Course analysis Dataset
 ################################################################################
-grades <- read_xlsx("data/Student Grade.xlsx")
-names(grades) <- make.names(names(grades), unique=TRUE)
-write.csv(grades, 'data/grades.csv', row.names = FALSE)
-
 grades <- read.csv("data/grades.csv")
 
 program <- read.csv("data/Student Program.csv")
 program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
   mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
   filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
+  dplyr::select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
          IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
          Academic.Program, Major.1.STEM.Flag, Major.1.College,
          Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
@@ -306,7 +302,7 @@ program.clean$Random.Student.ID<-factor(program.clean$Random.Student.ID)
 profile <- read.csv("data/Student Profile Metric.csv")
 profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
   mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
-  select(Cohort.Term, Random.Student.ID, Degree.Term,
+  dplyr::select(Cohort.Term, Random.Student.ID, Degree.Term,
          Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
          Student.Orientation.Flag)
@@ -354,7 +350,11 @@ course.level$SI.Component.Flag <- course.level$SI.Visit.Num
 course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
 course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
 
-course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
+course.level <- dplyr::select(course.level, c("Random.Course.ID", "Term.Year.x", "Term.Type.x", "URM", "class.size", "class.average", "dwf.rate",
                                        "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
 
 write.csv(course.level, "data/course_analysis_dataset.csv", row.names = FALSE)
+
+###################################################
+# !!! Everything Finished !!!
+###################################################
