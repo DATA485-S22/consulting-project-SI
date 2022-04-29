@@ -21,8 +21,8 @@ primary_colour: "#9D2235"
 secondary_colour: "#FFFFFF"
 poster_height: "36in"
 poster_width: "60in"
-logoright_name: "pictures/NSC-logo.png"
-logoleft_name: "pictures/DSI-logo.png"
+#logoright_name: "pictures/NSC-logo.png"
+#logoleft_name: "pictures/DSI-logo.png"
 output: 
   posterdown::posterdown_html:
     self_contained: false
@@ -34,14 +34,11 @@ knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 ```
 # Introduction
-
 #### What is Supplemental Instruction? 
-
-* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assited study session. The SI leader has performed well in the course.  
-
+Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assited study sessions. The SI leader has performed well in the course in a previous semester.  
 #### What is an Equity Gap?
-* An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
-  
+An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
+
 # Methods
 
   <table>
@@ -82,38 +79,23 @@ library(knitr)
 </tbody>
 </table>
 
-* The impact of SI can be addressed at the class level or the individual student level. Here, we investigate both.
+**Data**: The data was obtained from CSU Chico Institutional Research. SI was first implemented at Chico State in 2016, so we used years 2016-2021. The data included course information, student demographics, and student course grades. We considered measures of success at both the **student and course levels**. _Table 1_ presents the demographic composition of the data we utilized along with annual campus wide demographic statistics. Our data is fairly representative of the student student body.
 
-**Data**: The data was obtained from CSU Chico Institutional Research. SI was first implemented at Chico State in 2016, so we used years 2016-2021. The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. _Table 1_ presents the demographic composition of the data we utilized along with annual campus wide demographic statistics. Our data is fairly representative of the student student body.
+**Defining Equity Gap**: The CSU considers three groups when addressing equity gaps. These groups consist of first generation college students, students who are a member of an **under-represented minority (URM)**, and those who are low income/ Pell grant eligible. We did not have access to data regarding Pell grant eligibility, so we explored equity gaps utilizing the other two groups (URM and first generation college student).
 
-**Defining Equity Gap**: The CSU considers three groups when addressing equity gaps.These groups consist of students who are first generation, students who are under-represented minorities (URM), and those who are low income/ Pell grant eligible. We did not have access to data regarding Pell grant eligibility, so we explored equity gaps utilizing the other two groups (URM and first generation).  
-* *Student Level* : These variables are individual characteristics (whether the student belongs to the group or not).
+**Student Level** : These variables are individual characteristics (whether the student belongs to the group or not). Student success is measured by **one-year retention. Whether the student is still enrolled at the university one year later.** The sample was limited to first time freshman, so one-year retention will always be applicable. 
 
-* *Course Level*: These variables are accounted by calculating th proportion of URM and first generation students in the course. 
-<br>
-<br>
-<br>
-**Defining Success**
-* *Student Level*: Success is defined as one-year retention. The student will still be enrolled at the university one year later. The sample was limited to first time freshman, so one-year retention will always be applicable. 
-
-* *Course Level*: Success at the course level is measured using DWF rates. The proportion of students who received D's, withdrew, or failed the course.  
+**Course Level**: These variables are accounted by calculating the proportion of URM and first generation students in the course. Success at the course level is measured using **DWF rates. The proportion of students who received D's, withdrew, or failed the course.**
 
 ### Student Level Plots
 
-Figure \@ref(fig:fig1) presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
+## Figures 1 & 2 present one year retention and a proportion of the student body for those who did and did not attend SI by the selected measures of equity.
 
-```{r fig1, echo=FALSE,fig.cap="Less students attended SI overall, but there were fewer one-year drop-outs from students who attended SI, and it appears the one-year retention gap between groups is smaller.",fig.show='hold',fig.align='center'}
+```{r fig1&2, echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 ```
 
-
-```{r fig2, eval=FALSE, fig.align='center', fig.cap="Caption", fig.show='hold', include=FALSE}
-knitr::include_graphics(c("pictures/fig3.png"))
-```
-
-<br>
-<br>
-<br>
+## Fewer students attended SI overall, but there were fewer one-year drop-outs from students who attended SI. It also appears the one-year retention gap between the groups who attended SI is smaller.
 
 # Does SI have an impact on the one retention? 
 
@@ -127,14 +109,15 @@ knitr::include_graphics(c("pictures/fig3.png"))
 ```{r fig3, echo=FALSE,out.width = "50%", fig.cap="The dashed line marks zero. The horizontal gray lines show the confidence intervals for the main estimates we are interested in.",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 ```
-* **Limitations of Student Models**: Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for if a student is Pell grant eligibe. This is one of the equities the university considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention . 
+
+**Limitations of Student Models**: Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for if a student is Pell grant eligibe. This is one of the equities the university considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention . 
 
 <br>
 
 # Does SI have an impact on the DWF Rates?
   
 <table>
-<caption>Table 2: Model Results: DWF Rates </caption>
+<caption>Table 2: Model Results (DWF Rates) </caption>
  <caption style="caption-side:bottom">Note: $*p<0.1; **p<0.05; ***p<0.01$</caption>
  <thead>
   <tr>

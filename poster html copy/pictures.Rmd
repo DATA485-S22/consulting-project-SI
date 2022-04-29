@@ -42,8 +42,6 @@ dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
 dod_data2$One.Year.Retention <- factor(dod_data2$One.Year.Retention, labels = c("No", "Yes"))
 
 course.level <- read_csv("data/course_analysis_dataset.csv")
-# FIX! Bad data
-dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 
 ```{r echo=FALSE, fig.dim=c(14,7), message=FALSE, warning=FALSE, dev = png}
@@ -60,18 +58,6 @@ ggplot(dod_data2) +
   facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+  ylab("") + theme_few() +
   theme(text = element_text(size = 16,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
 ggsave("pictures/fig2.png")
-```
-
-```{r echo=FALSE, warning=FALSE, fig.dim=c(14,5)}
-# FIX! Bad Data
-facet_names<-c(`0` = "Does Not Have SI Component", `1` = "Contains SI Component")
-ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Component.Flag,labeller = as_labeller(facet_names)) + ylab("DWF Rate")+ scale_fill_brewer(palette = "Paired") +theme_bw() +
-  theme(text = element_text(size = 16,family = "Times New Roman"))
-ggsave("pictures/fig3.png")
-ggplot(dod, aes(x =First.Gen.Perc, y=dwf.rate)) + geom_point(aes( color = ifelse(dod$SI.Component.Flag == 1, "Yes", "No"))) +
-  xlab("Percentage of First Generation") + ylab("DWF Rate") + scale_colour_brewer(palette = "Reds")+theme_bw() + labs(color = "SI Component Flag")
-  theme(text = element_text(size = 16,family = "Times New Roman"))
-ggsave("pictures/fig4.png")
 ```
 
 ```{r echo=FALSE, fig.dim=c(14,5)}
