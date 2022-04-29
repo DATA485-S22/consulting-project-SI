@@ -24,6 +24,7 @@ library(ggthemes)
 library(RColorBrewer)
 library(kableExtra)
 
+
 d<-read_csv("data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
 d$Term.Year<-factor(d$Term.Year)
@@ -47,15 +48,15 @@ dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```{r echo=FALSE, fig.dim=c(14,7), message=FALSE, warning=FALSE, dev = png}
 facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
 ggplot(dod_data) +
-  geom_bar(aes(x=One.Year.Retention, fill=URM),
-           position = "dodge") +
+  geom_bar(mapping = aes(x=One.Year.Retention,y = (..count..)/sum(..count..), fill=URM), 
+           position = "dodge") + scale_y_continuous(labels=scales::percent) +
   facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+   ylab("") + theme_few() +
-  theme(text = element_text(size = 16, family = "Times New Roman"))+ scale_fill_brewer(name="First\nGeneration",palette = "Paired")
+  theme(text = element_text(size = 16, family = "Times New Roman"))+ scale_fill_brewer(name="Under-represented\nMinority",palette = "Paired")
 ggsave("pictures/fig1.png")
 ggplot(dod_data2) +
-  geom_bar(aes(x=One.Year.Retention, fill=First.Generation.Flag),
-           position = "dodge") +
-  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+    ylab("") + theme_few() +
+  geom_bar(aes(x=One.Year.Retention,y = (..count..)/sum(..count..), fill=First.Generation.Flag),
+           position = "dodge") +  scale_y_continuous(labels=scales::percent) +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+  ylab("") + theme_few() +
   theme(text = element_text(size = 16,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
 ggsave("pictures/fig2.png")
 ```
@@ -74,15 +75,32 @@ ggsave("pictures/fig4.png")
 ```{r echo=FALSE, fig.dim=c(14,5)}
 m1<-tidy(fit1) %>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
-dwplot(m1,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey")) +
+dwplot(m1,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey"))%>%
+   relabel_predictors(
+        c(
+            `SI.Attended` = "Attended SI",
+            `URMURM` = "URM",
+            `First.Generation.FlagY` = "First\nGeneration"
+        )
+    ) +
     geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("SI and Equity") + xlab("Confidence Interval") + theme_few() +
-  theme(legend.position = "none", axis.title.x = element_text(size = 16, family = "Times New Roman"), title = element_text(size = 16,family = "Times New Roman"), text = element_text(size = 16, family = "Times New Roman"))
+  theme(legend.position = "none", axis.title.x = element_text(size = 20, family = "Times New Roman"), title = element_text(size = 20,family = "Times New Roman"), text = element_text(size = 20, family = "Times New Roman"))
 ggsave("pictures/fig5.png")
+
 m4<-tidy(fit3)%>%
   filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
-dwplot(m4,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey")) +
+dwplot(m4,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey"))%>%
+   relabel_predictors(
+        c(
+            `SI.Attended` = "Attended SI",
+            `URMURM` = "URM",
+            `First.Generation.FlagY` = "First\nGeneration",
+            `SI.Attended:URMURM`  = "Attended SI\n&URM",
+            `SI.Attended:First.Generation.FlagY`  = "Attended SI\n&First Generation"
+        )
+    ) +
     geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Interactions SI and Equity")+ xlab("Confidence Interval") + theme_few() +
-  theme(legend.position = "none", axis.title.x = element_text(size = 16,family = "Times New Roman"), title = element_text(size = 16),text = element_text(size = 16, family = "Times New Roman"))
+  theme(legend.position = "none", axis.title.x = element_text(size = 20,family = "Times New Roman"), title = element_text(size = 20),text = element_text(size = 20, family = "Times New Roman"))
 ggsave("pictures/fig6.png")
 ```
 
