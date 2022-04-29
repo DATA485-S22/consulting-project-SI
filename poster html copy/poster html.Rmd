@@ -65,7 +65,7 @@ library(knitr)
 # Introduction
 ## **What is Supplemental Instruction? **
 
-Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.  
+Supplemental Instruction (**SI**) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.  
 
 ## **What is an Equity Gap?**
 An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
