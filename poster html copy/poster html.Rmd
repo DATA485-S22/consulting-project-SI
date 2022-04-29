@@ -1,5 +1,5 @@
 ---
-title: Exploring the Effect of Supplimental Instruction on Equity Gaps 
+title: Exploring the Effect of Supplemental Instruction on Equity Gaps
 author:
   - name: Faith Fatchen
     affil: 3
@@ -63,14 +63,13 @@ knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 ```
 # Introduction
+## **What is Supplemental Instruction? **
 
-#### What is Supplemental Instruction? 
+Supplemental Instruction (**SI**) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.  
 
-* Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assisted study session. The SI leader has performed well in the course.  
+## **What is an Equity Gap?**
+An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
 
-#### What is an Equity Gap?
-* An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
-  
 # Methods
 
   <table>
@@ -111,62 +110,46 @@ library(knitr)
 </tbody>
 </table>
 
-The impact of SI can be addressed at the class level or the individual student level. Here, we investigate both.
+**Data**: The data was obtained from CSU Chico Institutional Research. SI was first implemented at Chico State in 2016, so we used years 2016-2021. The data included course information, student demographics, and student course grades. We considered measures of success at both the **student and course levels**. _Table 1_ presents the demographic composition of the data we utilized along with annual campus wide demographic statistics. Our data is fairly representative of the student student body.
 
-**Data**: The data was obtained from CSU Chico Institutional Research. SI was first implemented at Chico State in 2016, so we used years 2016-2021. The data included course information, student demographics, and student course grades. We considered measures of success at both the student level and course. _Table 1_ presents the demographic composition of the data we utilized along with annual campus wide demographic statistics. Our data is fairly representative of the student student body.
+**Defining Equity Gap**: CSU Chico considers three groups when addressing equity gaps. These groups consist of first generation college students, students who are a member of an **under-represented minority (URM)**, and those who are low income/ Pell grant eligible. We did not have access to data regarding Pell grant eligibility, so we explored equity gaps utilizing the other two groups (URM and first generation college student).
 
-**Defining Equity Gap**: The CSU considers three groups when addressing equity gaps.These groups consist of students who are first generation, students who are under-represented minorities (URM), and those who are low income/ Pell grant eligible. We did not have access to data regarding Pell grant eligibility, so we explored equity gaps utilizing the other two groups (URM and first generation).  
+**Student Level** : These variables are individual characteristics (whether the student belongs to the group or not). Student success is measured by **one year retention. Whether the student is still enrolled at the university one year later.** The sample was limited to first time freshman, so one year retention will always be applicable. 
 
-* *Student Level* : These variables are individual characteristics (whether the student belongs to the group or not).
+**Course Level**: These variables are accounted by calculating the proportion of URM and first generation students in the course. Success at the course level is measured using **DWF rates. The proportion of students who received D's, withdrew, or failed the course.**
 
-* *Course Level*: These variables are accounted by calculating the proportion of URM and first generation students in the course. 
-<br>
-<br>
-<br>
-<br>
-**Defining Success**
-* *Student Level*: Success is defined as one-year retention. The student will still be enrolled at the university one year later. The sample was limited to first time freshman, so one-year retention will always be applicable. 
-
-* *Course Level*: Success at the course level is measured using DWF rates. The proportion of students who received D's, withdrew, or failed the course.  
-
-### Student Level Plots
-
-Figure \@ref(fig:fig1) presents one year retention for those who did and did not attend SI by one of the measures of equity, URM. 
-
-```{r fig1,out.width="90%", echo=FALSE,fig.cap="Less students attended SI overall, but there were fewer one-year drop-outs from students who attended SI, and it appears the one-year retention gap between groups is smaller.",fig.show='hold',fig.align='center'}
+```{r fig1&2, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 ```
 
+*Figures 1 & 2* present one year retention and a proportion of the student body for those who did and did not attend SI by the selected measures of equity. Fewer students attended SI overall, but there were fewer one year drop-outs from students who attended SI. It also appears the one year retention gap between the groups who attended SI is smaller.
 
-```{r fig2, eval=FALSE, fig.align='center', fig.cap="Caption", fig.show='hold', include=FALSE}
-knitr::include_graphics(c("pictures/fig3.png"))
-```
+# Does SI Have an Impact on Student One Year Retention? 
 
-# Does SI have an impact on the one retention? 
-
-* Figure \@ref(fig:fig3), presents the results from a model considering the first student level question, "Does SI have an impact on the one retention". The results only present our primary variables of interest, but many covariates were included to account for additional factors that may influence the outcome variable such as academic level and year. A logistic model was used to model our one year retention. This model was chosen since out one year retention is binary.
-
-* *SI and Equity* : If a student attend SI and if a student is first generation are not statistically significant. If is student is an under-represented minority is statistically significant, but this variable was not expected to be positive, given the historical context. This may be due to omitted variable bias. 
-
-* *Interactions SI and Equity*: In order to model the potential influence SI has on different groups we included interaction terms. The results from the previous model hold. In addition, if a student attend SI and is a URM is statically insignificant. However, if a student attend SI and is first generation is statistically significant and positive. 
-
-
-```{r fig3, echo=FALSE,out.width = "50%", fig.cap="The dashed line marks zero. The horizontal gray lines show the confidence intervals for the main estimates we are interested in.",fig.show='hold',fig.align='center'}
+```{r fig3, echo=FALSE, fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 ```
-* **Limitations of Student Models**: Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for if a student is Pell grant eligible. This is one of the equities the university considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention . 
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+*Figures 3 & 4* present the results from a model predicting one year retention. The results we present only show primary variables of interest, but many covariates were included to account for additional factors that may influence the outcome variable, such as academic level and year. A logistic model was used to model one year retention. This model was chosen since the one year retention flag is binary. The dashed line marks zero. The horizontal gray lines show the confidence intervals for the main estimates we are interested in.
 
-# Does SI have an impact on the DWF Rates?
+**SI and Equity Results**: The coefficients of the variables for whether a student attend SI or a student is first generation are not statistically significant. The coefficient of the variables for whether a student is a member of an under-represented minority is statistically significant (*p<0.05*), but this variable was not expected to be positive, given the historical context. This may be due to omitted variable bias.
+
+**Interactions SI and Equity Results**: In order to model the potential influence SI has on different groups, we included interaction terms. The results from the previous model hold. In addition, the coefficient of the variable for if a student attended SI and is a member of a URM is not statically significant. However, the coefficient of the variable for if a student attends SI and is a first generation student is statistically significant (*p<0.05*) and positive.
+
+## **Limitations of Student Models**
+
+Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for a student being Pell grant eligible. This is one of the measures of equity that the CSU considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+# Does SI Have an Impact on Course DWF Rates?
   
 <table>
-<caption>Table 2: Model Results: DWF Rates </caption>
+<caption>Table 2: Model Results (DWF Rates) </caption>
  <caption style="caption-side:bottom">Note: $*p<0.1; **p<0.05; ***p<0.01$</caption>
  <thead>
   <tr>
@@ -179,50 +162,50 @@ knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 <tbody>
   <tr>
    <td style="text-align:left;"> % URM </td>
-   <td style="text-align:right;"> 0.02*** </td>
+   <td style="text-align:right;"> 0.04*** </td>
    <td style="text-align:right;"> 0.006 </td>
-   <td style="text-align:right;"> 3.818 </td>
+   <td style="text-align:right;"> 6.183 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> SI Component </td>
-   <td style="text-align:right;"> 0.03*** </td>
-   <td style="text-align:right;"> 0.05 </td>
-   <td style="text-align:right;"> 0.517 </td>
+   <td style="text-align:right;"> 0.14*** </td>
+   <td style="text-align:right;"> 0.02 </td>
+   <td style="text-align:right;"> 6.368 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> % First Generation  </td>
-   <td style="text-align:right;"> -0.001 </td>
-   <td style="text-align:right;"> 0.009 </td>
-   <td style="text-align:right;"> -0.154 </td>
+   <td style="text-align:right;"> -0.06*** </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> -7.856 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> % URM:SI Component </td>
-   <td style="text-align:right;"> -0.01 </td>
-   <td style="text-align:right;"> 0.003 </td>
-   <td style="text-align:right;"> -0.577 </td>
+   <td style="text-align:right;"> 0.06** </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.829 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> SI Component:% First Generation </td>
-   <td style="text-align:right;"> -0.04 </td>
+   <td style="text-align:right;"> -0.21*** </td>
    <td style="text-align:right;"> 0.06 </td>
-   <td style="text-align:right;"> -0.670 </td>
+   <td style="text-align:right;"> -3.493 </td>
   </tr>
 </tbody>
 </table>
 
-* Table 3, presents the results from a consider SI's impact on a course's DWF rate. Similarly to the student level model, all relevant covariates available in the data were included to account for additional factors that may influence the outcome variable such as class size and class average high school GPA. A multilinear regression was used to model DWF rates. 
+*Table 2* presents the results from a multilinear regression model predicting SI's impact on a course's DWF rate. Similarly to the student level model, all relevant covariates available in the data were included to account for additional factors that may influence the outcome variable such as class enrollment size and class final grade point average.
 
-* From this model, the percentage of students who are URM and SI are a statistically significant. The percentage of students who are URM is positive, implying as the percentage increases so do DWF rate. The estimate for courses with an SI component implies that if a course has an SI component DWF rates increase. The estimate for the percentage of students who are first generation is not statistically  significant. Furthermore, although not statistically significant, if a courses has an SI component, as the percentage of students who are URM increases, DWF decrease. The results are similar for the percentage of students who are first generation in courses with an SI component.
+**DWF Model Results**: All variables of interest are statistically significant (*p<0.05*). The coefficient of the variable for the percentage of students who are URM variable is positive, implying as the percentage increases so does DWF rate. The positive estimate for the coefficient of the variable for courses with an SI component implies courses with an SI component have increased DWF rates (this gives evidence to support our purpose). The model predicts that if a course has an SI component, as the percentage of students who are first generation students increases, DWF rate decreases.
 
-* **Limitations of Course Model**: Similarly to the student level models there may be variables not accounted for in the model that influence DWF. Again, the percentage of students who are Pell grant eligible may influence DWF rates. 
+## **Limitations of Course Model**
+Similar to the student level models, there may be variables not accounted for in the model that influence DWF rate. Again, the percentage of students who are Pell grant eligible may be a significant influence.
 
 # Conclusions & Future Work
 
-* The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias discussed in the limitations of the models. There are additional methods may help us better consider our questions.
+* The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias discussed in the limitations of the models.
 
 * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
 In order to accomplish this, we will employ Coarsened Exact Matching to control for confounding variables. 
 With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
-  
-**Acknowledgments** We are extremely grateful for the guidance provided by Dr. Robin Donatello and Dr. Eric Wasinger.  
 
+**Acknowledgments**: We are extremely grateful for the guidance provided by Dr. Robin Donatello and Dr. Eric Wasinger.
