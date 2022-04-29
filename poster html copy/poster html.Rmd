@@ -6,29 +6,30 @@ author:
   - name: Skip Moses
     affil: 1
   - name: Rica Rebusit
-    affil: 2
-  - name: Joseph Shifman
     affil: 1
+  - name: Joseph Shifman
+    affil: 2
 affiliation:
+  - num: 1
+    address: Department of Mathematics and Statistics, California State University, Chico
   - num: 2
     address: Department of Computer Science, California State University, Chico
   - num: 3
     address: Department of Economics, California State University, Chico
-  - num: 1
-    address: Department of Mathematics and Statistics, California State University, Chico
 column_numbers: 4
 primary_colour: "#9D2235"
 secondary_colour: "#FFFFFF"
 poster_height: "36in"
 poster_width: "60in"
-# logoright_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
-# logoleft_name: https&#58;//raw.githubusercontent.com/brentthorne/posterdown/master/images/betterhexlogo.png
+logoright_name: "pictures/NSC-logo.png"
+logoleft_name: "pictures/DSI-logo.png"
 output: 
   posterdown::posterdown_html:
     self_contained: false
 ---
 
 ```{r setup, include=FALSE}
+# Notes: Manually change right logo to width = 95% in .html file
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 ```
