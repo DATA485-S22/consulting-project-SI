@@ -100,7 +100,7 @@ knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 ```
 #### Course Level
 
-```{r, echo=FALSE,fig.cap="caption",fig.show='hold',fig.align='center'}
+```{r, echo=FALSE,fig.cap="The average DWF rate is higher",fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig3.png"))
 ```
 
