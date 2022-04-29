@@ -41,6 +41,7 @@ dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
 dod_data2$One.Year.Retention <- factor(dod_data2$One.Year.Retention, labels = c("No", "Yes"))
 
 course.level <- read_csv("data/course_analysis_dataset.csv")
+# FIX! Bad data
 dod <- course.level %>% group_by(URM, SI.Component.Flag)
 ```
 
@@ -61,7 +62,8 @@ ggsave("pictures/fig2.png")
 ```
 
 ```{r echo=FALSE, warning=FALSE, fig.dim=c(14,5)}
-facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+# FIX! Bad Data
+facet_names<-c(`0` = "Does Not Have SI Component", `1` = "Contains SI Component")
 ggplot(dod, aes(URM, dwf.rate, fill=URM)) + geom_boxplot() + facet_wrap(~SI.Component.Flag,labeller = as_labeller(facet_names)) + ylab("DWF Rate")+ scale_fill_brewer(palette = "Paired") +theme_bw() +
   theme(text = element_text(size = 16,family = "Times New Roman"))
 ggsave("pictures/fig3.png")
@@ -87,8 +89,8 @@ ggsave("pictures/fig6.png")
 ```
 
 ```{r include=FALSE}
-course.level$Term.Year.x<-factor(course.level$Term.Year.x)
-lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag + class.size + Term.Year.x + HS.GPA.Ave, data=course.level)
+course.level$Term.Year<-factor(course.level$Term.Year)
+lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag + class.size + Term.Year + HS.GPA.Ave, data=course.level, na.action = na.omit)
 summary(lm1)
 model1 <- tidy(lm1)
 dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
