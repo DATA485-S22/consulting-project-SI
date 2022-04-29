@@ -21,12 +21,41 @@ primary_colour: "#9D2235"
 secondary_colour: "#FFFFFF"
 poster_height: "36in"
 poster_width: "60in"
-#logoright_name: "pictures/NSC-logo.png"
-#logoleft_name: "pictures/DSI-logo.png"
+logoleft_name: "pictures/NSC-logo.png"
+logoright_name: "pictures/DSI-logo.png"
 output: 
   posterdown::posterdown_html:
     self_contained: false
 ---
+
+<style>
+.poster_title {
+  width: 50%;
+  text-align: center;
+  float: left;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-top: 0.1in;
+  margin-bottom: 0.1in;
+}
+
+.logo_left {
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo_right {
+  width: 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
+
 
 ```{r setup, include=FALSE}
 # Notes: Manually change right logo to width = 95% in .html file
@@ -35,14 +64,16 @@ library(knitr)
 ```
 # Introduction
 #### What is Supplemental Instruction? 
-Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assited study sessions. The SI leader has performed well in the course in a previous semester.  
+
+Supplemental Instruction (SI) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.  
+
 #### What is an Equity Gap?
 An equity gap  refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
 
 # Methods
 
   <table>
-<caption>Table 1: Annual Population and Sample Comparison</caption>
+<caption>Table 1: Annual Fall Population and Sample Comparison</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> Variable </th>
@@ -91,7 +122,8 @@ An equity gap  refers to differences in educational outcomes and student success
 
 ## Figures 1 & 2 present one year retention and a proportion of the student body for those who did and did not attend SI by the selected measures of equity.
 
-```{r fig1&2, echo=FALSE,fig.show='hold',fig.align='center'}
+<<<<<<< HEAD
+```{r fig1&2, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 ```
 
@@ -110,8 +142,13 @@ knitr::include_graphics(c("pictures/fig1.png", "pictures/fig2.png"))
 knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 ```
 
-**Limitations of Student Models**: Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for if a student is Pell grant eligibe. This is one of the equities the university considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention . 
+* **Limitations of Student Models**: Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for if a student is Pell grant eligible. This is one of the equities the university considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention.
 
+<br>
+<br>
+<br>
+<br>
+<br>
 <br>
 
 # Does SI have an impact on the DWF Rates?
@@ -161,7 +198,7 @@ knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 </tbody>
 </table>
 
-* Table 3, presents the results from a consider SI's impact on a course's DWF rate. Similarly to the student level model, all relevant covariates available in the data were included to account for additional factors that may influence the outcome variable such as class size and class average highschool GPA. A multilinear regression was used to model DWF rates. 
+* Table 3, presents the results from a consider SI's impact on a course's DWF rate. Similarly to the student level model, all relevant covariates available in the data were included to account for additional factors that may influence the outcome variable such as class size and class average high school GPA. A multilinear regression was used to model DWF rates. 
 
 * From this model, the percentage of students who are URM and SI are a statistically significant. The percentage of students who are URM is positive, implying as the percentage increases so do DWF rate. The estimate for courses with an SI component implies that if a course has an SI component DWF rates increase. The estimate for the percentage of students who are first generation is not statistically  significant. Furthermore, although not statistically significant, if a courses has an SI component, as the percentage of students who are URM increases, DWF decrease. The results are similar for the percentage of students who are first generation in courses with an SI component.
 
@@ -172,7 +209,7 @@ knitr::include_graphics(c("pictures/fig5.png", "pictures/fig6.png"))
 * The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias discussed in the limitations of the models. There are additional methods may help us better consider our questions.
 
 * Ideally, we want to identify attending SI as a treatment, and explore it's causal effect on equity gaps.
-In order to accomplish this, we will employ Coarsened Exact Matching to control for counfounding variables. 
+In order to accomplish this, we will employ Coarsened Exact Matching to control for confounding variables. 
 With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial. 
   
 **Acknowledgments** We are extremely grateful for the guidance provided by Dr. Robin Donatello and Dr. Eric Wasinger.  
