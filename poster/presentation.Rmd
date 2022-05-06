@@ -1,7 +1,7 @@
 ---
 title: "Exploring the Effect of Supplemental Instruction on Equity Gaps"
 author: "Faith Fatchen, Skip Moses, Rica Rebusit,  Joseph Shifman"
-date: "5/4/2022"
+date: "5/17/2022"
 output: 
   beamer_presentation:
     theme: "AnnArbor"
@@ -13,11 +13,12 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## R Markdown
+## Introduction to the Data
 
-This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+Student profile data (per student):
+- Term
+- Part time/full time
+- 
 
 ## Slide with Bullets
 
