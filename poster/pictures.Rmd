@@ -32,9 +32,9 @@ d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
 d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
 d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
 d$One.Year.Retention<-factor(d$One.Year.Retention)
-fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
+fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
 
-fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
+fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
 
 dod_data <- d %>% group_by(URM, SI.Attended)
 dod_data$One.Year.Retention <- factor(dod_data$One.Year.Retention, labels = c("No", "Yes"))
