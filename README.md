@@ -13,7 +13,18 @@ _Data Sets Created:_
 - **grades.csv**
   - Copy of the grades Excel file to be a more light-weight format
 - **course_level.csv**
-  - [CONTINUE]
+  - Course information (PER SECTION, see codebook for more info)
+  - Year, Term (only Fall or Spring), subject name and number
+  - Section class size, GPA average, DWF rate of section (derived from grades data)
+  - SI component flag, total SI visits in semester
+  - Other course info from original courses dataset
+  - **Notes:** Sections with less than 10 visits to SI during the semester do not have the SI component flag set, these sections will be considered non-SI component sections. This dataset contains all classes that are not specially numbered (see CSU number reference) and within the range [Spring 2016 - Fall 2019]. This range is selected because SI first started in 2016, and students had the option to drop classes during the COVID-19 pandemic without incurring penalties.
+- **student_profiles_clean.csv**
+  - Clean mutating join of student profiles and student program datasets
+  - (PER STUDENT, see codebook for more info) Gender, IPEDS Ethnicity, First-Generation Student Flag, academic level, major(s)
+  - Enrollment term, degree term, full-time/part-time, highschool/transfer GPA, one year retention flag
+  - **Notes:** Only profiles and programs with a date after 2016 are used. The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record. Aproximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].
+- **si_grades.csv**
 
 -----
 
