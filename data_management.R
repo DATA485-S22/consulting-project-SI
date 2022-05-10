@@ -110,25 +110,30 @@ write.csv(student_profiles, "data/student_profiles_clean.csv", row.names = FALSE
 # Grades Data
 ################################################################################
 
-# Contains number of visits in the term per student, and flag for at least one visit
+# Contains number of visits in the term per student per class, and flag for at least one visit
 clean_si_visit <- dplyr::select(si_visit, Random.Course.ID, Random.Student.ID, SLC.Attended.Flag,
                          Term, Visit.Count..per.day.) %>%
-  group_by(Random.Student.ID, Term) %>%
+  group_by(Random.Student.ID, Random.Course.ID) %>%
   summarise(attended.si = min(SLC.Attended.Flag),
             count.visits = sum(Visit.Count..per.day.))
 
 # Import Grades Data, clean
-grades <- filter(grades, Term.Year >= 2016, Term.Year <= 2019)
 grades$Random.Course.ID <- factor(grades$Random.Course.ID)
 grades$Term.Type <- factor(grades$Term.Type)
 
 # Create Table for Grades of SI Classes
-si_visit$Random.Course.ID <- factor(si_visit$Random.Course.ID)
+clean_si_visit$Random.Course.ID <- factor(clean_si_visit$Random.Course.ID)
+clean_si_visit$Random.Student.ID <- factor(clean_si_visit$Random.Student.ID)
 si_grades <- filter(grades, Term.Type %nin% c("Summer", "Winter"),
-                    Random.Course.ID %in% levels(si_visit$Random.Course.ID))
+                    Random.Course.ID %in% levels(clean_si_visit$Random.Course.ID))
 si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
+si_grades <- left_join(si_grades, clean_si_visit,
+                       by = c("Random.Student.ID", "Random.Course.ID"))
 
-# Contains Grades of all Students for All Courses With SI
+si_grades$attended.si[is.na(si_grades$attended.si)] <- 0
+si_grades$count.visits[is.na(si_grades$count.visits)] <- 0
+
+# Contains Grades of all Students for all Courses With SI
 write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 
 ################################################################################
@@ -136,35 +141,6 @@ write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 ################################################################################
 si_student_profiles <- filter(student_profiles,
                               Random.Student.ID %in% levels(si_grades$Random.Student.ID))
-
-#############################################################################################
-#                   Create Grades data for only SI classes
-#############################################################################################
-si_students <- si_visit %>% dplyr::select(Term.Year, 
-                                      Term.Type,
-                                      Random.Course.ID,
-                                      Random.Student.ID,
-                                      SLC.Attended.Flag,
-                                      Visit.Count..per.day.)
-
-# Aggregate number of SI visits for each student in SLC dataset
-si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
-  dplyr::summarize(SI.Visit.Num = sum(Visit.Count..per.day.))
-si_count$Random.Course.ID <- factor(si_count$Random.Course.ID)
-si_count$Random.Student.ID <- factor(si_count$Random.Student.ID)
-
-si_grades <- si_grades %>% left_join(si_count)
-
-si_grades <- dplyr::select(si_grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
-                 Random.Student.ID, SI.Visit.Num, Student.Class.Unit.Passed, Student.Class.Unit.Attempted)
-
-# Create a flag for SI attended
-si_grades$SI.Attended <- ifelse(si_grades$SI.Visit.Num > 0, 1, 0)
-si_grades$SI.Attended[is.na(si_grades$SI.Attended)] <- 0
-si_grades$SI.Visit.Num[is.na(si_grades$SI.Visit.Num)] <- 0
-
-# Grades Data for only SI classes
-write.csv(si_grades, "data/grades_SI_classes.csv", row.names = FALSE)
 
 #############################################################################################
 #                                 Data for matchit
@@ -215,11 +191,9 @@ courses <- read.csv("data/Course Detail.csv") %>%
 grades$Random.Student.ID<-factor(grades$Random.Student.ID)
 grades$Random.Course.ID <- factor(grades$Random.Course.ID)
 courses$Random.Course.ID <- factor(courses$Random.Course.ID)
-data <- grades %>% left_join(profiles) %>% left_join(courses) %>% drop_na(c(HS.GPA, 
-                                                                            Student.Orientation.Flag,
-                                                                            Major.1.STEM.Flag,
-                                                                            Full.Time.Part.Time.Code,
-                                                                            Academic.Program))
+data <- grades %>% left_join(profiles) %>% left_join(courses) %>%
+  drop_na(c(HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, 
+            Full.Time.Part.Time.Code, Academic.Program))
 
 write.csv(data, "data/CEM_full_dataset.csv", row.names = FALSE)
 
@@ -299,7 +273,9 @@ student_data <- dplyr::select(student_data, Term.Year, Random.Course.ID,
 course.level <- read.csv("data/course_level.csv")
 course.level$Random.Course.ID <- factor(course.level$Random.Course.ID)
 student_data$Random.Course.ID <- factor(student_data$Random.Course.ID)
-course.level <- filter(course.level, class.size >= 20, course_num_clean < 300) %>% # More instances of lower division SI courses, and need substantial class size (20)
+
+# More instances of lower division SI courses, and need substantial class size (20)
+course.level <- filter(course.level, class.size >= 20, course_num_clean < 300) %>%
   dplyr::select(Random.Course.ID, class.size, class.average, dwf.rate, SI.Component.Flag)
 course.level <- inner_join(course.level, student_data, by = "Random.Course.ID")
 course.level <- drop_na(course.level, Term.Year)

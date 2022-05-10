@@ -1,6 +1,6 @@
 # The impact of Supplemental Instruction on Equity Gaps at Chico State
 
-## Introduction
+## Introduction _(define URM and first gen)_
 * Supplemental Instruction (**SI**) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.
 
 * An **equity gap** refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
@@ -13,7 +13,30 @@ _Data Sets Created:_
 - **grades.csv**
   - Copy of the grades Excel file to be a more light-weight format
 - **course_level.csv**
-  - [CONTINUE]
+  - Course information (PER SECTION, see codebook for more info)
+  - Year, Term (only Fall or Spring), subject name and number
+  - Section class size, GPA average, DWF rate of section (derived from grades data)
+  - SI component flag, total SI visits in semester
+  - Other course info from original courses dataset
+  - **Notes:** Sections with less than 10 visits to SI during the semester do not have the SI component flag set, these sections will be considered non-SI component sections. This dataset contains all classes that are not specially numbered (see CSU number reference) and within the range [Spring 2016 - Fall 2019]. This range is selected because SI first started in 2016, and students had the option to drop classes during the COVID-19 pandemic without incurring penalties.
+- **student_profiles_clean.csv**
+  - Clean mutating join of student profiles and student program datasets
+  - (PER STUDENT, see codebook for more info) Gender, IPEDS Ethnicity, First-Generation Student Flag, academic level, major(s)
+  - Enrollment term, degree term, full-time/part-time, high school/transfer GPA, one year retention flag
+  - **Notes:** Only profiles and programs with a date after 2016 are used. The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record. Approximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].
+- **si_grades.csv**
+  - Contains grades of all students for all courses with SI
+  - Includes a flag for at least one SI attendance number of SI visits in the semester
+- **CEM_full_dataset.csv**
+  - Merging of profiles, grades, and courses
+  - **Notes:** Records with missing values in the following columns are dropped due to not enough information for matching. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]
+- **student_analysis_dataset.csv**
+  - Used in the 2022 NSC poster code files to create logistic models predicting one year retention
+  - **Notes:** Records with missing values in the following columns are dropped. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]
+- **course_analysis_dataset.csv**
+  - Used in the 2022 NSC poster code files to create a linear regression model predicting course section DWF rate
+  - (PER SECTION, see _codebook_[need to create codebook] for more info) Class size, high school GPA average of students, percentage of first generation students, percentage of under-represented minority students, DWF rate, SI component flag, term year
+  - **Notes:** A number of student records contain missing values for high school GPA, URM status, or first generation status. These students are not included in the calculation of GPA and are considered non-URM or not first generation, respectfully. Only course records between 2016 and 2019, inclusive, are represented. Since a minute proportion of courses with SI are upper division, the decision was made to only include courses with a number less than 300. In an attempt to remove high DWF outliers, only courses with a class size 20 or greater are considered.
 
 -----
 
