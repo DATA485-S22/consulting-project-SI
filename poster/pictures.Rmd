@@ -7,6 +7,7 @@ output: html_document:
 ---
 
 ```{r setup, include=FALSE}
+set.seed(555)
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 library(tidyverse)

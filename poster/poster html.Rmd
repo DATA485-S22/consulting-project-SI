@@ -153,7 +153,7 @@ Although we included all relevant covariates available in the data, there are po
  <caption style="caption-side:bottom">Note: $*p<0.1; **p<0.05; ***p<0.01$</caption>
  <thead>
   <tr>
-   <th style="text-align:left;"> Term </th>
+   <th style="text-align:left;"> Variable </th>
    <th style="text-align:right;"> Estimate </th>
    <th style="text-align:right;"> Std Error </th>
    <th style="text-align:right;"> Statistic </th>
@@ -162,33 +162,33 @@ Although we included all relevant covariates available in the data, there are po
 <tbody>
   <tr>
    <td style="text-align:left;"> % URM </td>
-   <td style="text-align:right;"> 0.04*** </td>
-   <td style="text-align:right;"> 0.006 </td>
-   <td style="text-align:right;"> 6.183 </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.01 </td>
+   <td style="text-align:right;"> -0.323 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> SI Component </td>
-   <td style="text-align:right;"> 0.14*** </td>
-   <td style="text-align:right;"> 0.02 </td>
-   <td style="text-align:right;"> 6.368 </td>
+   <td style="text-align:right;"> 0.165*** </td>
+   <td style="text-align:right;"> 0.03 </td>
+   <td style="text-align:right;"> 5.923 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> % First Generation  </td>
-   <td style="text-align:right;"> -0.06*** </td>
-   <td style="text-align:right;"> 0.008 </td>
-   <td style="text-align:right;"> -7.856 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> 0.01 </td>
+   <td style="text-align:right;"> -1.096 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> % URM:SI Component </td>
-   <td style="text-align:right;"> 0.06** </td>
-   <td style="text-align:right;"> 0.007 </td>
-   <td style="text-align:right;"> 0.829 </td>
+   <td style="text-align:right;"> 0.02 </td>
+   <td style="text-align:right;"> 0.087 </td>
+   <td style="text-align:right;"> 0.219 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> SI Component:% First Generation </td>
-   <td style="text-align:right;"> -0.21*** </td>
-   <td style="text-align:right;"> 0.06 </td>
-   <td style="text-align:right;"> -3.493 </td>
+   <td style="text-align:right;"> -0.26*** </td>
+   <td style="text-align:right;"> 0.07 </td>
+   <td style="text-align:right;"> -3.641 </td>
   </tr>
 </tbody>
 </table>
