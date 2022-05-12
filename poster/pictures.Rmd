@@ -1,0 +1,105 @@
+---
+title: "Untitled"
+author: "Skip Moses"
+date: "4/27/2022"
+output: html_document:
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+set.seed(555)
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(tidyverse)
+library(readxl)
+library(magrittr) #Allows %<>% notation to update lhs object with resulting value
+library(naniar)
+library(Hmisc) # %nin%
+library(stargazer)
+library(tinytex)
+library(ggplot2)
+library(dotwhisker)
+library(broom)
+library(multcomp)
+library(ggthemes)
+library(RColorBrewer)
+library(kableExtra)
+
+
+d<-read_csv("data/student_analysis_dataset.csv")
+d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
+d$Term.Year<-factor(d$Term.Year)
+d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
+d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
+d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
+d$One.Year.Retention<-factor(d$One.Year.Retention)
+fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
+
+fit3<-glm(One.Year.Retention~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Course.Fee.Exist.Flag + GE.Class.Flag + SI.Attended:URM +SI.Attended:First.Generation.Flag, family = binomial(link = "logit"), data = d)
+
+dod_data <- d %>% group_by(URM, SI.Attended)
+dod_data$One.Year.Retention <- factor(dod_data$One.Year.Retention, labels = c("No", "Yes"))
+dod_data2<-d %>% group_by(First.Generation.Flag, SI.Attended)
+dod_data2$One.Year.Retention <- factor(dod_data2$One.Year.Retention, labels = c("No", "Yes"))
+
+course.level <- read_csv("data/course_analysis_dataset.csv")
+```
+
+```{r echo=FALSE, fig.dim=c(14,7), message=FALSE, warning=FALSE, dev = png}
+facet_names<-c(`0` = "Did Not Attend SI", `1` = "Attended SI")
+ggplot(dod_data) +
+  geom_bar(mapping = aes(x=One.Year.Retention,y = (..count..)/sum(..count..), fill=URM), 
+           position = "dodge") + scale_y_continuous(labels=scales::percent) +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+   ylab("") + theme_few() +
+  theme(text = element_text(size = 16, family = "Times New Roman"))+ scale_fill_brewer(name="Under-represented\nMinority",palette = "Paired")
+ggsave("pictures/fig1.png")
+ggplot(dod_data2) +
+  geom_bar(aes(x=One.Year.Retention,y = (..count..)/sum(..count..), fill=First.Generation.Flag),
+           position = "dodge") +  scale_y_continuous(labels=scales::percent) +
+  facet_wrap(~SI.Attended, labeller = as_labeller(facet_names))  +xlab("One Year Retention")+  ylab("") + theme_few() +
+  theme(text = element_text(size = 16,family = "Times New Roman")) + scale_fill_brewer(name="First\nGeneration",palette = "Reds")
+ggsave("pictures/fig2.png")
+```
+
+```{r echo=FALSE, fig.dim=c(14,5)}
+m1<-tidy(fit1) %>%
+  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY")
+dwplot(m1,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey"))%>%
+   relabel_predictors(
+        c(
+            `SI.Attended` = "Attended SI",
+            `URMURM` = "URM",
+            `First.Generation.FlagY` = "First\nGeneration"
+        )
+    ) +
+    geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("SI and Equity") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20, family = "Times New Roman"), title = element_text(size = 20,family = "Times New Roman"), text = element_text(size = 20, family = "Times New Roman"))
+ggsave("pictures/fig5.png")
+
+m4<-tidy(fit3)%>%
+  filter(term == "SI.Attended" | term == "URMURM" | term == "First.Generation.FlagY" | term == "SI.Attended:URMURM" | term == "SI.Attended:First.Generation.FlagY")
+dwplot(m4,dot_args = list(size = 3, color = "black"), whisker_args = list(size = 2, color = "grey"))%>%
+   relabel_predictors(
+        c(
+            `SI.Attended` = "Attended SI",
+            `URMURM` = "URM",
+            `First.Generation.FlagY` = "First\nGeneration",
+            `SI.Attended:URMURM`  = "Attended SI\n&URM",
+            `SI.Attended:First.Generation.FlagY`  = "Attended SI\n&First Generation"
+        )
+    ) +
+    geom_vline(xintercept = 0, colour = "grey60", linetype = 2) + ggtitle("Interactions SI and Equity")+ xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20,family = "Times New Roman"), title = element_text(size = 20),text = element_text(size = 20, family = "Times New Roman"))
+ggsave("pictures/fig6.png")
+```
+
+```{r include=FALSE}
+course.level$Term.Year<-factor(course.level$Term.Year)
+lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag + class.size + Term.Year + HS.GPA.Ave, data=course.level, na.action = na.omit)
+summary(lm1)
+model1 <- tidy(lm1)
+dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+d1 <- data.frame(model1)
+kable(d1)
+```

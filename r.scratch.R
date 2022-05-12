@@ -38,365 +38,64 @@ Wilson - traditionally URM - including Hispanics, African Americans, and Native 
 Yue - 1)underrepresented minority status 2) first-generation status, 3)Federal Pell Grant eligible status, and 4) English/ mathematics remedial status
 
 
+
+library(readr)
+library(kableExtra)
+library(broom)
+library(dotwhisker)
 library(dplyr)
-# Data Management File
-library(tidyverse)
-library(Hmisc) # Enables %nin% notation
-library(readxl) # read Excel file
-
-###########################################################################################
-# Create grades.csv 
-###########################################################################################
-grades <- read_xlsx("~/Downloads/Student Grade.xlsx")
-
-write.csv(grades, '~/Downloads/grades.csv')
-
-
-###########################################################################################
-# Course Level Data
-###########################################################################################
-grades.clean <- read.csv("~/Downloads/grades.csv")
-
-
-course.level <- grades.clean %>% group_by(Random.Course.ID, Term.Year, Term.Type) %>%
-  summarise(class.size = n(),
-            class.average = sum(Student.Class.Grade.Point.per.Unit)/class.size,
-            dwf.rate = sum(Grade.DFW.Count)/class.size)
-si_visit <- read.csv('~/Downloads/SLC Appointment.csv')
-
-temp3 <- si_visit %>% group_by(Random.Course.ID) %>%
-  summarise(SI.Visit.Num = sum(SLC.Attended.Flag))
-
-course.level <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
-
-# Add covariates from course detail file
-course.detail <- read.csv("~/Downloads/Course Detail.csv") 
-course.level <- left_join(course.level, course.detail, by = 'Random.Course.ID')
-
-# Create flag for SI component
-course.level$SI.Visit.Num[is.na(course.level$SI.Visit.Num)] <- 0
-course.level$SI.Component.Flag <- course.level$SI.Visit.Num
-course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
-course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
-
-# Remove repeated cols
-course.level <- select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
-
-write.csv(course.level, '~/Downloads/course_level.csv')
-
-################################################################################
-# Cleaned Student Profiles
-################################################################################
-
-# Student Program Dataset
-program <- read.csv("~/Downloads/Student Program.csv")
-program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
-  mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
-  filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
-         IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
-         Academic.Program, Major.1.STEM.Flag, Major.1.College,
-         Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
-         Academic.Standing.Status)
-program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
-# Remove duplicate rows
-program.clean <- program.clean[order(program.clean$Random.Student.ID),]
-program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
-
-# Student Profile Dataset
-profile <- read.csv("~/Downloads/Student Profile Metric.csv")
-profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
-  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
-  select(Cohort.Term, Random.Student.ID, Degree.Term,
-         Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
-         HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
-         Student.Orientation.Flag)
-
-# Student Programs and Profiles Joined together
-# about 35% of students are not present in the profile dataset
-# therefore they have null values
-student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
-student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
-write.csv(student_profiles, "~/Downloads/student_profiles_clean.csv")
-
-################################################################################
-# Grades Data
-################################################################################
-
-# Contains number of visits in the term, and flag for at least one visit
-clean_si_visit <- select(si_appt, Random.Student.ID, SLC.Attended.Flag,
-                         Term, Visit.Count..per.day.) %>%
-  group_by(Random.Student.ID, Term) %>%
-  summarise(attended.si = min(SLC.Attended.Flag),
-            count.visits = sum(Visit.Count..per.day.))
-
-# Import Grades Data, clean
-grades <- filter(grades, `Term.Year` >= 2016)
-grades$`Random.Course.ID` <- factor(grades$`Random.Course.ID`)
-grades$`Term.Type` <- factor(grades$`Term.Type`)
-
-# Create Table for Grades of SI Classes
-si_grades <- filter(grades, `Term.Type` %nin% c("Summer", "Winter"),
-                    `Random.Course.ID` %in% levels(si_appt$Random.Course.ID))
-si_grades$Random.Student.ID <- factor(si_grades$Random.Student.ID)
-
-# Contains Grades of all Students for All Courses With SI
-write.csv(si_grades, "~/Downloads/si_grades.csv", row.names = FALSE)
-
-################################################################################
-# Filtered Student Profiles (Have taken at least one SI Course)
-################################################################################
-si_student_profiles <- filter(student_profiles,
-                              Random.Student.ID %in% levels(si_grades$Random.Student.ID))
-
-
-courses<-read_csv("~/Downloads/Course Detail.csv")
-names(courses) <- make.names(names(courses), unique=TRUE)
-courses <- courses %>%
-  mutate(course_num_clean = str_extract(Course.Catalog.Number, "\\d+"))
-courses$course_num_clean <- factor(courses$course_num_clean)
-levels(courses$course_num_clean)
-
-courses <- courses %>%
-  filter(course_num_clean %nin% c(189, 289, 389, 489, 589, 689, #internship
-                                  198, 298, 398, 498, 598, 698, #special topics
-                                  199, 299, 399, 499, 599, #special problems
-                                  696, 697, 699)) #independent study
-courses$course_num_clean <- droplevels(courses$course_num_clean)
-
-courses <- courses %>%
-  filter(Term.Year >= 2016) # Start of SI
-
-
-identical(courses[["Writing.Course.Flag.Description"]], courses[["Writing.or.Not.Writing.Class"]]) # TRUE
-identical(courses[["GE.or.Program.Flag.Description"]], courses[["GE.or.Program.Major"]]) # TRUE
-
-si_appt  <- read.csv("~/Downloads/SLC Appointment.csv") %>% 
-  select(-c(College.Year, Academic.Year, Term, Term.Type))
-si_appt<- filter(si_appt, Term.Year>=2016)
-
-courses$Random.Course.ID <- factor(courses$Random.Course.ID)
-si_appt$Random.Course.ID <- factor(si_appt$Random.Course.ID)
-si_appt$Random.Student.ID <- factor(si_appt$Random.Student.ID)
-
-# Stores classes with an SI component
-si_courses <- filter(courses, Random.Course.ID %in% levels(si_appt$Random.Course.ID))
-#Joining SI Classes with SI visit data 
-si_attend<-left_join(si_appt, si_courses, by = "Random.Course.ID")
-
-profile <- read.csv("~/Downloads/Student Profile Metric.csv") 
-
-profile<- profile %>%  filter(Cohort.Term.Year >= 2016, 	
-                              Cohort.Student.Enrollment.Type == "First-Time Freshman") %>%
-  select(-c(Transfer.GPA,Transfer.GPA.Group, Transfer.GPA.Group.Code))
-profile$Cohort.Academic.Year = factor(profile$Cohort.Academic.Year)
-profile$Years.enrolled = rowSums(profile[,c(24,25,26,27,28)]) 
-profile$Years.enrolled = factor(profile$Years.enrolled )
-profile$Random.Student.ID<-factor(profile$Random.Student.ID)
-
-program<-read.csv("~/Downloads/Student Program.csv") 
-program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
-  mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
-  filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
-         IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
-         Academic.Program, Major.1.STEM.Flag, Major.1.College,
-         Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
-         Academic.Standing.Status)
-program.clean$Random.Student.ID<-factor(program.clean$Random.Student.ID)
-
-grades <- read_xlsx("~/Downloads/Student Grade.xlsx")
-names(grades) <- make.names(names(grades), unique=TRUE)
-write.csv(grades, '~/Downloads/grades.csv', row.names = FALSE)
-
-grades <- read.csv("~/Downloads/grades.csv")
-
-# Student Profile Dataset
-profile <- read.csv("~/Downloads/Student Profile Metric.csv")
-profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
-  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
-  select(Cohort.Term, Random.Student.ID, Degree.Term,
-         Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
-         HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
-         Student.Orientation.Flag)
-profile$Random.Student.ID<-factor(profile$Random.Student.ID)
-student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
-student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
-
-grades$Random.Student.ID<- factor(grades$Random.Student.ID)
-student_data<-left_join(student_profiles, grades, by = "Random.Student.ID" )
-
-student_data$URM<-factor(student_data$IPEDS.Ethnicity.URM.Non.URM)
-student_data$First.Gen<-factor(student_data$First.Generation.Flag) 
-student_data$First.Gen<-ifelse(student_data$First.Generation.Flag == "Y",1,0)
-
-si_visit <- read.csv('~/Downloads/SLC Appointment.csv')
-si_visit$Random.Student.ID<-factor(si_visit$Random.Student.ID)
-student_data<-left_join(student_data,si_visit, by = "Random.Student.ID" )
-###Work in progress
-###########################################################################################
-# Course Level Data
-###########################################################################################
-course.level <- student_data%>% group_by(Random.Course.ID.x, Term.Year.x, Term.Type.x, URM) %>%
-  summarise(class.size = n(),
-            class.average = sum(Student.Class.Grade.Point.per.Unit)/class.size,
-            dwf.rate = sum(Grade.DFW.Count)/class.size,
-            HS.GPA.Ave = sum(HS.GPA)/class.size,
-            First.Gen.Perc = sum(First.Gen)/class.size,
-            SLC.visits = sum(SLC.Attended.Flag)/class.size
-  )
-
+library(ggthemes)
+course.level <- read_csv("~/Downloads/course_analysis_dataset.csv")
 str(course.level)
 
-si_visit$Random.Course.ID <- factor(si_visit$Random.Course.ID)
-si_visit <- filter(si_visit, Term.Year>=2016)
-
-si_courses <- filter(courses, Random.Course.ID %in% levels(si_visit$Random.Course.ID))
-si_courses$Random.Course.ID <- factor(si_courses$Random.Course.ID)
-course.level <- rename(course.level, Random.Course.ID=Random.Course.ID.x)
-course.level$Random.Course.ID <- factor(course.level$Random.Course.ID)
-si_visit$Random.Course.ID <- factor(si_visit$Random.Course.ID )
-
-si_attend<-left_join(si_visit, si_courses, by = "Random.Course.ID")
+course.level$Term.Year<-factor(course.level$Term.Year)
+course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
 
 
-temp3 <- si_visit %>% group_by(Random.Course.ID) %>%
-  summarise(SI.Visit.Num = sum(SLC.Attended.Flag))
+#lm1 <- lm(dwf.rate ~ URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag + class.size + Term.Year + HS.GPA.Ave, data=course.level, na.action = na.omit)
+summary(lm1)
+model1 <- tidy(lm1)
+dwplot(model1) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+d1 <- data.frame(model1)
+kable(d1)
 
-temp3$Random.Course.ID <- factor(temp3$Random.Course.ID)
-str(temp3)
-course.level <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
-tes <- course.level %>% left_join(temp3, by = 'Random.Course.ID')
-tes
-test <- si_visit %>% group_by(Random.Course.ID) %>%
-  summarise(SI.Visit.Num = sum(SLC.Attended.Flag))
-# Add covariates from course detail file
-course.detail <- read.csv("~/Downloads/Course Detail.csv") 
-course.detail$Random.Course.ID <- factor(course.detail$Random.Course.ID )
-course.level <- left_join(course.level, course.detail, by = 'Random.Course.ID')
 
-course.detail$Random.Course.ID <- factor(course.detail$Random.Course.ID)
-# Create flag for SI component
-course.level$SI.Visit.Num[is.na(course.level$SI.Visit.Num)] <- 0
-course.level$SI.Component.Flag <- course.level$SI.Visit.Num
-course.level$SI.Component.Flag[course.level$SI.Component.Flag > 0] <- 1
-course.level$SI.Component.Flag <- factor(course.level$SI.Component.Flag)
+# First gen is only statistically significant
+lm2 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + Term.Year, data = course.level)
+summary(lm2)
+model2 <- tidy(lm2)
+dwplot(model2) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+d2 <- data.frame(model2)
+kable(d2)
 
-# Remove repeated cols
-course.level <- select(course.level, -Term.Year.x, -Term.Type.x, - Term.Year.y, -Term.Type.y)
+#First gen is still statistically significant 
+lm3 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + Term.Year + HS.GPA.Ave + URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag, data=course.level, na.action = na.omit)
+summary(lm3)
+model3 <- tidy(lm3)
+dwplot(model3) + geom_vline(xintercept = 0, colour = "black",linetype = 2) + ggtitle("Model Results DWF Rate and Equity Gaps") + xlab("Confidence Interval") + theme_few() +
+  theme(legend.position = "none", axis.title.x = element_text(size = 20), title = element_text(size = 32))
+d3 <- data.frame(model3)
+kable(d3)
 
-str(course.level)
+#lm4 <- lm(dwf.rate ~ URM + SI.Component.Flag + First.Gen.Perc + URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag, data=course.level, na.action = na.omit)
+summary (lm4)
 
-course.level <- select(course.level, c("Random.Course.ID", "Term.Year.x.x", "Term.Type.x.x", "URM", "class.size", "class.average", "dwf.rate",
-                            "HS.GPA.Ave", "First.Gen.Perc", "SLC.visits", "SI.Visit.Num", "SI.Component.Flag"))
 
-dwf.equity <- group_by(course.level, URM)
-dwf.equity <- summarise(dwf.equity, dwf.sum = sum(dwf.rate))
-dwf.equity
 
-```{r eval=FALSE, include=FALSE}
-#DATA WORK
-# Student Program Dataset
-program <- read.csv("~/Downloads/Student Program.csv")
-program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
-  mutate(Term.Type = factor(Term.Type), .keep = "unused") %>%
-  filter(Term.Type %nin% c("Summer", "Winter")) %>%
-  select(Term.Year, Random.Student.ID, Gender.Code, IPEDS.Ethnicity,
-         IPEDS.Ethnicity.URM.Non.URM, First.Generation.Flag, Academic.Level,
-         Academic.Program, Major.1.STEM.Flag, Major.1.College,
-         Major.2.STEM.Flag, Major.2.College, Entry.Enrollment.Type,
-         Academic.Standing.Status)
+library(ggplot2)
+ggplot(course.level, aes(dwf.rate, URM, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot() 
+ggplot(course.level, aes(dwf.rate, First.Gen.Perc, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot()
 
-program.clean$Random.Student.ID <- factor(program.clean$Random.Student.ID)
-# Remove duplicate rows
-program.clean <- program.clean[order(program.clean$Random.Student.ID),]
-program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
+ggplot(course.level, aes(Term.Year, dwf.rate, color = URM)) + 
+  geom_line() +
+  scale_y_continuous(limits = c(0, max(course$dwf.rate)))
 
-# Student Profile Dataset
-profile <- read.csv("~/Downloads/Student Profile Metric.csv")
-profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
-  mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
-  filter(Cohort.Student.Enrollment.Type == "First-Time Freshman")%>%
-  select(Cohort.Term, Cohort.Term.Year, Random.Student.ID, Degree.Term,
-         Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
-         HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,One.Year.Retention,
-         Student.Orientation.Flag)
-program.clean<-filter(program.clean, Random.Student.ID %in% levels(profile$Random.Student.ID))
+ggplot(course.level, aes(Term.Year, dwf.rate, color = First.Gen.Perc)) + 
+  geom_line() +
+  scale_y_continuous(limits = c(0, max(course$dwf.rate)))
 
-student_profiles <- left_join(program.clean, profile, by = "Random.Student.ID")
-student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
-
-profile<- student_profiles %>% 
-  select(c("Random.Student.ID",
-           "IPEDS.Ethnicity",
-           "IPEDS.Ethnicity.URM.Non.URM",
-           "Gender.Code",
-           "First.Generation.Flag",
-           "Academic.Level",
-           "Academic.Program",
-           "Major.1.STEM.Flag",
-           "Major.1.College",
-           "Entry.Enrollment.Type",
-           "Academic.Standing.Status",
-           "Full.Time.Part.Time.Code",
-           "HS.GPA",
-           "Enrollment.Term",
-           "Cohort.Term.Year",
-           "One.Year.Retention",
-           "Student.Orientation.Flag"))
-
-grades <- read.csv("data/grades_SI_classes.csv")  %>%
-  select(c("Random.Course.ID",
-           "Term",
-           "Term.Year",
-           "Term.Type",
-           "Student.Class.Unit.Attempted",
-           "Student.Class.Unit.Passed",
-           "Student.Class.Grade.Point.per.Unit",
-           "Student.Class.Official.Grade",
-           "Random.Student.ID",
-           "Grade.DFW.Count",
-           "SI.Visit.Num",
-           "SI.Attended"))
-
-courses <- read.csv("~/Downloads/Course Detail.csv") %>%
-  select(c("Random.Course.ID",
-           "Term",
-           "Term.Year",
-           "Term.Type",
-           "Class.Subject.Number.Section",
-           "Course.Subject.and.Number",
-           "Academic.Subject",
-           "Academic.Subject.Code",
-           "Course.Catalog.Number",
-           "Class.Learning.Mode",
-           "Instruction.Mode",
-           "Inst.MD.Persn.Chcoflx.Onl.Othr",
-           "Inst.MD.Persn.Onl.Othr",
-           "Course.Type",
-           "Class.Status",
-           "Course.Fee.Exist.Flag",
-           "Combined.Section.Group.ID",
-           "Writing.Course.Flag",
-           "GE.Class.Flag",
-           "GE.Foundation.Course",
-           "GE.Foundation.Course.Code",
-           "GE.Advanced.Course.Substitution.Flag",
-           "Honors.Class.Flag"))
-
-grades$Random.Student.ID<-factor(grades$Random.Student.ID)
-# Merge the data sets
-d <- grades %>% left_join(profile) %>% left_join(courses) %>% drop_na(c(HS.GPA, 
-                                                                        Student.Orientation.Flag,
-                                                                        Major.1.STEM.Flag,
-                                                                        Full.Time.Part.Time.Code,
-                                                                        Academic.Program))
-
-d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
-d$Term.Year<-factor(d$Term.Year)
-d$Cohort.Term.Year<-factor(d$Cohort.Term.Year)
-d<-rename(d, URM = IPEDS.Ethnicity.URM.Non.URM)
-d$URM.First.Gen<-factor(ifelse(d$URM=="URM" & d$First.Generation.Flag == "Y", 1, 0 )) #new var, student who is urm and first gen
-d$One.Year.Retention<-factor(d$One.Year.Retention)
-dod_data <- d %>% group_by(URM, SI.Attended)
-str(d)
+# These graphs show dwf of the percentages of equity gaps in a course in each year
+ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate")
+ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")

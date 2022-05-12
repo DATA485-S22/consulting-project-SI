@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<!--
+Font-awesome icons ie github or twitter
+-->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/brands.css" integrity="sha384-n9+6/aSqa9lBidZMRCQHTHKJscPq6NW4pCQBiMmHdUCvPN8ZOg2zJJTkC7WIezWv" crossorigin="anonymous">
+
+<!--
+Google fonts api stuff
+-->
+
+
+
+<title>Exploring the Effect of Supplemental Instruction on Equity Gaps</title>
+
+
+
+
+
+
+<style>
+@page {
+size: 60in 36in;
+margin: 0;
+padding: 0;
+}
+body {
+margin: 0;
+font-size: 45px;
+width: 60in;
+height: 36in;
+padding: 0;
+text-align: justify;
+font-family: Palatino;
+}
+.poster_wrap {
+width: 60in;
+height: 36in;
+padding: 0cm;
+}
+.title_container {
+width: 60in;
+height: calc(36in * 0.15);
+overflow: hidden;
+background-color: #9D2235;
+border: 0 solid #FFFFFF;
+}
+.logo_left {
+float: left;
+width: 10%;
+height: 100%;
+background-color: #9D2235;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.logo_right {
+float: right;
+width: 10%;
+height: 100%;
+background-color: #9D2235;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.poster_title {
+text-align: center;
+position: relative;
+float: left;
+width: 80%;
+height: 100%;
+color: #FFFFFF;
+top: 50%;
+transform: translateY(-50%);
+-webkit-transform: translateY(-50%);
+}
+#title {
+font-family: Palatino;
+}
+/* unvisited link */
+a:link {
+color: #cc0000;
+}
+.mybreak {
+  break-before: column;
+}
+/* visited link */
+a:visited {
+color: #cc0000;
+}
+
+/* mouse over link */
+a:hover {
+color: #cc0000;
+}
+
+/* selected link */
+a:active {
+color: #cc0000;
+}
+.poster_body {
+-webkit-column-count: 4; /* Chrome, Safari, Opera */
+-moz-column-count: 4; /* Firefox */
+column-count: 4;
+-webkit-column-fill: auto;
+-moz-column-fill: auto;
+column-fill: auto;
+-webkit-column-rule-width: 1mm;
+-moz-column-rule-width: 1mm;
+column-rule-width: 1mm;
+-webkit-column-rule-style: dashed;
+-moz-column-rule-style: dashed;
+column-rule-style: dashed;
+-webkit-column-rule-color: #9D2235;
+-moz-column-rule-color: #9D2235;
+column-rule-color: #9D2235;
+column-gap: 1em;
+padding-left: 0.5em;
+padding-right: 0.5em;
+height: 100%;
+color: #000000
+background-color: #ffffff;
+}
+.poster_title h1 {
+font-size: 75pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_body_wrap{
+width: calc(60in + 0 + 0);
+height: calc(36in * 0.83);
+padding-top: calc(36in * 0.005);
+padding-bottom: calc(36in * 0.01);
+background-color: #ffffff;
+}
+.poster_title h3 {
+color: #FFFFFF;
+font-size: 50pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+.poster_title h3 > sup {
+  font-size: 35pt;
+  margin-left: 0.02em;
+}
+.poster_title h5 {
+color: #FFFFFF;
+font-size: 35pt;
+margin: 0;
+border: 0;
+font-weight: normal;
+}
+img {
+margin-top: 2cm;
+margin-bottom: 0;
+}
+.section {
+  padding: 0.2em;
+}
+.poster_body h1 {
+text-align: center;
+color: #FFFFFF;
+font-size: 65pt;
+border: 2mm solid #9D2235;
+background-color: #9D2235;
+border-radius: 4mm 0mm;
+margin-top: 2mm;
+margin-bottom: 2mm;
+font-weight: normal;
+}
+.poster_body h2 {
+color: #000000;
+font-size: 40pt;
+padding-left: 4mm;
+font-weight: normal;
+}
+.span {
+width: 200%;
+}
+/* center align leaflet map,
+from https://stackoverflow.com/questions/52112119/center-leaflet-in-a-rmarkdown-document */
+.html-widget {
+margin: auto;
+position: sticky;
+margin-top: 2cm;
+margin-bottom: 2cm;
+}
+.leaflet.html-widget.html-widget-static-bound.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+position: sticky;
+width: 100%;
+}
+pre.sourceCode.r {
+background-color: #dddddd40;
+border-radius: 4mm;
+padding: 4mm;
+width: 75%;
+/* align-items: center; */
+margin: auto;
+padding-left: 2cm;
+}
+code.sourceCode.r{
+background-color: transparent;
+font-size: 20pt;
+border-radius: 2mm;
+}
+.caption {
+font-size: 25pt;
+}
+.table caption {
+font-size: 25pt;
+padding-bottom: 3mm;
+
+}
+code {
+font-size: 1em;
+font-family: monospace;
+background-color: #FFFFFF24;
+color: #9D2235;
+padding: 1.2mm;
+border-radius: 2mm;
+}
+.poster_title code {
+font-size: 1em;
+}
+table {
+font-size: 40px;
+margin: auto;
+border-top: 3px solid #666;
+border-bottom: 3px solid #666;
+}
+table thead th {
+border-bottom: 3px solid #ddd;
+}
+td {
+padding: 8px;
+}
+th {
+padding: 15px;
+}
+caption {
+margin-bottom: 10px;
+}
+.poster_body p {
+margin-right: 4mm;
+margin-left: 4mm;
+margin-top: 6mm;
+margin-bottom: 10mm;
+}
+.poster_body ol {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+#ul {
+margin-right: 4mm;
+margin-left: 4mm;
+}
+.references p {
+font-size: 20pt;
+}
+.orcid img {
+  width: 1em;
+}
+</style>
+</head>
+<body>
+
+
+<div class="poster_wrap">
+<div class="title_container">
+<!-- Left Logo  -->
+<div class="logo_left">
+<img src= 'pictures/NSC-logo.png' style="width: 80%">
+</div>
+<!-- Poster Title -->
+<div class= "poster_title">
+<h1 id="title">Exploring the Effect of Supplemental Instruction on Equity Gaps</h1>
+<h3 id="author">Faith Fatchen<sup>3</sup>, Skip Moses<sup>1</sup>, Rica Rebusit<sup>1</sup>, Joseph Shifman<sup>2</sup></h3><br>
+<h5 id="affiliation"><sup>1</sup> Department of Mathematics and Statistics, California State University, Chico<br> <sup>2</sup> Department of Computer Science, California State University, Chico<br> <sup>3</sup> Department of Economics, California State University, Chico</h5>
+</div>
+<!-- Right Logo  -->
+<div class="logo_right">
+<img src=pictures/DSI-logo.png style="width: 80%">
+</div>
+</div>
+
+<div class='poster_body_wrap'>
+<div class='poster_body'>
+<style>
+.poster_title {
+  width: 50%;
+  text-align: center;
+  float: left;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  margin-top: 0.1in;
+  margin-bottom: 0.1in;
+}
+
+.logo_left {
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo_right {
+  width: 9%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="what-is-supplemental-instruction" class="section level2">
+<h2><strong>What is Supplemental Instruction? </strong></h2>
+<p>Supplemental Instruction (<strong>SI</strong>) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.</p>
+</div>
+<div id="what-is-an-equity-gap" class="section level2">
+<h2><strong>What is an Equity Gap?</strong></h2>
+<p>An equity gap refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.</p>
+</div>
+</div>
+<div id="methods" class="section level1">
+<h1>Methods</h1>
+<table>
+<caption>
+Table 1: Annual Fall Population and Sample Comparison
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:right;">
+Chancelor.Data
+</th>
+<th style="text-align:right;">
+Sample.Data
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mean Number of Students
+</td>
+<td style="text-align:right;">
+16984
+</td>
+<td style="text-align:right;">
+16075
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mean Percentage of Females
+</td>
+<td style="text-align:right;">
+54.27
+</td>
+<td style="text-align:right;">
+53.34
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mean Percentage of Males
+</td>
+<td style="text-align:right;">
+45.72
+</td>
+<td style="text-align:right;">
+46.61
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mean Percentage of First Gen. 
+</td>
+<td style="text-align:right;">
+50.94
+</td>
+<td style="text-align:right;">
+38.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mean Percentage of URM
+</td>
+<td style="text-align:right;">
+36.66
+</td>
+<td style="text-align:right;">
+37.55
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Data</strong>: The data was obtained from CSU Chico Institutional Research. SI was first implemented at Chico State in 2016, so we used years 2016-2021. The data included course information, student demographics, and student course grades. We considered measures of success at both the <strong>student and course levels</strong>. <em>Table 1</em> presents the demographic composition of the data we utilized along with annual campus wide demographic statistics. Our data is fairly representative of the student student body.</p>
+<p><strong>Defining Equity Gap</strong>: CSU Chico considers three groups when addressing equity gaps. These groups consist of first generation college students, students who are a member of an <strong>under-represented minority (URM)</strong>, and those who are low income/ Pell grant eligible. We did not have access to data regarding Pell grant eligibility, so we explored equity gaps utilizing the other two groups (URM and first generation college student).</p>
+<p><strong>Student Level</strong> : These variables are individual characteristics (whether the student belongs to the group or not). Student success is measured by <strong>one year retention. Whether the student is still enrolled at the university one year later.</strong> The sample was limited to first time freshman, so one year retention will always be applicable.</p>
+<p><strong>Course Level</strong>: These variables are accounted by calculating the proportion of URM and first generation students in the course. Success at the course level is measured using <strong>DWF rates. The proportion of students who received D’s, withdrew, or failed the course.</strong></p>
+<p><img src="pictures/fig1.png" width="90%" style="display: block; margin: auto;" /><img src="pictures/fig2.png" width="90%" style="display: block; margin: auto;" /></p>
+<p><em>Figures 1 &amp; 2</em> present one year retention and a proportion of the student body for those who did and did not attend SI by the selected measures of equity. Fewer students attended SI overall, but there were fewer one year drop-outs from students who attended SI. It also appears the one year retention gap between the groups who attended SI is smaller.</p>
+</div>
+<div id="does-si-have-an-impact-on-student-one-year-retention" class="section level1">
+<h1>Does SI Have an Impact on Student One Year Retention?</h1>
+<p><img src="pictures/fig5.png" width="1010" style="display: block; margin: auto;" /><img src="pictures/fig6.png" width="1010" style="display: block; margin: auto;" /></p>
+<p><em>Figures 3 &amp; 4</em> present the results from a model predicting one year retention. The results we present only show primary variables of interest, but many covariates were included to account for additional factors that may influence the outcome variable, such as academic level and year. A logistic model was used to model one year retention. This model was chosen since the one year retention flag is binary. The dashed line marks zero. The horizontal gray lines show the confidence intervals for the main estimates we are interested in.</p>
+<p><strong>SI and Equity Results</strong>: The coefficients of the variables for whether a student attend SI or a student is first generation are not statistically significant. The coefficient of the variables for whether a student is a member of an under-represented minority is statistically significant (<em>p&lt;0.05</em>), but this variable was not expected to be positive, given the historical context. This may be due to omitted variable bias.</p>
+<p><strong>Interactions SI and Equity Results</strong>: In order to model the potential influence SI has on different groups, we included interaction terms. The results from the previous model hold. In addition, the coefficient of the variable for if a student attended SI and is a member of a URM is not statically significant. However, the coefficient of the variable for if a student attends SI and is a first generation student is statistically significant (<em>p&lt;0.05</em>) and positive.</p>
+<div id="limitations-of-student-models" class="section level2">
+<h2><strong>Limitations of Student Models</strong></h2>
+<p>Although we included all relevant covariates available in the data, there are potential factors beyond the scope of this dataset. Notably, in the current models there are no variables to account for a student being Pell grant eligible. This is one of the measures of equity that the CSU considers pertinent, so it likely has influence on one year retention. Additionally, the models currently do not include any measures of student engagement, which may also influence one year retention.</p>
+<p><br/>
+<br/>
+<br/>
+<br/>
+<br/></p>
+</div>
+</div>
+<div id="does-si-have-an-impact-on-course-dwf-rates" class="section level1">
+<h1>Does SI Have an Impact on Course DWF Rates?</h1>
+<table>
+<caption>
+Table 2: Model Results (DWF Rates)
+</caption>
+<caption style="caption-side:bottom">
+Note: <span class="math inline">\(*p&lt;0.1; **p&lt;0.05; ***p&lt;0.01\)</span>
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Term
+</th>
+<th style="text-align:right;">
+Estimate
+</th>
+<th style="text-align:right;">
+Std Error
+</th>
+<th style="text-align:right;">
+Statistic
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+% URM
+</td>
+<td style="text-align:right;">
+0.04***
+</td>
+<td style="text-align:right;">
+0.006
+</td>
+<td style="text-align:right;">
+6.183
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SI Component
+</td>
+<td style="text-align:right;">
+0.14***
+</td>
+<td style="text-align:right;">
+0.02
+</td>
+<td style="text-align:right;">
+6.368
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+% First Generation
+</td>
+<td style="text-align:right;">
+-0.06***
+</td>
+<td style="text-align:right;">
+0.008
+</td>
+<td style="text-align:right;">
+-7.856
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+% URM:SI Component
+</td>
+<td style="text-align:right;">
+0.06**
+</td>
+<td style="text-align:right;">
+0.007
+</td>
+<td style="text-align:right;">
+0.829
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SI Component:% First Generation
+</td>
+<td style="text-align:right;">
+-0.21***
+</td>
+<td style="text-align:right;">
+0.06
+</td>
+<td style="text-align:right;">
+-3.493
+</td>
+</tr>
+</tbody>
+</table>
+<p><em>Table 2</em> presents the results from a multilinear regression model predicting SI’s impact on a course’s DWF rate. Similarly to the student level model, all relevant covariates available in the data were included to account for additional factors that may influence the outcome variable such as class enrollment size and class final grade point average.</p>
+<p><strong>DWF Model Results</strong>: All variables of interest are statistically significant (<em>p&lt;0.05</em>). The coefficient of the variable for the percentage of students who are URM variable is positive, implying as the percentage increases so does DWF rate. The positive estimate for the coefficient of the variable for courses with an SI component implies courses with an SI component have increased DWF rates (this gives evidence to support our purpose). The model predicts that if a course has an SI component, as the percentage of students who are first generation students increases, DWF rate decreases.</p>
+<div id="limitations-of-course-model" class="section level2">
+<h2><strong>Limitations of Course Model</strong></h2>
+<p>Similar to the student level models, there may be variables not accounted for in the model that influence DWF rate. Again, the percentage of students who are Pell grant eligible may be a significant influence.</p>
+</div>
+</div>
+<div id="conclusions-future-work" class="section level1">
+<h1>Conclusions &amp; Future Work</h1>
+<ul>
+<li><p>The results from these initial models did not find significant results for our variables of interest. However, this could be due to underlying causes such as omitted variable bias discussed in the limitations of the models.</p></li>
+<li><p>Ideally, we want to identify attending SI as a treatment, and explore it’s causal effect on equity gaps.
+In order to accomplish this, we will employ Coarsened Exact Matching to control for confounding variables.
+With this matching we can estimate the effect of SI on equity gaps with SI as a treatment as in a clinical trial.</p></li>
+</ul>
+<p><strong>Acknowledgments</strong>: We are extremely grateful for the guidance provided by Dr. Robin Donatello and Dr. Eric Wasinger.</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+var script = document.createElement("script");
+script.type = "text/javascript";
+var src = "true";
+if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+if (location.protocol !== "file:" && /^https?:/.test(src))
+src = src.replace(/^https?:/, '');
+script.src = src;
+document.getElementsByTagName("head")[0].appendChild(script);
+})();
+</script>
+
+
+</body>
+</html>
