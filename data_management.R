@@ -1,9 +1,15 @@
 # Data Management File
-#### Add flags for only creating new stuff
 library(tidyverse)
 library(Hmisc) # Enables %nin% notation for "not in"
 library(magrittr) # Allows %<>% notation to update lhs object with resulting value
 library(readxl) # read Excel file
+
+################################################################################
+# Flags to reduce the load
+#     These flags are used to turn on and off some of the data creation
+# functions so that running this file does not take too long if new data is
+# added.
+################################################################################
 
 ###########################################################################################
 # Create grades.csv (easier to work with)
