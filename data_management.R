@@ -4,6 +4,13 @@ library(Hmisc) # Enables %nin% notation for "not in"
 library(magrittr) # Allows %<>% notation to update lhs object with resulting value
 library(readxl) # read Excel file
 
+################################################################################
+# Flags to reduce the load
+#     These flags are used to turn on and off some of the data creation
+# functions so that running this file does not take too long if new data is
+# added.
+################################################################################
+
 ###########################################################################################
 # Create grades.csv (easier to work with)
 ###########################################################################################
@@ -107,7 +114,7 @@ student_profiles <- rename(student_profiles, Enrollment.Term = Cohort.Term)
 write.csv(student_profiles, "data/student_profiles_clean.csv", row.names = FALSE)
 
 ################################################################################
-# Grades Data
+# SI expanded grades Data
 ################################################################################
 
 # Contains number of visits in the term per student per class, and flag for at least one visit
@@ -141,6 +148,35 @@ write.csv(si_grades, "data/si_grades.csv", row.names = FALSE)
 ################################################################################
 si_student_profiles <- filter(student_profiles,
                               Random.Student.ID %in% levels(si_grades$Random.Student.ID))
+
+#############################################################################################
+#   Create Grades data for only SI classes
+#############################################################################################
+si_students <- si_visit %>% dplyr::select(Term.Year, 
+                                          Term.Type,
+                                          Random.Course.ID,
+                                          Random.Student.ID,
+                                          SLC.Attended.Flag,
+                                          Visit.Count..per.day.)
+
+# Aggregate number of SI visits for each student in SLC dataset
+si_count <- si_students %>% group_by(Random.Course.ID, Random.Student.ID) %>%
+  dplyr::summarize(SI.Visit.Num = sum(Visit.Count..per.day.))
+si_count$Random.Course.ID <- factor(si_count$Random.Course.ID)
+si_count$Random.Student.ID <- factor(si_count$Random.Student.ID)
+
+si_grades <- si_grades %>% left_join(si_count)
+
+si_grades <- dplyr::select(si_grades, Term.Year, Term.Type, Random.Course.ID, Student.Class.Official.Grade,
+                           Random.Student.ID, SI.Visit.Num, Student.Class.Unit.Passed, Student.Class.Unit.Attempted)
+
+# Create a flag for SI attended
+si_grades$SI.Attended <- ifelse(si_grades$SI.Visit.Num > 0, 1, 0)
+si_grades$SI.Attended[is.na(si_grades$SI.Attended)] <- 0
+si_grades$SI.Visit.Num[is.na(si_grades$SI.Visit.Num)] <- 0
+
+# Grades Data for only SI classes
+write.csv(si_grades, "data/grades_SI_classes.csv", row.names = FALSE)
 
 #############################################################################################
 #                                 Data for matchit
