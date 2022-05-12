@@ -1,6 +1,6 @@
 ---
 title: "Exploring the Effect of Supplemental Instruction on Equity Gaps"
-author: "Faith Fatchen, Skip Moses, Rica Rebusit, Joseph Shifman"
+author: "Faith Fatchen, Skip Moses, Rica Rebusit,  Joseph Shifman"
 date: "5/17/2022"
 output: 
   beamer_presentation:
@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Introduction to the Data
 
 Student profile data (per student):
-[Full CSU enrollment stats](https://www.calstate.edu/data-center/institutional-research-analyses/Pages/enrollment.aspx)
 - Term
 - Part time/full time
 - 

@@ -40,9 +40,10 @@ vignettes/*.pdf
 
 # Data Files
 data/
-poster html copy/data/
+poster/data/
 # R Project
 ads-project.Rproj
 
 # Scratch files
 skip_scratch.R
+.DS_Store

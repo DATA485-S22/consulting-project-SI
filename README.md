@@ -1,9 +1,15 @@
 # The impact of Supplemental Instruction on Equity Gaps at Chico State
 
-## Introduction _(define URM and first gen)_
+## Introduction
 * Supplemental Instruction (**SI**) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.
 
 * An **equity gap** refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.
+
+* **Underrepresented Minority (URM)** - is defined as a U.S. citizen who identifies as Black/African American, Hispanic/Latino, or American Indian. All other Race/Ethnicity categories or Non-U.S. citizens are considered as a **Non-Underrepresented Minority (Non-URM)**.
+
+* **First generation** - is defined as a student who reported both parents as not receiving a baccalaureate degree. All other students are considered as **Not First Generation**.
+
+[Definition Source](https://www.calstate.edu/data-center/institutional-research-analyses/Pages/Glossary.aspx)
 
 ## Workflow
 Before running any files, you must first download the data files from the secure Box folder and put them into a folder called "data" in the main project repository on your local system. This data is private and must not be seen by eyes not working on the project. After downloading and moving data, run the entire file called "data_management.R". This will create many csv files (described below) and many data sets in your local environment. After it is done running, you can click the broomstick to clear your environment.
