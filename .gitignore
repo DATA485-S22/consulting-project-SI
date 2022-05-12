@@ -46,3 +46,7 @@ ads-project.Rproj
 
 # Scratch files
 skip_scratch.R
+
+# Presentation files
+presentation_skip.rmd
+presentation_skip.pdf

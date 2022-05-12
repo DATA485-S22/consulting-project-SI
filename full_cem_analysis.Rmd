@@ -123,12 +123,13 @@ matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
 
 matched_df2 <- matched_df1 %>% 
   filter(Random.Course.ID %in% matched_courses$Random.Course.ID) %>%
-  group_by(Random.Course.ID, First.Generation.Flag, SI.Attended) %>%
+  group_by(Random.Course.ID, First.Generation.Flag, SI.Attended,
+           Term.Year) %>%
   summarise(avg.grade = mean(grade), 
             n=n()) 
 
 matched_df2_wide <- matched_df2 %>% 
-  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended), 
+  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended, Term.Year), 
               names_from = First.Generation.Flag, 
               values_from = c(avg.grade, n)) %>%
   mutate(fg_gap = avg.grade_N - avg.grade_Y, 
@@ -150,7 +151,7 @@ ggplot(matched_df2_wide,
   geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) + 
   geom_text(aes(x=.75, y=.25, label = "Non-FG > FG"), col="red") +
   geom_text(aes(x=.75, y=-.25, label = "Non-FG < FG"), col="green3") +
-  ylab("Non-FG - FG") + 
+  ylab("Non-FG - FG") + theme(legend.position = "none") +
   ggtitle("FG gap among matched students who went to SI vs those who did not go to SI") + 
   facet_wrap(~Term.Year)
 ```
@@ -171,7 +172,7 @@ ggplot(matched_df1, aes(y=grade, x = First.Generation.Flag)) +
 
 matched_df1 %>% ggline(x="First.Generation.Flag", y = "grade", 
                        facet.by = "SI.Attended", add=c("mean_se")) + 
-  ggtitle("SI helps both grops equally")
+  ggtitle("SI helps both groups equally")
 
 ```
 
