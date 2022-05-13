@@ -3,15 +3,18 @@ library(tidyverse)
 library(Hmisc) # Enables %nin% notation for "not in"
 library(magrittr) # Allows %<>% notation to update lhs object with resulting value
 library(readxl) # read Excel file
+# Only set to TRUE if there is new grades data, otherwise this file will take too long to run
+new_grades_data_flag <- FALSE
 
 ###########################################################################################
 # Create grades.csv (easier to work with)
 ###########################################################################################
 # WARNING: THIS IS VERY LARGE, IT WILL TAKE ~5 MINS
+if (new_grades_data_flag == TRUE){
 grades <- read_xlsx("data/Student Grade.xlsx")
 
 write.csv(grades, 'data/grades.csv', row.names = FALSE)
-
+}
 ###########################################################################################
 # Course Level Data
 ###########################################################################################
