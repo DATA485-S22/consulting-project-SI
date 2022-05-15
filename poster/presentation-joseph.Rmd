@@ -33,8 +33,9 @@ knitr::opts_chunk$set(echo = FALSE)
   - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
   
 ## Data Preparation
-### Student Level Analysis (n = 20,562)
+### Student Level Analysis (n = 19,565)
 * Only student records dated 2016 or later
+* Only first-time freshmen
 * Best attempt at isolating most recent student program record
 * Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
 * Records with missing data for the following attributes were dropped:
@@ -56,7 +57,7 @@ knitr::opts_chunk$set(echo = FALSE)
 * To remove high calculated DWF outliers, class size >= 20
 
 ## Data Preparation
-### Coarsened Exact Matching Analysis (n = 11,166)
+### Coarsened Exact Matching Analysis (n = 19,565)
 * Student profiles, programs, and grades with course level information for courses with SI
 * Only student records dated 2016 to 2019 who DID NOT DROP
 * Best attempt at isolating most recent student program record
