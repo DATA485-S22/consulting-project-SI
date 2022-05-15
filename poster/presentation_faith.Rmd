@@ -4,9 +4,7 @@ author: "Faith Fatchen, Skip Moses, Rica Rebusit,  Joseph Shifman"
 date: "5/17/2022"
 output: 
   beamer_presentation:
-    theme: "AnnArbor"
-    colortheme: "dolphin"
-    fonttheme: "structurebold"
+  theme: "Madrid"
 ---
 
 
@@ -51,13 +49,13 @@ knitr::include_graphics("pictures/fig2.png")
   
 # Student Results
 
-```{r fig3, fig.show='hold',fig.align='center'}
+```{r fig3, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics("pictures/fig5.png")
 ```
 
 # Student Results: Interactions 
 
-```{r fig4, fig.show='hold',fig.align='center'}
+```{r fig4, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics("pictures/fig6.png")
 ```
 
