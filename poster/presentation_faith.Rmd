@@ -1,0 +1,80 @@
+---
+title: "Exploring the Effect of Supplemental Instruction on Equity Gaps: Student"
+author: "Faith Fatchen, Skip Moses, Rica Rebusit,  Joseph Shifman"
+date: "5/17/2022"
+output: 
+  beamer_presentation:
+  theme: "Madrid"
+---
+
+
+```{r setup, include=FALSE}
+# Notes: Manually change right logo to width = 95% in .html file
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+```
+
+# Student Level Analysis 
+
+- Measuring student level equity gaps
+  - Students who under represented minorities 
+  - Students who are first generation
+- Measuring success
+  - One-year retention
+  
+# Student Level Analysis 
+
+```{r fig1, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig1.png")
+```
+
+# Student Level Analysis 
+
+```{r fig2, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig2.png")
+```
+  
+# Student Level Analysis: Modeling 
+
+- Logistic regression 
+- Explanatory variables:
+  - Student characteristics: URM, First Generation, Gender, Stem Major, number of units taken in the semester, number of units passed in the semester, Cohort term year, SI attendance 
+  - Course characteristics: Academic level, Course fee existence, GE class 
+  
+```{r eval=FALSE, include=FALSE}
+# one model without interactions 
+# one with inter 
+```
+
+  
+# Student Results
+
+```{r fig3, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig5.png")
+```
+
+# Student Results: Interactions 
+
+```{r fig4, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig6.png")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
