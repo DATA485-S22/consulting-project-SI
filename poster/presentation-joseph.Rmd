@@ -1,0 +1,69 @@
+---
+title: "Exploring the Effect of Supplemental Instruction on Equity Gaps"
+author: "Faith Fatchen, Skip Moses, Rica Rebusit, Joseph Shifman"
+date: "5/17/2022"
+output: 
+  beamer_presentation:
+    theme: "AnnArbor"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Original Source Data (via CSU Chico Instituional Research)
+* Course Detail.csv
+  - n = 43,803
+  - Row contains record for course sections from Fall 2012 to Winter 2022
+* Student Profile Metric.csv
+  - n = 49,107
+  - Row contains one record per student matriculation for students enrolled from Fall 2012 to Spring 2022
+* Student Program.csv
+  - n = 343,781
+  - Row contains records for each semester of each student's attendance who were enrolled from Fall 2012 to Winter 2022
+  
+## Original Source Datasets (acquired via CSU Cico Instituional Research)
+* SLC Appointment.csv
+  - n = 78,229
+  - Row contains record for each day that a student went to an SI session, and how many they went to in that day (Fall 2015 - Spring 2022)
+* Student Grade.xlsx
+  - n = 864,471
+  - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
+  
+## Data Preparation
+### Student Level Analysis (n = 20,562)
+* Only student records dated 2016 or later
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program
+
+## Data Preparation
+### Course Level Analysis (n = 5,637)
+* Includes class size, average high school GPA, % first-gen in the class, % URM in the class, DWF rate, SI component flag, term year
+  - These were calculated using the grades data provided by IR
+  - Students with missing records for high school GPA were not included in the calculation
+  - Students with missing records for URM and first-gen status were considered as not a member of these groups
+* Course records from 2016-2019
+* Course sections with less than 10 records of an SI visit during the semester were considered as sections without an SI-component
+* Courses represented have a number less than 300 and are not a special number (x89, x99, etc.)
+* To remove high calculated DWF outliers, class size >= 20
+
+## Data Preparation
+### Coarsened Exact Matching Analysis (n = 11,166)
+* Student profiles, programs, and grades with course level information for courses with SI
+* Only student records dated 2016 to 2019 who DID NOT DROP
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program

@@ -178,12 +178,17 @@ pre code {
 <ul>
 <li><p>Supplemental Instruction (<strong>SI</strong>) is designed to increase student success in historically difficult courses by utilizing peer-assisted study sessions. The SI leader has performed well in the course in a previous semester.</p></li>
 <li><p>An <strong>equity gap</strong> refers to differences in educational outcomes and student success across race/ethnicity, socioeconomic status, gender, physical or mental abilities, and other demographic traits and intersectionalities.</p></li>
+<li><p><strong>Underrepresented Minority (URM)</strong> - is defined as a U.S. citizen who identifies as Black/African American, Hispanic/Latino, or American Indian. All other Race/Ethnicity categories or Non-U.S. citizens are considered as a <strong>Non-Underrepresented Minority (Non-URM)</strong>.</p></li>
+<li><p><strong>First generation</strong> - is defined as a student who reported both parents as not receiving a baccalaureate degree. All other students are considered as <strong>Not First Generation</strong>.</p></li>
 </ul>
+<p><a href="https://www.calstate.edu/data-center/institutional-research-analyses/Pages/Glossary.aspx">Definition Source</a></p>
 </div>
 <div id="workflow" class="section level2">
 <h2>Workflow</h2>
 <p>Before running any files, you must first download the data files from the secure Box folder and put them into a folder called “data” in the main project repository on your local system. This data is private and must not be seen by eyes not working on the project. After downloading and moving data, run the entire file called “data_management.R”. This will create many csv files (described below) and many data sets in your local environment. After it is done running, you can click the broomstick to clear your environment.</p>
-<p><em>Data Sets Created:</em></p>
+<div id="data-sets-created" class="section level3">
+<h3>Data Sets Created:</h3>
+<p><em>Please carevully read the caveats of each dataset!</em></p>
 <ul>
 <li><strong>grades.csv</strong>
 <ul>
@@ -196,17 +201,64 @@ pre code {
 <li>Section class size, GPA average, DWF rate of section (derived from grades data)</li>
 <li>SI component flag, total SI visits in semester</li>
 <li>Other course info from original courses dataset</li>
-<li><strong>Notes:</strong> Sections with less than 10 visits to SI during the semester do not have the SI component flag set, these sections will be considered non-SI component sections. This dataset contains all classes that are not specially numbered (see CSU number reference) and within the range [Spring 2016 - Fall 2019]. This range is selected because SI first started in 2016, and students had the option to drop classes during the COVID-19 pandemic without incurring penalties.</li>
+<li><strong>Notes:</strong>
+<ul>
+<li>Sections with less than 10 visits to SI during the semester do not have the SI component flag set, these sections will be considered non-SI component sections.</li>
+<li>This dataset contains all classes that do not have a special number (<a href="https://www.csuchico.edu/pres/em/2017/17-012.shtml">see CSU Chico Numbering Policy</a>)</li>
+<li>All records are within the range [Spring 2016 - Fall 2019]. This range is selected because SI first started in 2016, and students had the option to drop classes during the COVID-19 pandemic without incurring penalties.</li>
+</ul></li>
 </ul></li>
 <li><strong>student_profiles_clean.csv</strong>
 <ul>
 <li>Clean mutating join of student profiles and student program datasets</li>
 <li>(PER STUDENT, see codebook for more info) Gender, IPEDS Ethnicity, First-Generation Student Flag, academic level, major(s)</li>
-<li>Enrollment term, degree term, full-time/part-time, highschool/transfer GPA, one year retention flag</li>
-<li><strong>Notes:</strong> Only profiles and programs with a date after 2016 are used. The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record. Aproximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].</li>
+<li>Enrollment term, degree term, full-time/part-time, high school/transfer GPA, one year retention flag</li>
+<li><strong>Notes:</strong>
+<ul>
+<li>Only profiles and programs with a date after 2016 are used.</li>
+<li>The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record (see data_management.R lines 91-93).</li>
+<li>Approximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].</li>
+</ul></li>
+</ul></li>
+<li><strong>grades_SI_classes.csv</strong>
+<ul>
+<li>Contains grades of all students for all courses with SI</li>
+<li>Includes a flag for at least one SI attendance number of SI visits in the semester</li>
+</ul></li>
+<li><strong>CEM_full_dataset.csv</strong>
+<ul>
+<li>Merging of cleaned profiles, grades, and course level information</li>
+<li><strong>Notes:</strong>
+<ul>
+<li>Records with missing values in the following columns are dropped due to not enough information for matching. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]</li>
+<li>This dataset was built using <strong>course_level.csv</strong> and <strong>student_profiles_clean.csv</strong>, so it contains the same caveats as them both.</li>
+</ul></li>
+</ul></li>
+<li><strong>student_analysis_dataset.csv</strong>
+<ul>
+<li>Used in the 2022 NSC poster code files to create logistic models predicting one year retention</li>
+<li><strong>Notes:</strong>
+<ul>
+<li>Records with missing values in the following columns are dropped. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]</li>
+<li>This dataset was built using <strong>student_profiles_clean.csv</strong>, so it contains the same caveats.</li>
+</ul></li>
+</ul></li>
+<li><strong>course_analysis_dataset.csv</strong>
+<ul>
+<li>Used in the 2022 NSC poster code files to create a linear regression model predicting course section DWF rate</li>
+<li>(PER SECTION, see <em>codebook</em>[need to create codebook] for more info) Class size, high school GPA average of students, percentage of first generation students, percentage of under-represented minority students, DWF rate, SI component flag, term year</li>
+<li><strong>Notes:</strong>
+<ul>
+<li>A number of student records contain missing values for high school GPA, URM status, or first generation status. These students are not included in the calculation of average GPA and are considered non-URM or not first generation, respectfully.</li>
+<li>Only course records between 2016 and 2019, inclusive, are represented.</li>
+<li>Since a miniscule proportion of courses with SI are upper division, the decision was made to only include courses with a number less than 300.</li>
+<li>In an attempt to remove high DWF outliers, only course sections with a class size 20 or greater are considered.</li>
+<li>This dataset was created using <strong>course_level.csv</strong> and <strong>student_profiles_clean.csv</strong>, so it contains the same caveats as them both.</li>
+</ul></li>
 </ul></li>
 </ul>
 <hr />
+</div>
 <div id="references" class="section level3">
 <h3>References</h3>
 <ul>
