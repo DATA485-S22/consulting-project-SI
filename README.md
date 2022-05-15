@@ -30,15 +30,15 @@ _Data Sets Created:_
   - (PER STUDENT, see codebook for more info) Gender, IPEDS Ethnicity, First-Generation Student Flag, academic level, major(s)
   - Enrollment term, degree term, full-time/part-time, high school/transfer GPA, one year retention flag
   - **Notes:** Only profiles and programs with a date after 2016 are used. The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record. Approximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].
-- **si_grades.csv**
+- **grades_SI_classes.csv**
   - Contains grades of all students for all courses with SI
   - Includes a flag for at least one SI attendance number of SI visits in the semester
 - **CEM_full_dataset.csv**
-  - Merging of profiles, grades, and courses
-  - **Notes:** Records with missing values in the following columns are dropped due to not enough information for matching. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]
+  - Merging of profiles, grades, and courses ######### WTF DUDE
+  - **Notes:** Records with missing values in the following columns are dropped due to not enough information for matching. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program] This dataset was built using **student_profiles_clean.csv**, so it contains the same caveats.
 - **student_analysis_dataset.csv**
   - Used in the 2022 NSC poster code files to create logistic models predicting one year retention
-  - **Notes:** Records with missing values in the following columns are dropped. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]
+  - **Notes:** Records with missing values in the following columns are dropped. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program] This dataset was built using **student_profiles_clean.csv**, so it contains the same caveats.
 - **course_analysis_dataset.csv**
   - Used in the 2022 NSC poster code files to create a linear regression model predicting course section DWF rate
   - (PER SECTION, see _codebook_[need to create codebook] for more info) Class size, high school GPA average of students, percentage of first generation students, percentage of under-represented minority students, DWF rate, SI component flag, term year

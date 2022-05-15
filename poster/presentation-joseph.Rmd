@@ -13,8 +13,7 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Introduction to the Data
-_Original Source Datasets (acquired via CSU Cico Instituional Research)_
+## Original Source Data (via CSU Chico Instituional Research)
 * Course Detail.csv
   - n = 43,803
   - Row contains record for course sections from Fall 2012 to Winter 2022
@@ -24,6 +23,8 @@ _Original Source Datasets (acquired via CSU Cico Instituional Research)_
 * Student Program.csv
   - n = 343,781
   - Row contains records for each semester of each student's attendance who were enrolled from Fall 2012 to Winter 2022
+  
+## Original Source Datasets (acquired via CSU Cico Instituional Research)
 * SLC Appointment.csv
   - n = 78,229
   - Row contains record for each day that a student went to an SI session, and how many they went to in that day (Fall 2015 - Spring 2022)
@@ -31,9 +32,9 @@ _Original Source Datasets (acquired via CSU Cico Instituional Research)_
   - n = 864,471
   - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
   
-  
-Student profile data (per student):
-[Full CSU enrollment stats](https://www.calstate.edu/data-center/institutional-research-analyses/Pages/enrollment.aspx)
+## Data Preparation
+### Student Level Analysis
+
 
 ## Slide with Bullets
 
