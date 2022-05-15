@@ -44,3 +44,26 @@ knitr::opts_chunk$set(echo = FALSE)
   - Full Time / Part Time Code
   - Academic Program
 
+## Data Preparation
+### Course Level Analysis (n = 5,637)
+* Includes class size, average high school GPA, % first-gen in the class, % URM in the class, DWF rate, SI component flag, term year
+  - These were calculated using the grades data provided by IR
+  - Students with missing records for high school GPA were not included in the calculation
+  - Students with missing records for URM and first-gen status were considered as not a member of these groups
+* Course records from 2016-2019
+* Course sections with less than 10 records of an SI visit during the semester were considered as sections without an SI-component
+* Courses represented have a number less than 300 and are not a special number (x89, x99, etc.)
+* To remove high calculated DWF outliers, class size >= 20
+
+## Data Preparation
+### Coarsened Exact Matching Analysis (n = 11,166)
+* Student profiles, programs, and grades with course level information for courses with SI
+* Only student records dated 2016 to 2019 who DID NOT DROP
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program

@@ -44,7 +44,7 @@ Before running any files, you must first download the data files from the secure
   - Merging of cleaned profiles, grades, and course level information
   - **Notes:**
     - Records with missing values in the following columns are dropped due to not enough information for matching. [HS.GPA, Student.Orientation.Flag, Major.1.STEM.Flag, Full.Time.Part.Time.Code, Academic.Program]
-    - This dataset was built using **course_level.csv** and **student_profiles_clean.csv**, so it contains the same caveats as them both.
+    - This dataset was built using **student_profiles_clean.csv**, so it contains the same caveats.
 - **student_analysis_dataset.csv**
   - Used in the 2022 NSC poster code files to create logistic models predicting one year retention
   - Merging of cleaned profiles, grades, and original course (not course level) information
