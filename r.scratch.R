@@ -45,7 +45,7 @@ library(broom)
 library(dotwhisker)
 library(dplyr)
 library(ggthemes)
-course.level <- read_csv("~/Downloads/course_analysis_dataset.csv")
+course.level <- read_csv("data/course_analysis_dataset.csv")
 str(course.level)
 
 course.level$Term.Year<-factor(course.level$Term.Year)
@@ -82,20 +82,23 @@ kable(d3)
 #lm4 <- lm(dwf.rate ~ URM + SI.Component.Flag + First.Gen.Perc + URM*SI.Component.Flag + First.Gen.Perc*SI.Component.Flag, data=course.level, na.action = na.omit)
 summary (lm4)
 
+lm5 <- lm(dwf.rate ~ SI.Component.Flag*First.Gen.Perc, data = course.level)
+summary(lm5)
 
+lm6 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + Term.Year + HS.GPA.Ave + class.average, data = course.level)
+summary(lm6)
 
 library(ggplot2)
-ggplot(course.level, aes(dwf.rate, URM, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot() 
-ggplot(course.level, aes(dwf.rate, First.Gen.Perc, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot()
+#ggplot(course.level, aes(dwf.rate, URM, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot() 
+#ggplot(course.level, aes(dwf.rate, First.Gen.Perc, group = 1)) + facet_wrap(~Term.Year) + geom_boxplot()
 
 ggplot(course.level, aes(Term.Year, dwf.rate, color = URM)) + 
   geom_line() +
   scale_y_continuous(limits = c(0, max(course$dwf.rate)))
-
 ggplot(course.level, aes(Term.Year, dwf.rate, color = First.Gen.Perc)) + 
   geom_line() +
-  scale_y_continuous(limits = c(0, max(course$dwf.rate)))
+  scale_y_continuous(limits = c(0, max(course.level$dwf.rate)))
 
 # These graphs show dwf of the percentages of equity gaps in a course in each year
-ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate")
-ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")
+ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate") + theme(legend.position="none") + geom_smooth(se=F)
+ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate") + theme(legend.position="none") + geom_smooth(se=F)
