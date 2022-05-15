@@ -96,6 +96,7 @@ program.clean <- program.clean[!duplicated(program.clean$Random.Student.ID),]
 profile <- read.csv("data/Student Profile Metric.csv")
 profile <- filter(profile, Cohort.Term.Year >= 2016) %>%
   mutate(Random.Student.ID = factor(Random.Student.ID), .keep = "unused") %>%
+  filter(Cohort.Student.Enrollment.Type == "First-Time Freshman")%>%
   dplyr::select(Cohort.Term, Random.Student.ID, Degree.Term,
          Full.Time.Part.Time.Code, Cohort.Student.Enrollment.Type, HS.GPA.Group,
          HS.GPA, Transfer.GPA.Group, Transfer.GPA, Cohort.Time.to.Degree.Year,
