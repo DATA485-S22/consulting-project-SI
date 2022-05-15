@@ -24,8 +24,7 @@ library(scales) # plotting
 data_raw <- read.csv("data/CEM_full_dataset.csv")
 #data_raw <- read.csv("C:/Box/Projects_Current/SI Equity analysis/data/CEM_full_dataset.csv")
 
-data <- data_raw %>% filter(Term.Year < 2020, Entry.Enrollment.Type == "First-Time Freshman") %>%
-  dplyr::select(-X) %>%
+data <- data_raw %>% filter(Term.Year < 2020, Entry.Enrollment.Type == "First-Time Freshman")  %>%
   # Remove Withdraws from class 
   filter(Student.Class.Official.Grade != "W") %>%
   filter(Student.Class.Official.Grade != "WU") %>%
@@ -116,6 +115,58 @@ matched_df1 <- match.data(matching) %>%
 
 
 ## Exploratory plots with matched sample - trying to create this gap
+```{r, fig.width=10}
+# Identify courses with 20 or more students (10 matched pairs per class)
+matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
+  tally() %>% filter(n>=20) %>% droplevels()
+
+matched_df2 <- matched_df1 %>% 
+  filter(Random.Course.ID %in% matched_courses$Random.Course.ID) %>%
+  group_by(Random.Course.ID, IPEDS.Ethnicity.URM.Non.URM, SI.Attended,
+           Term.Year, Academic.Subject, Class.Subject.Number.Section) %>%
+  summarise(avg.grade = mean(grade), 
+            n=n()) 
+
+matched_df2_wide <- matched_df2 %>% 
+  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended, Term.Year, Academic.Subject, Class.Subject.Number.Section), 
+              names_from = IPEDS.Ethnicity.URM.Non.URM, 
+              values_from = c(avg.grade, n)) %>%
+  mutate(urm_gap = `avg.grade_Non-URM` - avg.grade_URM, 
+         n = pmin(`n_Non-URM`, n_URM)) 
+
+ggplot(matched_df2_wide, 
+       aes(y=urm_gap, x=SI.Attended, color = Random.Course.ID, 
+           group = Random.Course.ID)) + 
+  geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) + 
+  geom_text(aes(x=.75, y=.25, label = "Non-URM > URM"), col="red") +
+  geom_text(aes(x=.75, y=-.25, label = "Non-URM < URM"), col="green3") +
+  ylab("Non-FG - FG") + 
+  ggtitle("URM gap among matched students who went to SI \n vs those who did not go to SI")
+
+matched_df2_wide %>% filter(Term.Year > 2016)  %>%
+ggplot(aes(y=urm_gap, x=SI.Attended, color = Academic.Subject, 
+           group = Random.Course.ID)) + 
+  geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) +
+  ylab("Non-URM - URM") + xlab("Attended SI")  + guides(size = "none") + labs(color = "Subject") +
+  ggtitle("URM gap among matched students who went to SI\n vs those who did not go to SI") + 
+  facet_wrap(~Term.Year) 
+ggsave("poster/pictures/urm_gap_by_year.png")
+```
+
+
+```{r, fig.width=10}
+matched_df2_wide %>% filter(Term.Year > 2016)  %>% 
+  filter(Academic.Subject == "Biological Sciences") %>%
+ggplot(aes(y=urm_gap, x=SI.Attended, color = Class.Subject.Number.Section, 
+           group = Random.Course.ID)) + 
+  geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0)  +
+  ylab("Non-URM - URM")  + xlab("SI Attended") +  guides(size = "none") + labs(color = "Subject and Section") +
+  ggtitle("URM gap among matched students who went to SI \n vs those who did not go to SI") + 
+  facet_wrap(~Term.Year)
+ggsave("poster/pictures/urm_gap_bio.png")
+```
+
+
 ```{r}
 # Identify courses with 20 or more students (10 matched pairs per class)
 matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
@@ -123,12 +174,13 @@ matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
 
 matched_df2 <- matched_df1 %>% 
   filter(Random.Course.ID %in% matched_courses$Random.Course.ID) %>%
-  group_by(Random.Course.ID, First.Generation.Flag, SI.Attended) %>%
+  group_by(Random.Course.ID, First.Generation.Flag, SI.Attended,
+           Term.Year, Academic.Subject) %>%
   summarise(avg.grade = mean(grade), 
             n=n()) 
 
 matched_df2_wide <- matched_df2 %>% 
-  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended), 
+  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended, Term.Year, Academic.Subject), 
               names_from = First.Generation.Flag, 
               values_from = c(avg.grade, n)) %>%
   mutate(fg_gap = avg.grade_N - avg.grade_Y, 
@@ -143,17 +195,19 @@ ggplot(matched_df2_wide,
   ylab("Non-FG - FG") + 
   ggtitle("FG gap among matched students who went to SI vs those who did not go to SI")
 
-
-ggplot(matched_df2_wide, 
-       aes(y=fg_gap, x=SI.Attended, color = Random.Course.ID, 
+matched_df2_wide %>% filter(Term.Year > 2016)  %>%
+ggplot(aes(y=fg_gap, x=SI.Attended, color = Academic.Subject, 
            group = Random.Course.ID)) + 
   geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) + 
   geom_text(aes(x=.75, y=.25, label = "Non-FG > FG"), col="red") +
   geom_text(aes(x=.75, y=-.25, label = "Non-FG < FG"), col="green3") +
-  ylab("Non-FG - FG") + 
+  ylab("Non-FG - FG")  +
   ggtitle("FG gap among matched students who went to SI vs those who did not go to SI") + 
   facet_wrap(~Term.Year)
 ```
+
+
+
 
 * At the course-section level - possibly too small sample sizes here. Sometimes within a class, only 2 students who are a FG who didn't go to SI. We also didn't match on FG. 
 * Size of dots is the min size of either FG or NonFG. 
@@ -190,7 +244,7 @@ coeftest(fit1, vcov. = vcovCL, cluster = ~subclass)
 # it is important not to interpret the coefficients and tests of the other covariates in the outcome model. These are not causal effects and their estimates may be severely confounded.
 ```
 
-The estimated effect was (0.344, SE=.076, p<.0001), indicating that the average effect of attending SI 0.338 grade points higher compared to those that did not go to SI. 
+The estimated effect was (0.51, SE=.076, p<.0001), indicating that the average effect of attending SI 0.51 grade points higher compared to those that did not go to SI. 
 
 Results still pending further filtering such as on FTF only. And possibly including more years. 
 
@@ -253,15 +307,15 @@ Create dwf variable. This is where we can modify the data used
 
 ```{r}
 dod_data <- data %>% 
-  mutate(dwf = ifelse(Student.Class.Grade.Point.per.Unit < 2.0, 1, 0))
+  mutate(dwf = ifelse(Student.Class.Grade.Point.per.Unit < 1.7, 1, 0))
 ```
 
 Bivariate exploration. No additional covarites.
 ```{r}
-dod_data %>% group_by(IPEDS.Ethnicity.URM.Non.URM, SI.Attended) %>%
-  summarize(x = sum(dwf), 
+dod_data %>% dplyr::group_by(IPEDS.Ethnicity.URM.Non.URM, SI.Attended) %>%
+  summarise(x = sum(dwf), 
             n=n(), 
-            pct = x/n, pct.lab = percent(pct, accuracy = .1))  %>%
+            pct = mean(dwf), pct.lab = percent(pct, accuracy = .1))  %>%
   ggplot(aes(x=SI.Attended, 
              y = pct, 
              fill = as.factor(IPEDS.Ethnicity.URM.Non.URM), 
