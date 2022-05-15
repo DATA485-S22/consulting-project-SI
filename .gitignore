@@ -46,3 +46,4 @@ ads-project.Rproj
 
 # Scratch files
 skip_scratch.R
+.DS_Store
