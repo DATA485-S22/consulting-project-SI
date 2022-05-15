@@ -33,12 +33,14 @@ knitr::opts_chunk$set(echo = FALSE)
   - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
   
 ## Data Preparation
-### Student Level Analysis
-
-
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
+### Student Level Analysis (n = 20,562)
+* Only student records dated 2016 or later
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program
 

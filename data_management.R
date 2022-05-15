@@ -142,7 +142,7 @@ write.csv(si_grades, "data/grades_SI_classes.csv", row.names = FALSE)
 #############################################################################################
 #                                 Data for matchit
 #############################################################################################
-grades <- read.csv("data/grades_SI_classes.csv")
+grades <- si_grades
 profiles <- student_profiles %>%
   dplyr::select(c("Random.Student.ID",
            "IPEDS.Ethnicity",
@@ -216,7 +216,7 @@ profile<- student_profiles %>%
                   "One.Year.Retention",
                   "Student.Orientation.Flag"))
 
-grades <- read.csv("data/grades_SI_classes.csv")
+grades <- si_grades
 courses <- read.csv("data/Course Detail.csv") %>%
   dplyr::select(c("Random.Course.ID",
                   "Term",
