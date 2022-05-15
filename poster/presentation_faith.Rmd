@@ -40,6 +40,7 @@ knitr::include_graphics("pictures/fig2.png")
 - Explanatory variables:
   - Student characteristics: URM, First Generation, Gender, Stem Major, number of units taken in the semester, number of units passed in the semester, Cohort term year, SI attendance 
   - Course characteristics: Academic level, Course fee existence, GE class 
+- Primary variables of interest: SI and the interaction between SI the measures of equity 
   
 ```{r eval=FALSE, include=FALSE}
 # one model without interactions 

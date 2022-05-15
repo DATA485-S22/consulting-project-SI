@@ -23,6 +23,7 @@ library(dotwhisker)
 library(broom)
 library(multcomp)
 
+# Prep for modeling
 d<-read_csv("data/student_analysis_dataset.csv")
 d[sapply(d, is.character)] <- lapply(d[sapply(d, is.character)], as.factor)
 d$Term.Year<-factor(d$Term.Year)
@@ -35,7 +36,7 @@ d$One.Year.Retention<-factor(d$One.Year.Retention)
 
 
 ```{r eval=FALSE, include=FALSE}
-#DATA WORK
+#Data work, the same as data management file, no need to run
 # Student Program Dataset
 program <- read.csv("data/Student Program.csv")
 program.clean <- filter(program, Term.Year >= 2016) %>% # SI classes start in 2016
@@ -138,6 +139,8 @@ write.csv(d, "data/student_analysis_dataset.csv")
 
 ## Initial Model
 
+Running intial logistic regression without interaction
+
 ```{r}
 fit1<-glm(One.Year.Retention ~ Cohort.Term.Year + SI.Attended + Student.Class.Unit.Attempted + Student.Class.Unit.Passed +  URM + Gender.Code + First.Generation.Flag + Academic.Level + Major.1.STEM.Flag + Academic.Standing.Status + HS.GPA + Inst.MD.Persn.Onl.Othr + Course.Fee.Exist.Flag + GE.Class.Flag, family = binomial(link = "logit"), data = d)
 summary(fit1)
@@ -202,6 +205,8 @@ dwplot(m5) +
 ```
 
 ## DoD URM
+
+
 
 ```{r}
 dod_data_urm <- d %>% group_by(URM, SI.Attended)
