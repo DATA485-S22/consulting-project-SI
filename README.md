@@ -35,6 +35,7 @@ Before running any files, you must first download the data files from the secure
   - Enrollment term, degree term, full-time/part-time, high school/transfer GPA, one year retention flag
   - **Notes:**
     - Only profiles and programs with a date after 2016 are used.
+    - Only first time freshmen profiles
     - The student programs dataset contained multiple rows per student, an attempt was made to select the most recent program record (see data_management.R lines 91-93).
     - Approximately 35% of students in the programs dataset are not present in the profiles dataset. These entries have NA values for columns [15-26].
 - **grades_SI_classes.csv**
