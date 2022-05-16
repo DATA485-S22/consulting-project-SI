@@ -22,11 +22,11 @@ library(ggthemes)
 library(stargazer)
 
 # Run everything from the data_management.R file
-course.level <- read_csv("data/course_analysis_dataset.csv")
+course.level <- read_csv("~/Downloads/course_analysis_dataset.csv")
 # Convert to factors
 course.level$Term.Year<-factor(course.level$Term.Year)
 course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
-No.SI <- filter(course.level, SI.Component.Flag == "0") # Looking at the courses with No SI
+No.SI <- filter(course.level, SI.Component.Flag == "0") # Looking at the courses less than 10 SI visits
 ```
 
 # Initial Graphs
