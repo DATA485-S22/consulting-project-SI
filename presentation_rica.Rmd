@@ -24,10 +24,6 @@ course.level <- read_csv("~/Downloads/course_analysis_dataset.csv")
 course.level$Term.Year<-factor(course.level$Term.Year)
 course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
 No.SI <- filter(course.level, SI.Component.Flag == "0")
-m <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + class.size + class.average, data = course.level)
-summary(m)
-m2 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + SI.Component.Flag*URM + SI.Component.Flag*First.Gen.Perc + class.size + class.average, data = course.level)
-summary(m2)
 ```
 
 
@@ -43,14 +39,12 @@ summary(m2)
 
 ```{r cars, echo = TRUE}
 ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate") + geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F) 
-ggsave("pictures/fig3.png")
 ```
 
 ## First Generation and DWF Rate
 
 ```{r pressure}
 ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")+ geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F)
-ggsave("pictures/fig4.png")
 ```
 
 ## Course Level Modelling
@@ -58,3 +52,4 @@ ggsave("pictures/fig4.png")
 ```{r, results = 'asis', echo = FALSE}
 stargazer(m, m2, off.ratio=T, single.row = TRUE, type = "latex", title = "Results Multilinear Regression")
 ```
+
