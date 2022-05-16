@@ -22,7 +22,7 @@ library(ggthemes)
 library(stargazer)
 
 # Run everything from the data_management.R file
-course.level <- read_csv("~/Downloads/course_analysis_dataset.csv")
+course.level <- read_csv("data/course_analysis_dataset.csv")
 # Convert to factors
 course.level$Term.Year<-factor(course.level$Term.Year)
 course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
