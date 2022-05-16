@@ -32,12 +32,12 @@ No.SI <- filter(course.level, SI.Component.Flag == "0") # Looking at the courses
 # Initial Graphs
 
 ```{r}
-ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate") + geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F) 
+ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate") + geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F) # The red dots represent the courses with less than 10 SI visits
 ```
 It seems like over the years, if the percent of URM increases in a course, the dwf.rate decreases. Possibly be because URM "works" harder in a course that offers SI?
 
 ```{r}
-ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")+ geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F)
+ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")+ geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F) # The red dots represent courses with less than 10 SI visits
 ```
 Same thing with the percentage of first generation students in a course. As the percentage increases the dwf rates decreases. So a course that offers SI helps courses with a high percentage of equity gaps decrease dwf rates
 
@@ -95,6 +95,7 @@ summary(m2)
 mod2 <- tidy(m2)
 df2 <- data.frame(mod2)
 kable(mod)
+#ddd
 ```
 
 ```{r, results = 'asis', echo = FALSE}
