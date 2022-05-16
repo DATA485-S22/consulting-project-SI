@@ -9,7 +9,6 @@ output:
 
 
 ```{r setup, include=FALSE}
-# Notes: Manually change right logo to width = 95% in .html file
 knitr::opts_chunk$set(echo = FALSE)
 library(knitr)
 library(tidyverse)
@@ -25,6 +24,10 @@ course.level <- read_csv("data/course_analysis_dataset.csv")
 course.level$Term.Year<-factor(course.level$Term.Year)
 course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
 No.SI <- filter(course.level, SI.Component.Flag == "0")
+m <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + class.size + class.average, data = course.level)
+summary(m)
+m2 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + SI.Component.Flag*URM + SI.Component.Flag*First.Gen.Perc + class.size + class.average, data = course.level)
+summary(m2)
 ```
 
 # Original Source Data (via CSU Chico Instituional Research)
@@ -93,21 +96,28 @@ No.SI <- filter(course.level, SI.Component.Flag == "0")
 
 # URM and DWF Rate
 
-```{r cars, echo = FALSE}
-ggplot(course.level, aes(URM, dwf.rate, color = URM)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent URM") + ylab("DWF Rate") + geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F) 
+```{r, echo = FALSE, out.width="95%"}
+knitr::include_graphics("pictures/fig3.png")
 ```
 
 # First Generation and DWF Rate
 
-```{r pressure, echo = FALSE}
-ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + geom_point() + facet_wrap(. ~Term.Year) + xlab("Percent First Gen") + ylab("DWF Rate")+ geom_point(data=No.SI, aes(x=URM, y=dwf.rate), color = 'red') + theme(legend.position="none") + geom_smooth(se=F)
+```{r, echo = FALSE, out.width="95%"}
+knitr::include_graphics("pictures/fig4.png")
 ```
 
 # Course Level Modelling
 
 ```{r, results = 'asis', echo = FALSE}
-#stargazer(m, m2, off.ratio=T, single.row = TRUE, type = "latex", title = "Results Multilinear Regression")
+stargazer(m, single.row = TRUE, type = "latex", title = "Results Multilinear Regression", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
 ```
+
+# Course Level Modelling
+
+```{r, results = 'asis', echo = FALSE}
+stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interaction", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
+```
+
 
 # Student Level Analysis 
 
@@ -119,13 +129,13 @@ ggplot(course.level, aes(First.Gen.Perc, dwf.rate, color = First.Gen.Perc)) + ge
   
 # Student Level Analysis 
 
-```{r fig1, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+```{r fig1, out.width="95%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics("pictures/fig1.png")
 ```
 
 # Student Level Analysis 
 
-```{r fig2, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+```{r fig2, out.width="95%", echo=FALSE,fig.show='hold',fig.align='center'}
 knitr::include_graphics("pictures/fig2.png")
 ```
   
