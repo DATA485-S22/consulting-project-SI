@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  16 MAY 2022 19:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  16 MAY 2022 19:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -863,7 +863,7 @@ Package pdftex.def Info: pictures/fig6.png  used on input line 483.
 <pictures/causal_diagram2.png, id=148, 716.6775pt x 536.0025pt>
 File: pictures/causal_diagram2.png Graphic file (type png)
 <use pictures/causal_diagram2.png>
-Package pdftex.def Info: pictures/causal_diagram2.png  used on input line 491.
+Package pdftex.def Info: pictures/causal_diagram2.png  used on input line 499.
 (pdftex.def)             Requested size: 153.64523pt x 114.91113pt.
 [19
 
@@ -873,7 +873,7 @@ Package pdftex.def Info: pictures/causal_diagram2.png  used on input line 491.
 <pictures/matching1.png, id=164, 1040.88875pt x 341.275pt>
 File: pictures/matching1.png Graphic file (type png)
 <use pictures/matching1.png>
-Package pdftex.def Info: pictures/matching1.png  used on input line 511.
+Package pdftex.def Info: pictures/matching1.png  used on input line 526.
 (pdftex.def)             Requested size: 307.28188pt x 100.74815pt.
 [21
 
@@ -881,7 +881,7 @@ Package pdftex.def Info: pictures/matching1.png  used on input line 511.
 <pictures/matching2.png, id=172, 1040.88875pt x 341.275pt>
 File: pictures/matching2.png Graphic file (type png)
 <use pictures/matching2.png>
-Package pdftex.def Info: pictures/matching2.png  used on input line 516.
+Package pdftex.def Info: pictures/matching2.png  used on input line 531.
 (pdftex.def)             Requested size: 307.28188pt x 100.74815pt.
 [22
 
@@ -889,7 +889,7 @@ Package pdftex.def Info: pictures/matching2.png  used on input line 516.
 <pictures/matching3.png, id=180, 1040.88875pt x 274.02374pt>
 File: pictures/matching3.png Graphic file (type png)
 <use pictures/matching3.png>
-Package pdftex.def Info: pictures/matching3.png  used on input line 521.
+Package pdftex.def Info: pictures/matching3.png  used on input line 536.
 (pdftex.def)             Requested size: 307.28188pt x 80.89484pt.
 [23
 
@@ -899,7 +899,7 @@ Package pdftex.def Info: pictures/matching3.png  used on input line 521.
 <pictures/urm_gap_by_year.png, id=194, 3312.375pt x 2046.64626pt>
 File: pictures/urm_gap_by_year.png Graphic file (type png)
 <use pictures/urm_gap_by_year.png>
-Package pdftex.def Info: pictures/urm_gap_by_year.png  used on input line 568.
+Package pdftex.def Info: pictures/urm_gap_by_year.png  used on input line 582.
 (pdftex.def)             Requested size: 307.24911pt x 189.84271pt.
 [25
 
@@ -907,7 +907,7 @@ Package pdftex.def Info: pictures/urm_gap_by_year.png  used on input line 568.
 <pictures/urm_gap_bio.png, id=203, 3312.375pt x 2046.64626pt>
 File: pictures/urm_gap_bio.png Graphic file (type png)
 <use pictures/urm_gap_bio.png>
-Package pdftex.def Info: pictures/urm_gap_bio.png  used on input line 573.
+Package pdftex.def Info: pictures/urm_gap_bio.png  used on input line 587.
 (pdftex.def)             Requested size: 307.24911pt x 189.84271pt.
 [26
 
@@ -943,7 +943,7 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  99i,11n,104p,493b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}<c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss12.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on presentation_faith.pdf (29 pages, 1584730 bytes).
+Output written on presentation_faith.pdf (29 pages, 1585212 bytes).
 PDF statistics:
  292 PDF objects out of 1000 (max. 8388607)
  210 compressed objects within 3 object streams

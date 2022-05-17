@@ -178,6 +178,7 @@ knitr::include_graphics("pictures/fig6.png")
 # Causal Inference 
 
 ![](pictures/causal_diagram2.png){#id .class width=50% height=50%}
+
 - We want to measure the impact SI has on student performance.
 - We need to control for these confounding variables!
 - We can accomplish this by matching students with similar characteristics.
