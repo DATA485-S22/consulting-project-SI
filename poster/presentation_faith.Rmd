@@ -29,6 +29,14 @@ summary(m)
 m2 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + SI.Component.Flag*URM + SI.Component.Flag*First.Gen.Perc + class.size + class.average, data = course.level)
 summary(m2)
 ```
+# Definitions
+
+Two common measurements universities use to identify historically underserved students are underrepresented minority and first generation.
+
+- **Underrepresented Minority (URM)** - is defined as a U.S. citizen who identifies as Black/African American, Hispanic/Latino, or American Indian. All other Race/Ethnicity categories or Non-U.S. citizens are considered as a Non-Underrepresented Minority (Non-URM).
+
+- **First generation** - is defined as a student who reported both parents as not receiving a baccalaureate degree. All other students are considered as Not First Generation
+
 
 # Original Source Data (via CSU Chico Instituional Research)
 * Course Detail.csv
@@ -50,7 +58,7 @@ summary(m2)
   - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
   
 # Data Preparation
-### Student Level Analysis (n = 19,565)
+## Student Level Analysis (n = 19,565)
 * Only student records dated 2016 or later
 * Only first-time freshmen
 * Best attempt at isolating most recent student program record
@@ -63,7 +71,7 @@ summary(m2)
   - Academic Program
 
 # Data Preparation
-### Course Level Analysis (n = 5,637)
+## Course Level Analysis (n = 5,637)
 * Includes class size, average high school GPA, % first-gen in the class, % URM in the class, DWF rate, SI component flag, term year
   - These were calculated using the grades data provided by IR
   - Students with missing records for high school GPA were not included in the calculation
@@ -74,7 +82,7 @@ summary(m2)
 * To remove high calculated DWF outliers, class size >= 20
 
 # Data Preparation
-### Coarsened Exact Matching Analysis (n = 19,565)
+## Coarsened Exact Matching Analysis (n = 19,565)
 * Student profiles, programs, and grades with course level information for courses with SI
 * Only student records dated 2016 to 2019 who DID NOT DROP
 * Best attempt at isolating most recent student program record
@@ -88,11 +96,18 @@ summary(m2)
   
 # Course Level Details
 
-- Variables: avg HS GPA, First Gen, URM, class size, DWF rate, class average, SI component, term year
+- Variables of interest:
+  - Avg HS GPA
+  - First Gen %
+  - URM %
+  - class size
+  - DWF rate
+  - class average
+  - SI component flag
+  - term year
 - Courses from term years 2016-2019
-- URM and First Generation percentages
 - Lower Division courses
-- Courses with class size 20+
+- Course sections with class size 20+
 
 # URM and DWF Rate
 
@@ -106,16 +121,16 @@ knitr::include_graphics("pictures/fig3.png")
 knitr::include_graphics("pictures/fig4.png")
 ```
 
-# Course Level Modelling
+# Course Level Modeling
 
 ```{r, results = 'asis', echo = FALSE}
 stargazer(m, single.row = TRUE, type = "latex", title = "Results Multilinear Regression", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
 ```
 
-# Course Level Modelling
+# Course Level Modeling
 
 ```{r, results = 'asis', echo = FALSE}
-stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interaction", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
+stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interactions", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
 ```
 
 
@@ -126,6 +141,7 @@ stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Re
   - Students who are first generation
 - Measuring success
   - One-year retention
+- First time freshmen matriculated 2016 or later
   
 # Student Level Analysis 
 
@@ -144,12 +160,7 @@ knitr::include_graphics("pictures/fig2.png")
 - Logistic regression 
 - Explanatory variables:
   - Student characteristics: URM, First Generation, Gender, Stem Major, number of units taken in the semester, number of units passed in the semester, Cohort term year, SI attendance 
-  - Course characteristics: Academic level, Course fee existence, GE class 
-  
-```{r eval=FALSE, include=FALSE}
-# one model without interactions 
-# one with inter 
-```
+  - Course characteristics: Academic level, Course fee existence, GE class
 
   
 # Student Results
@@ -166,7 +177,7 @@ knitr::include_graphics("pictures/fig6.png")
 
 # Causal Inference 
 
-- ![](pictures/causal_diagram2.png){#id .class width=50% height=50%}
+![](pictures/causal_diagram2.png){#id .class width=50% height=50%}
 - We want to measure the impact SI has on student performance.
 - We need to control for these confounding variables!
 - We can accomplish this by matching students with similar characteristics.
@@ -193,8 +204,8 @@ knitr::include_graphics("pictures/fig6.png")
 # Covariates for Matching 
 
 - Notion: Good students go to SI, so the benefit is inflated.
-  - High School GPA: Helps address the notion SI is only seems benefical.
-  - Student Orientation Flag: 
+  - High School GPA
+  - Student Orientation Flag
   - Major Stem Flag 
 
 - Demographics

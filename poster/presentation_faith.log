@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  15 MAY 2022 20:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  16 MAY 2022 19:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -723,57 +723,58 @@ Dictionary: translator-theorem-dictionary, Language: English
 ) (./presentation_faith.nav) [1
 
 {c:/Users/josep/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 152.
+LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmss.fd
 File: ot1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 152.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 152.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 152.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 152.
+(Font)              <10.95> on input line 129.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 152.
+(Font)              <8> on input line 129.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 152.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 152.
+(Font)              <6> on input line 129.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 152.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 129.
 (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 129.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 129.
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <6> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 152.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 152.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 152.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 152.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 129.
 [2
 
-] [3
+]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 170.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 170.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 170.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 170.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <7> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 170.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 170.
+[3
 
 ] [4
 
@@ -783,136 +784,138 @@ LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <5> not available
 
 ] [7
 
+] [8
+
 ]
-<pictures/fig3.png, id=62, 3011.25pt x 2106.87125pt>
+<pictures/fig3.png, id=69, 3011.25pt x 2106.87125pt>
 File: pictures/fig3.png Graphic file (type png)
 <use pictures/fig3.png>
-Package pdftex.def Info: pictures/fig3.png  used on input line 316.
-(pdftex.def)             Requested size: 291.9071pt x 204.23767pt.
-[8
-
- <./pictures/fig3.png>]
-<pictures/fig4.png, id=71, 3011.25pt x 2106.87125pt>
-File: pictures/fig4.png Graphic file (type png)
-<use pictures/fig4.png>
-Package pdftex.def Info: pictures/fig4.png  used on input line 321.
+Package pdftex.def Info: pictures/fig3.png  used on input line 351.
 (pdftex.def)             Requested size: 291.9071pt x 204.23767pt.
 [9
 
+ <./pictures/fig3.png>]
+<pictures/fig4.png, id=78, 3011.25pt x 2106.87125pt>
+File: pictures/fig4.png Graphic file (type png)
+<use pictures/fig4.png>
+Package pdftex.def Info: pictures/fig4.png  used on input line 356.
+(pdftex.def)             Requested size: 291.9071pt x 204.23767pt.
+[10
+
  <./pictures/fig4.png>]
 
-Package hyperref Warning: Ignoring empty anchor on input line 349.
+Package hyperref Warning: Ignoring empty anchor on input line 384.
 
-[10
+[11
 
 ]
 
-Package hyperref Warning: Ignoring empty anchor on input line 379.
+Package hyperref Warning: Ignoring empty anchor on input line 414.
 
 
-Overfull \hbox (12.41562pt too wide) in paragraph at lines 379--379
+Overfull \hbox (12.41562pt too wide) in paragraph at lines 414--414
  [] 
  []
 
 
-Overfull \vbox (17.31041pt too high) detected at line 379
+Overfull \vbox (17.31041pt too high) detected at line 414
  []
 
-[11
+[12
 
-] [12
+] [13
 
 ]
-<pictures/fig1.png, id=102, 486.8589pt x 300.6432pt>
+<pictures/fig1.png, id=110, 486.8589pt x 300.6432pt>
 File: pictures/fig1.png Graphic file (type png)
 <use pictures/fig1.png>
-Package pdftex.def Info: pictures/fig1.png  used on input line 409.
-(pdftex.def)             Requested size: 291.93187pt x 180.27261pt.
-[13
-
- <./pictures/fig1.png>]
-<pictures/fig2.png, id=111, 486.8589pt x 300.6432pt>
-File: pictures/fig2.png Graphic file (type png)
-<use pictures/fig2.png>
-Package pdftex.def Info: pictures/fig2.png  used on input line 414.
+Package pdftex.def Info: pictures/fig1.png  used on input line 446.
 (pdftex.def)             Requested size: 291.93187pt x 180.27261pt.
 [14
 
- <./pictures/fig2.png>] [15
+ <./pictures/fig1.png>]
+<pictures/fig2.png, id=118, 486.8589pt x 300.6432pt>
+File: pictures/fig2.png Graphic file (type png)
+<use pictures/fig2.png>
+Package pdftex.def Info: pictures/fig2.png  used on input line 451.
+(pdftex.def)             Requested size: 291.93187pt x 180.27261pt.
+[15
+
+ <./pictures/fig2.png>] [16
 
 ]
-<pictures/fig5.png, id=125, 486.8589pt x 300.6432pt>
+<pictures/fig5.png, id=132, 486.8589pt x 300.6432pt>
 File: pictures/fig5.png Graphic file (type png)
 <use pictures/fig5.png>
-Package pdftex.def Info: pictures/fig5.png  used on input line 441.
-(pdftex.def)             Requested size: 276.56155pt x 170.7812pt.
-[16
-
- <./pictures/fig5.png>]
-<pictures/fig6.png, id=133, 486.8589pt x 300.6432pt>
-File: pictures/fig6.png Graphic file (type png)
-<use pictures/fig6.png>
-Package pdftex.def Info: pictures/fig6.png  used on input line 446.
+Package pdftex.def Info: pictures/fig5.png  used on input line 478.
 (pdftex.def)             Requested size: 276.56155pt x 170.7812pt.
 [17
 
- <./pictures/fig6.png>]
-<pictures/causal_diagram2.png, id=141, 716.6775pt x 536.0025pt>
-File: pictures/causal_diagram2.png Graphic file (type png)
-<use pictures/causal_diagram2.png>
-Package pdftex.def Info: pictures/causal_diagram2.png  used on input line 462.
-(pdftex.def)             Requested size: 153.64523pt x 114.91113pt.
+ <./pictures/fig5.png>]
+<pictures/fig6.png, id=140, 486.8589pt x 300.6432pt>
+File: pictures/fig6.png Graphic file (type png)
+<use pictures/fig6.png>
+Package pdftex.def Info: pictures/fig6.png  used on input line 483.
+(pdftex.def)             Requested size: 276.56155pt x 170.7812pt.
 [18
 
- <./pictures/causal_diagram2.png>] [19
+ <./pictures/fig6.png>]
+<pictures/causal_diagram2.png, id=148, 716.6775pt x 536.0025pt>
+File: pictures/causal_diagram2.png Graphic file (type png)
+<use pictures/causal_diagram2.png>
+Package pdftex.def Info: pictures/causal_diagram2.png  used on input line 491.
+(pdftex.def)             Requested size: 153.64523pt x 114.91113pt.
+[19
+
+ <./pictures/causal_diagram2.png>] [20
 
 ]
-<pictures/matching1.png, id=156, 1040.88875pt x 341.275pt>
+<pictures/matching1.png, id=164, 1040.88875pt x 341.275pt>
 File: pictures/matching1.png Graphic file (type png)
 <use pictures/matching1.png>
-Package pdftex.def Info: pictures/matching1.png  used on input line 482.
-(pdftex.def)             Requested size: 307.28188pt x 100.74815pt.
-[20
-
- <./pictures/matching1.png>]
-<pictures/matching2.png, id=165, 1040.88875pt x 341.275pt>
-File: pictures/matching2.png Graphic file (type png)
-<use pictures/matching2.png>
-Package pdftex.def Info: pictures/matching2.png  used on input line 487.
+Package pdftex.def Info: pictures/matching1.png  used on input line 511.
 (pdftex.def)             Requested size: 307.28188pt x 100.74815pt.
 [21
 
- <./pictures/matching2.png>]
-<pictures/matching3.png, id=173, 1040.88875pt x 274.02374pt>
-File: pictures/matching3.png Graphic file (type png)
-<use pictures/matching3.png>
-Package pdftex.def Info: pictures/matching3.png  used on input line 492.
-(pdftex.def)             Requested size: 307.28188pt x 80.89484pt.
+ <./pictures/matching1.png>]
+<pictures/matching2.png, id=172, 1040.88875pt x 341.275pt>
+File: pictures/matching2.png Graphic file (type png)
+<use pictures/matching2.png>
+Package pdftex.def Info: pictures/matching2.png  used on input line 516.
+(pdftex.def)             Requested size: 307.28188pt x 100.74815pt.
 [22
 
- <./pictures/matching3.png>] [23
+ <./pictures/matching2.png>]
+<pictures/matching3.png, id=180, 1040.88875pt x 274.02374pt>
+File: pictures/matching3.png Graphic file (type png)
+<use pictures/matching3.png>
+Package pdftex.def Info: pictures/matching3.png  used on input line 521.
+(pdftex.def)             Requested size: 307.28188pt x 80.89484pt.
+[23
+
+ <./pictures/matching3.png>] [24
 
 ]
-<pictures/urm_gap_by_year.png, id=187, 3312.375pt x 2046.64626pt>
+<pictures/urm_gap_by_year.png, id=194, 3312.375pt x 2046.64626pt>
 File: pictures/urm_gap_by_year.png Graphic file (type png)
 <use pictures/urm_gap_by_year.png>
-Package pdftex.def Info: pictures/urm_gap_by_year.png  used on input line 539.
-(pdftex.def)             Requested size: 307.24911pt x 189.84271pt.
-[24
-
- <./pictures/urm_gap_by_year.png>]
-<pictures/urm_gap_bio.png, id=195, 3312.375pt x 2046.64626pt>
-File: pictures/urm_gap_bio.png Graphic file (type png)
-<use pictures/urm_gap_bio.png>
-Package pdftex.def Info: pictures/urm_gap_bio.png  used on input line 544.
+Package pdftex.def Info: pictures/urm_gap_by_year.png  used on input line 568.
 (pdftex.def)             Requested size: 307.24911pt x 189.84271pt.
 [25
 
- <./pictures/urm_gap_bio.png>] [26
+ <./pictures/urm_gap_by_year.png>]
+<pictures/urm_gap_bio.png, id=203, 3312.375pt x 2046.64626pt>
+File: pictures/urm_gap_bio.png Graphic file (type png)
+<use pictures/urm_gap_bio.png>
+Package pdftex.def Info: pictures/urm_gap_bio.png  used on input line 573.
+(pdftex.def)             Requested size: 307.24911pt x 189.84271pt.
+[26
 
-] [27
+ <./pictures/urm_gap_bio.png>] [27
 
 ] [28
+
+] [29
 
 ]
 \tf@nav=\write6
@@ -932,18 +935,18 @@ Package rerunfilecheck Info: File `presentation_faith.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 21936 strings out of 480260
- 432784 string characters out of 5892356
+ 21943 strings out of 480260
+ 432857 string characters out of 5892356
  680464 words of memory out of 5000000
- 39289 multiletter control sequences out of 15000+600000
- 534631 words of font info for 76 fonts, out of 8000000 for 9000
+ 39292 multiletter control sequences out of 15000+600000
+ 537399 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,11n,104p,493b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}<c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss12.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on presentation_faith.pdf (28 pages, 1559697 bytes).
+{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}<c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss12.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on presentation_faith.pdf (29 pages, 1584730 bytes).
 PDF statistics:
- 281 PDF objects out of 1000 (max. 8388607)
- 202 compressed objects within 3 object streams
- 87 named destinations out of 1000 (max. 500000)
+ 292 PDF objects out of 1000 (max. 8388607)
+ 210 compressed objects within 3 object streams
+ 90 named destinations out of 1000 (max. 500000)
  103 words of extra memory for PDF output out of 10000 (max. 10000000)
 
