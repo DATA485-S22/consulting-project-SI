@@ -185,8 +185,8 @@ knitr::include_graphics("pictures/fig6.png")
 
 # How do we match?
 
-- The goal of matching is to balence the distribution of the covariates. 
-- In order to create the matching, covariates with more than 2 levels are coarsened. 
+- The goal of matching is to balance the distribution of the covariates 
+- In order to create the matching, covariates with more than 2 levels are coarsened
   - Coarsening a covariate is essentially binning.
   - After coarsening we match exactly.
   - Lastly, throw out any unmatched observations

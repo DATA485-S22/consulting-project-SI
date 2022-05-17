@@ -1,40 +1,254 @@
 ---
-title: "Exploring the Effect of Supplemental Instruction on Equity Gaps"
-author: "Faith Fatchen, Skip Moses, Rica Rebusit, Joseph Shifman"
+title: "Exploring the Effect of Supplemental Instruction on Equity Gaps: Student"
+author: "Faith Fatchen, Skip Moses, Rica Rebusit,  Joseph Shifman"
 date: "5/17/2022"
 output: 
   beamer_presentation:
-    theme: "AnnArbor"
-    colortheme: "dolphin"
-    fonttheme: "structurebold"
+  theme: "Madrid"
 ---
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(tidyverse)
+library(Hmisc) # Enables %nin% notation for "not in"
+library(readxl) # read Excel file
+library(magrittr) #Allows %<>% notation to update lhs object with resulting value
+library(naniar)
+library(tinytex)
+library(ggplot2)
+library(stargazer)
+
+course.level <- read_csv("data/course_analysis_dataset.csv")
+course.level$Term.Year<-factor(course.level$Term.Year)
+course.level$SI.Component.Flag<-factor(course.level$SI.Component.Flag)
+No.SI <- filter(course.level, SI.Component.Flag == "0")
+m <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + class.size + class.average, data = course.level)
+summary(m)
+m2 <- lm(dwf.rate ~ SI.Component.Flag + URM + First.Gen.Perc + SI.Component.Flag*URM + SI.Component.Flag*First.Gen.Perc + class.size + class.average, data = course.level)
+summary(m2)
+```
+# Definitions
+
+Two common measurements universities use to identify historically underserved students are underrepresented minority and first generation.
+
+- **Underrepresented Minority (URM)** - is defined as a U.S. citizen who identifies as Black/African American, Hispanic/Latino, or American Indian. All other Race/Ethnicity categories or Non-U.S. citizens are considered as a Non-Underrepresented Minority (Non-URM).
+
+- **First generation** - is defined as a student who reported both parents as not receiving a baccalaureate degree. All other students are considered as Not First Generation
+
+
+# Original Source Data (via CSU Chico Instituional Research)
+* Course Detail.csv
+  - n = 43,803
+  - Row contains record for course sections from Fall 2012 to Winter 2022
+* Student Profile Metric.csv
+  - n = 49,107
+  - Row contains one record per student matriculation for students enrolled from Fall 2012 to Spring 2022
+* Student Program.csv
+  - n = 343,781
+  - Row contains records for each semester of each student's attendance who were enrolled from Fall 2012 to Winter 2022
+  
+# Original Source Datasets (acquired via CSU Cico Instituional Research)
+* SLC Appointment.csv
+  - n = 78,229
+  - Row contains record for each day that a student went to an SI session, and how many they went to in that day (Fall 2015 - Spring 2022)
+* Student Grade.xlsx
+  - n = 864,471
+  - Row contains final grade data earned for each course for each student from Fall 2016 to Winter 2022
+  
+# Data Preparation
+## Student Level Analysis (n = 19,565)
+* Only student records dated 2016 or later
+* Only first-time freshmen
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program
+
+# Data Preparation
+## Course Level Analysis (n = 5,637)
+* Includes class size, average high school GPA, % first-gen in the class, % URM in the class, DWF rate, SI component flag, term year
+  - These were calculated using the grades data provided by IR
+  - Students with missing records for high school GPA were not included in the calculation
+  - Students with missing records for URM and first-gen status were considered as not a member of these groups
+* Course records from 2016-2019
+* Course sections with less than 10 records of an SI visit during the semester were considered as sections without an SI-component
+* Courses represented have a number less than 300 and are not a special number (x89, x99, etc.)
+* To remove high calculated DWF outliers, class size >= 20
+
+# Data Preparation
+## Coarsened Exact Matching Analysis (n = 19,565)
+* Student profiles, programs, and grades with course level information for courses with SI
+* Only student records dated 2016 to 2019 who DID NOT DROP
+* Best attempt at isolating most recent student program record
+* Approximately 35% of students in the programs dataset are not present in the profiles dataset. Therefore, these records have missing data for HS/Transfer GPA, one-year retention, and matriculation/graduation terms
+* Records with missing data for the following attributes were dropped:
+  - High School GPA
+  - Attended Orientation Flag
+  - STEM Major Flag
+  - Full Time / Part Time Code
+  - Academic Program
+  
+# Course Level Details
+
+- Variables of interest:
+  - Avg HS GPA
+  - First Gen %
+  - URM %
+  - class size
+  - DWF rate
+  - class average
+  - SI component flag
+  - term year
+- Courses from term years 2016-2019
+- Lower Division courses
+- Course sections with class size 20+
+
+# URM and DWF Rate
+
+```{r, echo = FALSE, out.width="95%"}
+knitr::include_graphics("pictures/fig3.png")
 ```
 
-## Introduction to the Data
+# First Generation and DWF Rate
 
-Student profile data (per student):
-[Full CSU enrollment stats](https://www.calstate.edu/data-center/institutional-research-analyses/Pages/enrollment.aspx)
-- Term
-- Part time/full time
-- 
-
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Output
-
-```{r cars, echo = TRUE}
-summary(cars)
+```{r, echo = FALSE, out.width="95%"}
+knitr::include_graphics("pictures/fig4.png")
 ```
 
-## Slide with Plot
+# Course Level Modeling
 
-```{r pressure}
-plot(pressure)
+```{r, results = 'asis', echo = FALSE}
+stargazer(m, single.row = TRUE, type = "latex", title = "Results Multilinear Regression", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
 ```
+
+# Course Level Modeling
+
+```{r, results = 'asis', echo = FALSE}
+stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interactions", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"), font.size = "small")
+```
+
+
+# Student Level Analysis 
+
+- Measuring student level equity gaps
+  - Students who under represented minorities 
+  - Students who are first generation
+- Measuring success
+  - One-year retention
+- First time freshmen matriculated 2016 or later
+  
+# Student Level Analysis 
+
+```{r fig1, out.width="95%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig1.png")
+```
+
+# Student Level Analysis 
+
+```{r fig2, out.width="95%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig2.png")
+```
+  
+# Student Level Analysis: Modeling 
+
+- Logistic regression 
+- Explanatory variables:
+  - Student characteristics: URM, First Generation, Gender, Stem Major, number of units taken in the semester, number of units passed in the semester, Cohort term year, SI attendance 
+  - Course characteristics: Academic level, Course fee existence, GE class
+  - Primary variables of interest: SI, URM, First generation, and interactions
+  
+# Student Results
+
+```{r fig3, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig5.png")
+```
+
+# Student Results: Interactions 
+
+```{r fig4, out.width="90%", echo=FALSE,fig.show='hold',fig.align='center'}
+knitr::include_graphics("pictures/fig6.png")
+```
+
+# Causal Inference 
+
+![](pictures/causal_diagram2.png){#id .class width=50% height=50%}
+
+- We want to measure the impact SI has on student performance.
+- We need to control for these confounding variables!
+- We can accomplish this by matching students with similar characteristics.
+
+# How do we match?
+
+- The goal of matching is to balance the distribution of the covariates 
+- In order to create the matching, covariates with more than 2 levels are coarsened
+  - Coarsening a covariate is essentially binning.
+  - After coarsening we match exactly.
+  - Lastly, throw out any unmatched observations
+
+# Controlling for Confounding with Coarsened Exact Matching
+
+![](pictures/matching1.png)
+
+# Controlling for Confounding with Coarsened Exact Matching
+
+![](pictures/matching2.png)
+
+# Controlling for Confounding with Coarsened Exact Matching
+
+![](pictures/matching3.png)
+
+# Covariates for Matching 
+
+- Notion: Good students go to SI, so the benefit is inflated.
+  - High School GPA
+  - Student Orientation Flag
+  - Major Stem Flag 
+
+- Demographics
+  - Random Course ID
+  - Academic Level
+
+- Equity Gaps
+  - First Generation Flag
+  - URM/NonURM Flag
+  - Gender Code
+
+# Visualizing the Equity Gap
+![](pictures/urm_gap_by_year.png)
+
+# Visualizing the Equity Gap
+
+![](pictures/urm_gap_bio.png)
+
+
+# Effect of SI in General
+
+- After creating our matching, we fit a linear model to estimate the effect SI has on a students final grade.
+  - The model includes the covariates used in our matching. 
+- We find, after controlling for our confounding variables, SI improves students final grade by half of a letter grade.
+  - This doesn't address the question of whether or not SI reduces equity gaps.
+
+# Limitations
+
+- We have no data on student living situations.
+  - Are they paying rent or living with parents?
+  - Are parents helping with tuition?
+  - Are they working full/part time.
+- The Oroville dam flooding and Camp fire are not being accounted for.
+- We are treating equity gaps separtely. 
+
+# Next Steps
+
+- Meet with an expert in Casual Inference.
+- Can we extended Causal Inference Techniques to account for equity gaps?
+  - Can we find trends using difference of proportion plots. 
+- Can we put dollar amount on the benefit of SI by extending the results of the Casual Inference analysis.
+  - Logistic model on matched sample for DWF rates.
+
+
