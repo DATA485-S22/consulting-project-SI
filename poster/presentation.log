@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  16 MAY 2022 19:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.14)  16 MAY 2022 19:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**presentation_faith.tex
-(./presentation_faith.tex
+**presentation.tex
+(./presentation.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-05-04> (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
 Document Class: beamer 2022/02/08 v3.66 A class for typesetting presentations
@@ -584,12 +584,12 @@ Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
 File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count342
 \l__pdf_internal_box=\box76
-) (./presentation_faith.aux
+) (./presentation.aux
 
 LaTeX Warning: Label `' multiply defined.
 
 )
-\openout1 = `presentation_faith.aux'.
+\openout1 = `presentation.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 110.
 LaTeX Font Info:    ... okay on input line 110.
@@ -658,9 +658,9 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count343
-) (./presentation_faith.out) (./presentation_faith.out)
+) (./presentation.out) (./presentation.out)
 \@outlinefile=\write5
-\openout5 = `presentation_faith.out'.
+\openout5 = `presentation.out'.
 
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/lmr/m/n --> OT1/cmss/m/n on input line 110.
@@ -720,7 +720,7 @@ Dictionary: translator-months-dictionary, Language: English
 Dictionary: translator-numbers-dictionary, Language: English 
 ) (c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/translator/translator-theorem-dictionary-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
-) (./presentation_faith.nav) [1
+) (./presentation.nav) [1
 
 {c:/Users/josep/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Trying to load font information for OT1+lmss on input line 129.
@@ -910,31 +910,31 @@ Package pdftex.def Info: pictures/urm_gap_bio.png  used on input line 591.
 
 ]
 \tf@nav=\write6
-\openout6 = `presentation_faith.nav'.
+\openout6 = `presentation.nav'.
 
 \tf@toc=\write7
-\openout7 = `presentation_faith.toc'.
+\openout7 = `presentation.toc'.
 
 \tf@snm=\write8
-\openout8 = `presentation_faith.snm'.
+\openout8 = `presentation.snm'.
 
-(./presentation_faith.aux)
+(./presentation.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `presentation_faith.out' has not changed.
+Package rerunfilecheck Info: File `presentation.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
  21943 strings out of 480260
- 432857 string characters out of 5892356
- 680464 words of memory out of 5000000
+ 432731 string characters out of 5892356
+ 680458 words of memory out of 5000000
  39292 multiletter control sequences out of 15000+600000
  537399 words of font info for 77 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,11n,104p,493b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,11n,104p,487b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}<c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss12.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmss8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmssbx10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsso10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/josep/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on presentation_faith.pdf (29 pages, 1588716 bytes).
+Output written on presentation.pdf (29 pages, 1588722 bytes).
 PDF statistics:
  297 PDF objects out of 1000 (max. 8388607)
  213 compressed objects within 3 object streams
