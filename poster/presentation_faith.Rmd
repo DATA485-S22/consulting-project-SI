@@ -130,7 +130,7 @@ stargazer(m, single.row = TRUE, type = "latex", title = "Results Multilinear Reg
 # Course Level Modeling
 
 ```{r, results = 'asis', echo = FALSE}
-stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interactions", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"))
+stargazer(m2, single.row = TRUE, type = "latex", title = "Results Multilinear Regression With Interactions", header = FALSE, no.space = TRUE, keep.stat = c("adj.rsq", "f"), font.size = "small")
 ```
 
 
@@ -161,7 +161,7 @@ knitr::include_graphics("pictures/fig2.png")
 - Explanatory variables:
   - Student characteristics: URM, First Generation, Gender, Stem Major, number of units taken in the semester, number of units passed in the semester, Cohort term year, SI attendance 
   - Course characteristics: Academic level, Course fee existence, GE class
-
+  - Primary variables of interest: SI, URM, First generation, and interactions
   
 # Student Results
 
