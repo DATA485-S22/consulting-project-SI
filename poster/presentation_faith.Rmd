@@ -184,10 +184,11 @@ knitr::include_graphics("pictures/fig6.png")
 
 # How do we match?
 
-- We can't match exactly!
-- We coarsen our covariates (think binning). 
-- We can now match exactly on our coarsened data.
-- Lastly, throw out any unmatched observations
+- The goal of matching is to balence the distribution of the covariates. 
+- In order to create the matching, covariates with more than 2 levels are coarsened. 
+  - Coarsening a covariate is essentially binning.
+  - After coarsening we match exactly.
+  - Lastly, throw out any unmatched observations
 
 # Controlling for Confounding with Coarsened Exact Matching
 
@@ -211,9 +212,9 @@ knitr::include_graphics("pictures/fig6.png")
 - Demographics
   - Random Course ID
   - Academic Level
-  - First Generation Flag
-  
+
 - Equity Gaps
+  - First Generation Flag
   - URM/NonURM Flag
   - Gender Code
 
@@ -228,12 +229,16 @@ knitr::include_graphics("pictures/fig6.png")
 # Effect of SI in General
 
 - After creating our matching, we fit a linear model to estimate the effect SI has on a students final grade.
+  - The model includes the covariates used in our matching. 
 - We find, after controlling for our confounding variables, SI improves students final grade by half of a letter grade.
-- This doesn't address the question of whether or not SI reduces equity gaps.
+  - This doesn't address the question of whether or not SI reduces equity gaps.
 
 # Limitations
 
 - We have no data on student living situations.
+  - Are they paying rent or living with parents?
+  - Are parents helping with tuition?
+  - Are they working full/part time.
 - The Oroville dam flooding and Camp fire are not being accounted for.
 - We are treating equity gaps separtely. 
 
@@ -241,6 +246,8 @@ knitr::include_graphics("pictures/fig6.png")
 
 - Meet with an expert in Casual Inference.
 - Can we extended Causal Inference Techniques to account for equity gaps?
+  - Can we find trends using difference of proportion plots. 
 - Can we put dollar amount on the benefit of SI by extending the results of the Casual Inference analysis.
+  - Logistic model on matched sample for DWF rates.
 
 
