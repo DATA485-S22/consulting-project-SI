@@ -123,12 +123,12 @@ matched_courses <- matched_df1 %>% group_by(Random.Course.ID) %>%
 matched_df2 <- matched_df1 %>% 
   filter(Random.Course.ID %in% matched_courses$Random.Course.ID) %>%
   group_by(Random.Course.ID, IPEDS.Ethnicity.URM.Non.URM, SI.Attended,
-           Term.Year, Academic.Subject, Class.Subject.Number.Section) %>%
+           Term.Year, Term.Type, Academic.Subject, Class.Subject.Number.Section) %>%
   summarise(avg.grade = mean(grade), 
             n=n()) 
 
 matched_df2_wide <- matched_df2 %>% 
-  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended, Term.Year, Academic.Subject, Class.Subject.Number.Section), 
+  pivot_wider(id_cols = c(Random.Course.ID, SI.Attended, Term.Year, Term.Type, Academic.Subject, Class.Subject.Number.Section), 
               names_from = IPEDS.Ethnicity.URM.Non.URM, 
               values_from = c(avg.grade, n)) %>%
   mutate(urm_gap = `avg.grade_Non-URM` - avg.grade_URM, 
@@ -149,7 +149,7 @@ ggplot(aes(y=urm_gap, x=SI.Attended, color = Academic.Subject,
   geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0) +
   ylab("Non-URM - URM") + xlab("Attended SI")  + guides(size = "none") + labs(color = "Subject") +
   ggtitle("URM gap among matched students who went to SI\n vs those who did not go to SI") + 
-  facet_wrap(~Term.Year) 
+  facet_wrap(~Term.Year + Term.Type) 
 ggsave("poster/pictures/urm_gap_by_year.png")
 ```
 
@@ -162,7 +162,7 @@ ggplot(aes(y=urm_gap, x=SI.Attended, color = Class.Subject.Number.Section,
   geom_point(aes(size=n)) + geom_line()  + geom_hline(yintercept=0)  +
   ylab("Non-URM - URM")  + xlab("SI Attended") +  guides(size = "none") + labs(color = "Subject and Section") +
   ggtitle("URM gap among matched students who went to SI \n vs those who did not go to SI") + 
-  facet_wrap(~Term.Year)
+  facet_wrap(~Term.Year + Term.Type)
 ggsave("poster/pictures/urm_gap_bio.png")
 ```
 
@@ -368,36 +368,3 @@ confint(mind.the.gap)
 ```
 
 The difference between URM yes and URM does not significantly differ between SI yes and SI no.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
