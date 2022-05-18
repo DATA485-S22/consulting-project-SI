@@ -368,36 +368,3 @@ confint(mind.the.gap)
 ```
 
 The difference between URM yes and URM does not significantly differ between SI yes and SI no.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

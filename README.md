@@ -54,13 +54,18 @@ Before running any files, you must first download the data files from the secure
     - This dataset was built using **student_profiles_clean.csv**, so it contains the same caveats.
 - **course_analysis_dataset.csv**
   - Used in the 2022 NSC poster code files to create a linear regression model predicting course section DWF rate
-  - (PER SECTION, see _codebook_[need to create codebook] for more info) Class size, high school GPA average of students, percentage of first generation students, percentage of under-represented minority students, DWF rate, SI component flag, term year
+  - (PER SECTION) Class size, high school GPA average of students, percentage of first generation students, percentage of under-represented minority students, DWF rate, SI component flag, term year, other course information
   - **Notes:**
     - A number of student records contain missing values for high school GPA, URM status, or first generation status. These students are not included in the calculation of average GPA and are considered non-URM or not first generation, respectfully.
     - Only course records between 2016 and 2019, inclusive, are represented.
-    - Since a miniscule proportion of courses with SI are upper division, the decision was made to only include courses with a number less than 300.
+    - Since a minuscule proportion of courses with SI are upper division, the decision was made to only include courses with a number less than 300.
     - In an attempt to remove high DWF outliers, only course sections with a class size 20 or greater are considered.
     - This dataset was created using **course_level.csv** and **student_profiles_clean.csv**, so it contains the same caveats as them both.
+
+### Poster and Presentation (Spring 2022)
+To view and run the files that create the poster and final presentation from Spring 2022, first create a poster/data/ repository. Copy the files **course_analysis_dataset.csv** and **student_analysis_dataset.csv** into the poster/data/ directory. PDFs of the poster and presentation are already saved in this repository. Images for the poster were created in "poster/pictures.Rmd" and the compiled poster is made in "poster.Rmd". The presentation is made in "presentation.Rmd" and running this file requires that you download/update TinyTeX.
+
+All analysis and exploration code is located in the scripts/ directory.
 
 -----
 
